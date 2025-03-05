@@ -1,0 +1,77 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: rococo-gateway
+
+logging:
+  file:
+    path: ./logs/rococo-gateway
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    net.devh.boot.grpc: INFO
+    org.springframework.boot.autoconfigure: INFO
+
+rococo-userdata:
+  client: rest
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://127.0.0.1:9000'
+
+grpc:
+  client:
+    grpcCurrencyClient:
+      address: 'static://localhost:8092'
+      negotiationType: PLAINTEXT
+
+rococo-userdata:
+  base-uri: 'http://127.0.0.1:8089'
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
+rococo-gateway:
+  base-uri: 'http://127.0.0.1:8090'
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://auth.rococo.dc:9000'
+
+grpc:
+  client:
+    grpcCurrencyClient:
+      address: 'static://currency.rococo.dc:8092'
+      negotiationType: PLAINTEXT
+
+rococo-userdata:
+  base-uri: 'http://userdata.rococo.dc:8089'
+rococo-front:
+  base-uri: 'http://frontend.rococo.dc'
+rococo-gateway:
+  base-uri: 'http://gateway.rococo.dc:8090'
