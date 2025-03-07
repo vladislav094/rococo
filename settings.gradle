@@ -1,3 +1,5 @@
-rootProject.name = 'rococo'
+rootProject.name = 'rococo-ng'
 include 'rococo-gateway'
 include 'rococo-auth'
+include 'rococo-userdata'
+include 'rococo-grpc-common'
