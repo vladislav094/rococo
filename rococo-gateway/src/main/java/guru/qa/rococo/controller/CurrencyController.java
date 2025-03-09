@@ -20,8 +20,8 @@ public class CurrencyController {
         this.grpcCurrencyClient = grpcCurrencyClient;
     }
 
-    @GetMapping("/all")
-    public List<CurrencyJson> getAllCurrencies() {
-        return grpcCurrencyClient.getAllCurrencies();
-    }
+//    @GetMapping("/all")
+//    public List<CurrencyJson> getAllCurrencies() {
+//        return grpcCurrencyClient.getAllCurrencies();
+//    }
 }

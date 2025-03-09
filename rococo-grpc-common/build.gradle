@@ -52,7 +52,7 @@ protobuf {
             task.generateDescriptorSet = true
             task.descriptorSetOptions.includeSourceInfo = true
             task.descriptorSetOptions.includeImports = true
-            task.descriptorSetOptions.path = "${buildDir}/generated/currency.dsc"
+            task.descriptorSetOptions.path = "${buildDir}/generated/museum.dsc"
         }
     }
 }
