@@ -10,50 +10,55 @@ option java_outer_classname = "RococoMuseumProto";
 
 // Сервис для работы с музеями
 service RococoMuseumService {
-  rpc GetAllMuseum (google.protobuf.Empty) returns (MuseumResponse) {}
+  rpc GetAllMuseum (google.protobuf.Empty) returns (MuseumsResponse) {}
+  rpc GetMuseumById (IdRequest) returns (MuseumResponse) {}
   // Получить музей по ID
 //  rpc GetMuseum(GetMuseumRequest) returns (Museum);
 //  // Получить все музеи
 //  rpc GetAllMuseums(GetAllMuseumsRequest) returns (GetAllMuseumsResponse);
 }
 
-message MuseumResponse {
-  repeated Museum allMuseum = 1;
+message MuseumsResponse {
+  repeated MuseumResponse allMuseum = 1;
+}
+
+message IdRequest {
+  string id = 1;
 }
 
 // Сообщение для страны
-message Country {
+message CountryResponse {
   string id = 1; // UUID страны
   string name = 2; // Название страны
 }
 
 // Сообщение для геолокации (город + страна)
-message Geo {
+message GeoResponse {
   string id = 1; // UUID геолокации
   string city = 2; // Название города
-  Country country = 3; // Связанная страна
+  CountryResponse country = 3; // Связанная страна
 }
 
 // Сообщение для музея
-message Museum {
+message MuseumResponse {
   string id = 1; // UUID музея
   string title = 2; // Название музея
   string description = 3; // Описание музея
   bytes photo = 4; // Фотография музея (опционально)
-  Geo geo = 5; // Геолокация музея
+  GeoResponse geo = 5; // Геолокация музея
 }
 
-// Запрос для получения музея по ID
-message GetMuseumRequest {
-  string id = 1; // UUID музея
-}
-
-// Запрос для получения всех музеев
-message GetAllMuseumsRequest {
-  // Пока без параметров
-}
-
-// Ответ с списком музеев
-message GetAllMuseumsResponse {
-  repeated Museum museums = 1; // Список музеев
-}
+//// Запрос для получения музея по ID
+//message GetMuseumRequest {
+//  string id = 1; // UUID музея
+//}
+//
+//// Запрос для получения всех музеев
+//message GetAllMuseumsRequest {
+//  // Пока без параметров
+//}
+//
+//// Ответ с списком музеев
+//message GetAllMuseumsResponse {
+//  repeated Museum museums = 1; // Список музеев
+//}
