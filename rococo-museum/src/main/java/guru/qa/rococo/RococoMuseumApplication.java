@@ -12,5 +12,4 @@ public class RococoMuseumApplication {
     springApplication.addListeners(new PropertiesLogger());
     springApplication.run(args);
   }
-
 }
