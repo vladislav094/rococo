@@ -10,7 +10,7 @@ option java_outer_classname = "RococoMuseumProto";
 
 // Сервис для работы с музеями
 service RococoMuseumService {
-  rpc GetAllMuseum (google.protobuf.Empty) returns (MuseumsResponse) {}
+  rpc GetAllMuseum (MuseumsRequest) returns (MuseumsResponse) {}
   rpc GetMuseumById (IdRequest) returns (MuseumResponse) {}
   // Получить музей по ID
 //  rpc GetMuseum(GetMuseumRequest) returns (Museum);
@@ -18,8 +18,15 @@ service RococoMuseumService {
 //  rpc GetAllMuseums(GetAllMuseumsRequest) returns (GetAllMuseumsResponse);
 }
 
+message MuseumsRequest {
+  int32 page = 1;
+  int32 size = 2;
+}
+
 message MuseumsResponse {
   repeated MuseumResponse allMuseum = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
 }
 
 message IdRequest {

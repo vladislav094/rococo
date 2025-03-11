@@ -1,7 +1,6 @@
 package guru.qa.rococo.service;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Empty;
 import guru.qa.rococo.data.CountryEntity;
 import guru.qa.rococo.data.GeoEntity;
 import guru.qa.rococo.data.MuseumEntity;
@@ -12,6 +11,8 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -30,17 +31,18 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
 
     @Transactional(readOnly = true)
     @Override
-    public void getAllMuseum(Empty request, StreamObserver<MuseumsResponse> responseObserver) {
+    public void getAllMuseum(MuseumsRequest request, StreamObserver<MuseumsResponse> responseObserver) {
+        // данные с пагинацией
+        Page<MuseumEntity> museumPage = museumRepository.findAll(
+                PageRequest.of(request.getPage(), request.getSize())
+        );
+        // результат в gRPC ответ
         MuseumsResponse response = MuseumsResponse.newBuilder()
-                .addAllAllMuseum(museumRepository.findAll().stream()
-                        .map(e -> MuseumResponse.newBuilder()
-                                .setId(e.getId().toString())
-                                .setTitle(e.getTitle())
-                                .setDescription(e.getDescription())
-                                .setPhoto(e.getPhoto() != null ? ByteString.copyFrom(e.getPhoto()) : ByteString.EMPTY)
-                                .setGeo(toGrpcGeo(e.getGeo()))
-                                .build())
+                .addAllAllMuseum(museumPage.getContent().stream()
+                        .map(this::toGrpcMuseum)
                         .toList())
+                .setTotalPages(museumPage.getTotalPages())
+                .setTotalElements(museumPage.getTotalElements())
                 .build();
 
         responseObserver.onNext(response);
@@ -62,6 +64,16 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
         );
 
         responseObserver.onCompleted();
+    }
+
+    private MuseumResponse toGrpcMuseum(MuseumEntity museumEntity) {
+        return MuseumResponse.newBuilder()
+                .setId(museumEntity.getId().toString())
+                .setTitle(museumEntity.getTitle())
+                .setDescription(museumEntity.getDescription())
+                .setPhoto(museumEntity.getPhoto() != null ? ByteString.copyFrom(museumEntity.getPhoto()) : ByteString.EMPTY)
+                .setGeo(toGrpcGeo(museumEntity.getGeo()))
+                .build();
     }
 
     private GeoResponse toGrpcGeo(GeoEntity geoEntity) {
