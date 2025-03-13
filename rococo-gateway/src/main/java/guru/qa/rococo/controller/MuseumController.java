@@ -5,8 +5,6 @@ import guru.qa.rococo.service.api.GrpcMuseumClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +22,17 @@ public class MuseumController {
     }
 
     @GetMapping
-    public Page<MuseumJson> getAllMuseums(@AuthenticationPrincipal Jwt principal, Pageable pageable) {
+    public Page<MuseumJson> getAllMuseums(Pageable pageable) {
         return grpcMuseumClient.getAllMuseums(pageable);
     }
 
-//    @GetMapping("/{id}")
-//    public MuseumJson getMuseum(@PathVariable("id") S)
+    @GetMapping("/{id}")
+    public MuseumJson getMuseumById(@PathVariable("id") String id) {
+        return grpcMuseumClient.getMuseumById(id);
+    }
+
+    @GetMapping("/{title}")
+    public MuseumJson getMuseumByTitle(@PathVariable("title") String title) {
+        return grpcMuseumClient.getMuseumByTitle(title);
+    }
 }

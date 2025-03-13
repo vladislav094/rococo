@@ -1,11 +1,11 @@
 package guru.qa.rococo.service;
 
-import com.google.protobuf.ByteString;
-import guru.qa.rococo.data.CountryEntity;
-import guru.qa.rococo.data.GeoEntity;
 import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.ex.MuseumNotFoundException;
 import guru.qa.rococo.grpc.*;
+import guru.qa.rococo.utils.GrpcResponseConverter;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
+
+import static guru.qa.rococo.utils.GrpcResponseConverter.buildResponse;
 
 @GrpcService
 public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServiceImplBase {
@@ -30,8 +32,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     }
 
     @Transactional(readOnly = true)
-    @Override
-    public void getAllMuseum(MuseumsRequest request, StreamObserver<MuseumsResponse> responseObserver) {
+    public void getAllMuseums(PageableRequest request, StreamObserver<MuseumsResponse> responseObserver) {
         // данные с пагинацией
         Page<MuseumEntity> museumPage = museumRepository.findAll(
                 PageRequest.of(request.getPage(), request.getSize())
@@ -39,7 +40,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
         // результат в gRPC ответ
         MuseumsResponse response = MuseumsResponse.newBuilder()
                 .addAllAllMuseum(museumPage.getContent().stream()
-                        .map(this::toGrpcMuseum)
+                        .map(GrpcResponseConverter::toGrpcMuseum)
                         .toList())
                 .setTotalPages(museumPage.getTotalPages())
                 .setTotalElements(museumPage.getTotalElements())
@@ -51,43 +52,31 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
 
     @Transactional(readOnly = true)
     @Override
-    public void getMuseumById(IdRequest request, StreamObserver<MuseumResponse> responseObserver) {
-        final MuseumEntity museumEntity = museumRepository.findById(UUID.fromString(request.getId()))
-                .orElseThrow(() -> new RuntimeException("Museum with id: " + request.getId() + " not found."));
-        responseObserver.onNext(MuseumResponse.newBuilder()
-                .setId(museumEntity.getId().toString())
-                .setTitle(museumEntity.getTitle())
-                .setDescription(museumEntity.getDescription())
-                .setPhoto(museumEntity.getPhoto() != null ? ByteString.copyFrom(museumEntity.getPhoto()) : ByteString.EMPTY)
-                .setGeo(toGrpcGeo(museumEntity.getGeo()))
-                .build()
-        );
-
-        responseObserver.onCompleted();
+    public void getMuseumById(ByIdRequest request, StreamObserver<MuseumResponse> responseObserver) {
+        try {
+            final MuseumEntity museumEntity = museumRepository.findById(UUID.fromString(request.getId()))
+                    .orElseThrow(() -> new MuseumNotFoundException("Museum with id: " + request.getId() + " not found."));
+            responseObserver.onNext(buildResponse(museumEntity));
+            responseObserver.onCompleted();
+        } catch (MuseumNotFoundException e) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription(e.getMessage())
+                    .asRuntimeException());
+        }
     }
 
-    private MuseumResponse toGrpcMuseum(MuseumEntity museumEntity) {
-        return MuseumResponse.newBuilder()
-                .setId(museumEntity.getId().toString())
-                .setTitle(museumEntity.getTitle())
-                .setDescription(museumEntity.getDescription())
-                .setPhoto(museumEntity.getPhoto() != null ? ByteString.copyFrom(museumEntity.getPhoto()) : ByteString.EMPTY)
-                .setGeo(toGrpcGeo(museumEntity.getGeo()))
-                .build();
-    }
-
-    private GeoResponse toGrpcGeo(GeoEntity geoEntity) {
-        return GeoResponse.newBuilder()
-                .setId(geoEntity.getId().toString())
-                .setCity(geoEntity.getCity())
-                .setCountry(toGrpcCountry(geoEntity.getCountry()))
-                .build();
-    }
-
-    private CountryResponse toGrpcCountry(CountryEntity countryEntity) {
-        return CountryResponse.newBuilder()
-                .setId(countryEntity.getId().toString())
-                .setName(countryEntity.getName())
-                .build();
+    @Transactional(readOnly = true)
+    @Override
+    public void getMuseumByTitle(ByTitleRequest request, StreamObserver<MuseumResponse> responseObserver) {
+        try {
+            final MuseumEntity museumEntity = museumRepository.findByTitle(request.getTitle())
+                    .orElseThrow(() -> new MuseumNotFoundException("Museum with title: " + request.getTitle() + " not found."));
+            responseObserver.onNext(buildResponse(museumEntity));
+            responseObserver.onCompleted();
+        } catch (MuseumNotFoundException e) {
+            responseObserver.onError(Status.NOT_FOUND.
+                    withDescription(e.getMessage())
+                    .asRuntimeException());
+        }
     }
 }

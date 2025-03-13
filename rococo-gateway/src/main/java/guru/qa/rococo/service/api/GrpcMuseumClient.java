@@ -1,9 +1,7 @@
 package guru.qa.rococo.service.api;
 
 import com.google.protobuf.Empty;
-import guru.qa.rococo.grpc.MuseumsRequest;
-import guru.qa.rococo.grpc.MuseumsResponse;
-import guru.qa.rococo.grpc.RococoMuseumServiceGrpc;
+import guru.qa.rococo.grpc.*;
 import guru.qa.rococo.model.MuseumJson;
 import io.grpc.StatusRuntimeException;
 import jakarta.annotation.Nonnull;
@@ -22,23 +20,23 @@ import java.util.List;
 @Component
 public class GrpcMuseumClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcCurrencyClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GrpcMuseumClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
 
-    @GrpcClient("grpcMuseumClient")
+    @GrpcClient("grpcCustomClient")
     private RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub rococoMuseumServiceStub;
 
     public @Nonnull
     Page<MuseumJson> getAllMuseums(Pageable pageable) {
         try {
             // gRPC запрос с пагинацией
-            MuseumsRequest request = MuseumsRequest.newBuilder()
+            PageableRequest request = PageableRequest.newBuilder()
                     .setPage(pageable.getPageNumber())
                     .setSize(pageable.getPageSize())
                     .build();
 
             // выполняем gRPC запрос
-            MuseumsResponse response = rococoMuseumServiceStub.getAllMuseum(request);
+            MuseumsResponse response = rococoMuseumServiceStub.getAllMuseums(request);
 
             // преобразуем ответ в Page<MuseumJson>
             List<MuseumJson> museums = response.getAllMuseumList().stream()
@@ -47,6 +45,30 @@ public class GrpcMuseumClient {
 
             return new PageImpl<>(museums, pageable, response.getTotalElements());
 
+        } catch (StatusRuntimeException e) {
+            LOG.error("### Error while calling gRPC server ", e);
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+        }
+    }
+
+    public MuseumJson getMuseumById(String id) {
+        ByIdRequest request = ByIdRequest.newBuilder()
+                .setId(id)
+                .build();
+        try {
+            return MuseumJson.fromGrpcMessage(rococoMuseumServiceStub.getMuseumById(request));
+        } catch (StatusRuntimeException e) {
+            LOG.error("### Error while calling gRPC server ", e);
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+        }
+    }
+
+    public MuseumJson getMuseumByTitle(String title) {
+        ByTitleRequest request = ByTitleRequest.newBuilder()
+                .setTitle(title)
+                .build();
+        try {
+            return MuseumJson.fromGrpcMessage(rococoMuseumServiceStub.getMuseumByTitle(request));
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);

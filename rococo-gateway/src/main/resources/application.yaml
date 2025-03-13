@@ -37,7 +37,7 @@ spring:
 
 grpc:
   client:
-    grpcMuseumClient:
+    grpcCustomClient:
       address: 'static://localhost:8092'
       negotiationType: PLAINTEXT
 
