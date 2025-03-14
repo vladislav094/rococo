@@ -10,19 +10,20 @@ option java_outer_classname = "RococoMuseumProto";
 
 // Сервис для работы с музеями
 service RococoMuseumService {
-  rpc GetAllMuseums (PageableRequest) returns (MuseumsResponse) {}
+  rpc GetMuseums (PageableRequest) returns (MuseumsResponse) {}
   rpc GetMuseumById (ByIdRequest) returns (MuseumResponse) {}
-  rpc GetMuseumByTitle (ByTitleRequest) returns (MuseumResponse) {}
+  rpc GetMuseumByTitle (PageableRequest) returns (MuseumsResponse) {}
 }
 
 // Сервис для работы со странами
 service RococoCountryService {
-  rpc GetAllCountries (PageableRequest) returns (CountriesResponse) {}
+  rpc GetCountries (PageableRequest) returns (CountriesResponse) {}
 }
 
 message PageableRequest {
-  int32 page = 1;
-  int32 size = 2;
+  string title = 1;
+  int32 page = 2;
+  int32 size = 3;
 }
 
 message ByIdRequest {
@@ -35,7 +36,7 @@ message ByTitleRequest {
 
 // ответы для музеев
 message MuseumsResponse {
-  repeated MuseumResponse allMuseum = 1;
+  repeated MuseumResponse museum = 1;
   int32  totalPages = 2;
   int64  totalElements = 3;
 }
@@ -50,7 +51,7 @@ message MuseumResponse {
 
 // ответы для стран
 message CountriesResponse {
-  repeated CountryResponse allCountries = 1;
+  repeated CountryResponse country = 1;
   int32  totalPages = 2;
   int64  totalElements = 3;
 }

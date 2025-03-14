@@ -4,11 +4,9 @@ import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.service.api.GrpcMuseumClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/museum")
@@ -22,17 +20,15 @@ public class MuseumController {
     }
 
     @GetMapping
-    public Page<MuseumJson> getAllMuseums(Pageable pageable) {
-        return grpcMuseumClient.getAllMuseums(pageable);
+    public Page<MuseumJson> getAllMuseums(@RequestParam(name = "title", required = false) String title,
+                                          @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                          @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return grpcMuseumClient.getAllMuseums(title, pageable);
     }
 
     @GetMapping("/{id}")
     public MuseumJson getMuseumById(@PathVariable("id") String id) {
         return grpcMuseumClient.getMuseumById(id);
-    }
-
-    @GetMapping("/{title}")
-    public MuseumJson getMuseumByTitle(@PathVariable("title") String title) {
-        return grpcMuseumClient.getMuseumByTitle(title);
     }
 }

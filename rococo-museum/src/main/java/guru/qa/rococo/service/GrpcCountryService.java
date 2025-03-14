@@ -21,22 +21,22 @@ public class GrpcCountryService extends RococoCountryServiceGrpc.RococoCountrySe
     private static final Logger LOG = LoggerFactory.getLogger(GrpcCountryService.class);
 
     private final CountryRepository countryRepository;
-    private GrpcResponseConverter grpcResponseConverter;
 
     @Autowired
     public GrpcCountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public void getAllCountries(PageableRequest request, StreamObserver<CountriesResponse> responseObserver) {
+    public void getCountries(PageableRequest request, StreamObserver<CountriesResponse> responseObserver) {
         // данные с пагинацией
         Page<CountryEntity> countiesPage = countryRepository.findAll(
                 PageRequest.of(request.getPage(), request.getSize())
         );
         // результат в gRPC ответ
         CountriesResponse response = CountriesResponse.newBuilder()
-                .addAllAllCountries(countiesPage.getContent().stream()
+                .addAllCountry(countiesPage.getContent().stream()
                         .map(GrpcResponseConverter::toGrpcCountry)
                         .toList())
                 .setTotalPages(countiesPage.getTotalPages())

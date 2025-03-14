@@ -27,19 +27,18 @@ public class GrpcMuseumClient {
     private RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub rococoMuseumServiceStub;
 
     public @Nonnull
-    Page<MuseumJson> getAllMuseums(Pageable pageable) {
+    Page<MuseumJson> getAllMuseums(String title, Pageable pageable) {
         try {
             // gRPC запрос с пагинацией
             PageableRequest request = PageableRequest.newBuilder()
                     .setPage(pageable.getPageNumber())
                     .setSize(pageable.getPageSize())
+                    .setTitle(title != null && !title.isEmpty() ? title : "")
                     .build();
-
             // выполняем gRPC запрос
-            MuseumsResponse response = rococoMuseumServiceStub.getAllMuseums(request);
-
+            MuseumsResponse response = rococoMuseumServiceStub.getMuseums(request);
             // преобразуем ответ в Page<MuseumJson>
-            List<MuseumJson> museums = response.getAllMuseumList().stream()
+            List<MuseumJson> museums = response.getMuseumList().stream()
                     .map(MuseumJson::fromGrpcMessage)
                     .toList();
 
@@ -57,18 +56,6 @@ public class GrpcMuseumClient {
                 .build();
         try {
             return MuseumJson.fromGrpcMessage(rococoMuseumServiceStub.getMuseumById(request));
-        } catch (StatusRuntimeException e) {
-            LOG.error("### Error while calling gRPC server ", e);
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
-        }
-    }
-
-    public MuseumJson getMuseumByTitle(String title) {
-        ByTitleRequest request = ByTitleRequest.newBuilder()
-                .setTitle(title)
-                .build();
-        try {
-            return MuseumJson.fromGrpcMessage(rococoMuseumServiceStub.getMuseumByTitle(request));
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);

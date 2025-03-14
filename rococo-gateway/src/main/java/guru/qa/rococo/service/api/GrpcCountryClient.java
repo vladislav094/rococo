@@ -4,7 +4,6 @@ import com.google.protobuf.Empty;
 import guru.qa.rococo.grpc.CountriesResponse;
 import guru.qa.rococo.grpc.PageableRequest;
 import guru.qa.rococo.grpc.RococoCountryServiceGrpc;
-import guru.qa.rococo.grpc.RococoMuseumServiceGrpc;
 import guru.qa.rococo.model.CountryJson;
 import io.grpc.StatusRuntimeException;
 import jakarta.annotation.Nonnull;
@@ -39,10 +38,10 @@ public class GrpcCountryClient {
                     .build();
 
             // выполняем gRPC запрос
-            CountriesResponse response = rococoCountryServiceStub.getAllCountries(request);
+            CountriesResponse response = rococoCountryServiceStub.getCountries(request);
 
             // преобразуем ответ в Page<MuseumJson>
-            List<CountryJson> museums = response.getAllCountriesList().stream()
+            List<CountryJson> museums = response.getCountryList().stream()
                     .map(CountryJson::fromGrpcMessage)
                     .toList();
 
