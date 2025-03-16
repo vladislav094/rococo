@@ -25,11 +25,11 @@ public class GeoEntity implements Serializable {
     private String city;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
     private CountryEntity country;
 
     @OneToMany(mappedBy = "geo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<MuseumEntity> museum;
+    private Set<MuseumEntity> museums;
 
     @Override
     public final boolean equals(Object o) {

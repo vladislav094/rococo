@@ -18,7 +18,7 @@ public record GeoJson(
         String city,
 
         @JsonProperty("country")
-        CountryJson geo) {
+        CountryJson country) {
 
 
     public static @Nonnull GeoJson fromGrpcMessage(@Nonnull GeoResponse geo) {

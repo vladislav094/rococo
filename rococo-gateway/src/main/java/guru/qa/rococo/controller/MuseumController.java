@@ -31,4 +31,9 @@ public class MuseumController {
     public MuseumJson getMuseumById(@PathVariable("id") String id) {
         return grpcMuseumClient.getMuseumById(id);
     }
+
+    @PatchMapping
+    public MuseumJson updateMuseum(@RequestBody MuseumJson museum) {
+        return grpcMuseumClient.updateMuseum(museum);
+    }
 }

@@ -13,6 +13,7 @@ service RococoMuseumService {
   rpc GetMuseums (PageableRequest) returns (MuseumsResponse) {}
   rpc GetMuseumById (ByIdRequest) returns (MuseumResponse) {}
   rpc GetMuseumByTitle (PageableRequest) returns (MuseumsResponse) {}
+  rpc UpdateMuseum(UpdateMuseumRequest) returns (MuseumResponse);
 }
 
 // Сервис для работы со странами
@@ -47,6 +48,15 @@ message MuseumResponse {
   string description = 3; // Описание музея
   bytes photo = 4; // Фотография музея (опционально)
   GeoResponse geo = 5; // Геолокация музея
+}
+
+message UpdateMuseumRequest {
+  string id = 1; // UUID музея
+  string title = 2; // Название музея
+  string description = 3; // Описание музея
+  bytes photo = 4; // Фотография музея (опционально)
+  string city = 5; // Название города
+  string countryId = 6; // UUID страны
 }
 
 // ответы для стран

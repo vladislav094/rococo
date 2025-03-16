@@ -1,5 +1,6 @@
 package guru.qa.rococo.service.api;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Empty;
 import guru.qa.rococo.grpc.*;
 import guru.qa.rococo.model.MuseumJson;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -59,6 +61,33 @@ public class GrpcMuseumClient {
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+        }
+    }
+
+    public MuseumJson updateMuseum(MuseumJson museumJson) {
+        try {
+            // Создаем UpdateMuseumRequest из тела REST запроса
+            UpdateMuseumRequest request = UpdateMuseumRequest.newBuilder()
+                    .setId(museumJson.id().toString())
+                    .setTitle(museumJson.title())
+                    .setDescription(museumJson.description())
+                    .setPhoto(ByteString.copyFrom(Base64.getDecoder().decode(museumJson.photo())))
+                    .setCity(museumJson.geo().city())
+                    .setCountryId(museumJson.geo().country().id().toString())
+                    .build();
+
+            // Вызываем gRPC-сервис
+            MuseumResponse response = rococoMuseumServiceStub.updateMuseum(request);
+
+            // Преобразуем ответ в MuseumJson
+            return MuseumJson.fromGrpcMessage(response);
+        } catch (StatusRuntimeException e) {
+            HttpStatus httpStatus = switch (e.getStatus().getCode()) {
+                case INVALID_ARGUMENT -> HttpStatus.BAD_REQUEST;
+                case NOT_FOUND -> HttpStatus.NOT_FOUND;
+                default -> HttpStatus.SERVICE_UNAVAILABLE;
+            };
+            throw new ResponseStatusException(httpStatus, e.getStatus().getDescription(), e);
         }
     }
 }

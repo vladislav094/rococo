@@ -4,11 +4,16 @@ import com.google.protobuf.ByteString;
 import guru.qa.rococo.data.CountryEntity;
 import guru.qa.rococo.data.GeoEntity;
 import guru.qa.rococo.data.MuseumEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.data.repository.GeoRepository;
 import guru.qa.rococo.grpc.CountryResponse;
 import guru.qa.rococo.grpc.GeoResponse;
 import guru.qa.rococo.grpc.MuseumResponse;
 
+import java.util.UUID;
+
 public class GrpcResponseConverter {
+
 
     public static MuseumResponse buildResponse(MuseumEntity entity) {
         return MuseumResponse.newBuilder()
@@ -45,4 +50,5 @@ public class GrpcResponseConverter {
                 .setName(countryEntity.getName())
                 .build();
     }
+
 }
