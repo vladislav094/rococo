@@ -9,8 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.MERGE;
 
 @Getter
 @Setter
@@ -32,7 +31,7 @@ public class MuseumEntity implements Serializable {
     @Column(name = "photo", columnDefinition = "bytea")
     private byte[] photo;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = MERGE)
     @JoinColumn(name = "geo_id", referencedColumnName = "id", nullable = false)
     private GeoEntity geo;
 

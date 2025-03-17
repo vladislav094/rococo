@@ -32,6 +32,11 @@ public class MuseumController {
         return grpcMuseumClient.getMuseumById(id);
     }
 
+    @PostMapping
+    public MuseumJson createMuseum(@RequestBody MuseumJson museum) {
+        return grpcMuseumClient.createMuseum(museum);
+    }
+
     @PatchMapping
     public MuseumJson updateMuseum(@RequestBody MuseumJson museum) {
         return grpcMuseumClient.updateMuseum(museum);

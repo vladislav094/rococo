@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -45,49 +44,70 @@ public class GrpcMuseumClient {
                     .toList();
 
             return new PageImpl<>(museums, pageable, response.getTotalElements());
-
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+            throw handleStatusRuntimeException(e);
         }
     }
 
-    public MuseumJson getMuseumById(String id) {
-        ByIdRequest request = ByIdRequest.newBuilder()
-                .setId(id)
-                .build();
+    public @Nonnull MuseumJson getMuseumById(String id) {
         try {
+            ByIdRequest request = ByIdRequest.newBuilder()
+                    .setId(id)
+                    .build();
             return MuseumJson.fromGrpcMessage(rococoMuseumServiceStub.getMuseumById(request));
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+            throw handleStatusRuntimeException(e);
         }
     }
 
-    public MuseumJson updateMuseum(MuseumJson museumJson) {
+    public @Nonnull MuseumJson createMuseum(MuseumJson museumJson) {
         try {
-            // Создаем UpdateMuseumRequest из тела REST запроса
+            CreateMuseumRequest request = CreateMuseumRequest.newBuilder()
+                    .setTitle(museumJson.title())
+                    .setDescription(museumJson.description())
+                    .setPhoto(ByteString.copyFromUtf8(museumJson.photo()))
+                    .setCity(museumJson.geo().city())
+                    .setCountryId(museumJson.geo().country().id().toString())
+                    .build();
+            // вызываем gRPC-сервис
+            MuseumResponse response = rococoMuseumServiceStub.createMuseum(request);
+            // преобразуем ответ в MuseumJson
+            return MuseumJson.fromGrpcMessage(response);
+        } catch (StatusRuntimeException e) {
+            LOG.error("### Error while calling gRPC server ", e);
+            throw handleStatusRuntimeException(e);
+        }
+    }
+
+    public @Nonnull MuseumJson updateMuseum(MuseumJson museumJson) {
+        try {
+            // создаем UpdateMuseumRequest из тела REST запроса
             UpdateMuseumRequest request = UpdateMuseumRequest.newBuilder()
                     .setId(museumJson.id().toString())
                     .setTitle(museumJson.title())
                     .setDescription(museumJson.description())
-                    .setPhoto(ByteString.copyFrom(Base64.getDecoder().decode(museumJson.photo())))
+                    .setPhoto(ByteString.copyFromUtf8(museumJson.photo()))
                     .setCity(museumJson.geo().city())
                     .setCountryId(museumJson.geo().country().id().toString())
                     .build();
-
-            // Вызываем gRPC-сервис
+            // вызываем gRPC-сервис
             MuseumResponse response = rococoMuseumServiceStub.updateMuseum(request);
-
-            // Преобразуем ответ в MuseumJson
+            // преобразуем ответ в MuseumJson
             return MuseumJson.fromGrpcMessage(response);
         } catch (StatusRuntimeException e) {
-            HttpStatus httpStatus = switch (e.getStatus().getCode()) {
-                case INVALID_ARGUMENT -> HttpStatus.BAD_REQUEST;
-                case NOT_FOUND -> HttpStatus.NOT_FOUND;
-                default -> HttpStatus.SERVICE_UNAVAILABLE;
-            };
-            throw new ResponseStatusException(httpStatus, e.getStatus().getDescription(), e);
+            LOG.error("### Error while calling gRPC server ", e);
+            throw handleStatusRuntimeException(e);
         }
+    }
+
+    private ResponseStatusException handleStatusRuntimeException(StatusRuntimeException e) {
+        HttpStatus httpStatus = switch (e.getStatus().getCode()) {
+            case INVALID_ARGUMENT -> HttpStatus.BAD_REQUEST;
+            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+            default -> HttpStatus.SERVICE_UNAVAILABLE;
+        };
+        return new ResponseStatusException(httpStatus, e.getStatus().getDescription(), e);
     }
 }

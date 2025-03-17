@@ -68,11 +68,27 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     @Override
     public void getMuseumById(ByIdRequest request, StreamObserver<MuseumResponse> responseObserver) {
         try {
-            UUID museumId = UUID.fromString(request.getId());
-            final MuseumEntity museumEntity = museumRepository.findById(museumId)
-                    .orElseThrow(() -> new MuseumNotFoundException("Museum with id: " + request.getId() + " not found."));
-
+            final MuseumEntity museumEntity = findMuseumById(request.getId());
             responseObserver.onNext(buildResponse(museumEntity));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            GrpcExceptionHandler.handleException(responseObserver, e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void createMuseum(CreateMuseumRequest request, StreamObserver<MuseumResponse> responseObserver) {
+        try {
+            validateRequest(request);
+            GeoEntity geoEntity = processGeoEntity(request.getCity(), request.getCountryId());
+            MuseumEntity museumEntity = new MuseumEntity();
+            museumEntity.setTitle(request.getTitle());
+            museumEntity.setDescription(request.getDescription());
+            museumEntity.setPhoto(request.getPhoto().toByteArray());
+            museumEntity.setGeo(geoEntity);
+
+            responseObserver.onNext(buildResponse(museumRepository.save(museumEntity)));
             responseObserver.onCompleted();
         } catch (Exception e) {
             GrpcExceptionHandler.handleException(responseObserver, e);
@@ -96,7 +112,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
         }
     }
 
-    private void validateRequest(UpdateMuseumRequest request) {
+    private void validateRequest(Object request) {
         if (request == null) {
             throw new IllegalArgumentException("Request or museum data is null");
         }
@@ -108,6 +124,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     }
 
     private void updateMuseumData(MuseumEntity museumEntity, UpdateMuseumRequest request) {
+
         museumEntity.setTitle(request.getTitle());
         museumEntity.setDescription(request.getDescription());
         museumEntity.setPhoto(request.getPhoto().toByteArray());

@@ -8,7 +8,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.Base64;
 import java.util.UUID;
 
 public record MuseumJson(
@@ -30,21 +29,20 @@ public record MuseumJson(
         @JsonProperty("geo")
         GeoJson geo) {
 
-
     public static @Nonnull MuseumJson fromGrpcMessage(@Nonnull MuseumResponse museum) {
         return new MuseumJson(
                 UUID.fromString(museum.getId()),
                 museum.getTitle(),
                 museum.getDescription(),
-                convertPhotoToBase64(museum.getPhoto()),
+                convertPhotoFromBase64(museum.getPhoto()),
                 GeoJson.fromGrpcMessage(museum.getGeo())
         );
     }
 
-    private static String convertPhotoToBase64(ByteString photo) {
+    private static String convertPhotoFromBase64(ByteString photo) {
         if (photo == null || photo.isEmpty()) {
             return "";
         }
-        return Base64.getEncoder().encodeToString(photo.toByteArray());
+        return photo.toStringUtf8();
     }
 }
