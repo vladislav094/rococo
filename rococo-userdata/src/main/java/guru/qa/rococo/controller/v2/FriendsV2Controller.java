@@ -26,10 +26,10 @@ public class FriendsV2Controller {
     this.userService = userService;
   }
 
-  @GetMapping("/all")
-  public Page<? extends IUserJson> friends(@RequestParam String username,
-                                           @PageableDefault Pageable pageable,
-                                           @RequestParam(required = false) String searchQuery) {
-    return userService.friends(username, pageable, searchQuery);
-  }
+//  @GetMapping("/all")
+//  public Page<? extends IUserJson> friends(@RequestParam String username,
+//                                           @PageableDefault Pageable pageable,
+//                                           @RequestParam(required = false) String searchQuery) {
+//    return userService.friends(username, pageable, searchQuery);
+//  }
 }

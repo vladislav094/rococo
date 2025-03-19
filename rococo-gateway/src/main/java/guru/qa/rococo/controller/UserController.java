@@ -1,7 +1,10 @@
 package guru.qa.rococo.controller;
 
+import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.model.UserJson;
 import guru.qa.rococo.service.UserDataClient;
+import guru.qa.rococo.service.api.GrpcMuseumClient;
+import guru.qa.rococo.service.api.GrpcUserClient;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +21,21 @@ public class UserController {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-  private final UserDataClient userDataClient;
+  private final GrpcUserClient grpcUserClient;
 
   @Autowired
-  public UserController(UserDataClient userDataClient) {
-    this.userDataClient = userDataClient;
+  public UserController(GrpcUserClient grpcUserClient) {
+    this.grpcUserClient = grpcUserClient;
   }
 
   @GetMapping
   public UserJson currentUser(@AuthenticationPrincipal Jwt principal) {
     String username = principal.getClaim("sub");
-    return userDataClient.currentUser(username);
+    return grpcUserClient.currentUser(username);
   }
+
+//  @PatchMapping
+//  public UserJson updateUser(@RequestBody UserJson museum) {
+//    return userDataClient.updateUserInfo(museum);
+//  }
 }

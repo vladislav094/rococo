@@ -23,21 +23,21 @@ public class InvitationsController {
     this.userService = userService;
   }
 
-  @PostMapping("/send")
-  public UserJson sendInvitation(@RequestParam String username,
-                                 @RequestParam String targetUsername) {
-    return userService.createFriendshipRequest(username, targetUsername);
-  }
-
-  @PostMapping("/accept")
-  public UserJson acceptInvitation(@RequestParam String username,
-                                   @RequestParam String targetUsername) {
-    return userService.acceptFriendshipRequest(username, targetUsername);
-  }
-
-  @PostMapping("/decline")
-  public UserJson declineInvitation(@RequestParam String username,
-                                    @RequestParam String targetUsername) {
-    return userService.declineFriendshipRequest(username, targetUsername);
-  }
+//  @PostMapping("/send")
+//  public UserJson sendInvitation(@RequestParam String username,
+//                                 @RequestParam String targetUsername) {
+//    return userService.createFriendshipRequest(username, targetUsername);
+//  }
+//
+//  @PostMapping("/accept")
+//  public UserJson acceptInvitation(@RequestParam String username,
+//                                   @RequestParam String targetUsername) {
+//    return userService.acceptFriendshipRequest(username, targetUsername);
+//  }
+//
+//  @PostMapping("/decline")
+//  public UserJson declineInvitation(@RequestParam String username,
+//                                    @RequestParam String targetUsername) {
+//    return userService.declineFriendshipRequest(username, targetUsername);
+//  }
 }

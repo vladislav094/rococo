@@ -9,7 +9,10 @@ group = 'guru.qa'
 version = '2.0.2'
 
 dependencies {
+    implementation project(':rococo-grpc-common')
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "net.devh:grpc-server-spring-boot-starter:${project.ext.springGrpcVersion}"
     implementation('org.springframework.boot:spring-boot-starter-web-services') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
     }
@@ -28,27 +31,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "com.h2database:h2:${project.ext.h2Version}"
-}
-
-xjcGeneration {
-    defaultAdditionalXjcOptions = ['encoding': 'UTF-8']
-    schemas {
-        wsdlSchema {
-            schemaRootDir = "$projectDir/src/main/resources"
-            schemaFile = 'userdata.xsd'
-            javaPackageName = 'jaxb.userdata'
-            sourceSet = 'main'
-        }
-    }
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir('src/main/java')
-            srcDir("$buildDir/generated-sources/main/xjc")
-        }
-    }
 }
 
 jib {

@@ -37,8 +37,11 @@ spring:
 
 grpc:
   client:
-    grpcCustomClient:
+    museumGrpcClient:
       address: 'static://localhost:8092'
+      negotiationType: PLAINTEXT
+    userdataGrpcClient:
+      address: 'static://localhost:8093'
       negotiationType: PLAINTEXT
 
 rococo-userdata:

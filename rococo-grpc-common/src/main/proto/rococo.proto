@@ -22,6 +22,12 @@ service RococoCountryService {
   rpc GetCountries (PageableRequest) returns (CountriesResponse) {}
 }
 
+// Сервис для работы с пользователем
+service RococoUserdataService {
+  rpc GetCurrentUser (GetCurrentUserRequest) returns (UserdataGrpc);
+  rpc UpdateUser (UserdataGrpc) returns (UserdataGrpc);
+}
+
 message PageableRequest {
   string title = 1;
   int32 page = 2;
@@ -86,3 +92,25 @@ message GeoResponse {
   string city = 2; // Название города
   CountryResponse country = 3; // Связанная страна
 }
+
+message UserdataGrpc {
+  string id = 1; // UUID юзера
+  string username = 2; // Логин юзера
+  string firstname = 3; // Имя пользователя
+  string lastname = 4; // Фамилия пользователя
+  bytes avatar = 5; // Аватар пользователя
+}
+
+message GetCurrentUserRequest {
+  string username = 1; // Логин юзера
+}
+
+
+//message UpdateUserRequest {
+//  string id = 1; // UUID юзера
+//  string username = 2; // Логин юзера
+//  string firstname = 3; // Имя пользователя
+//  string lastname = 4; // Фамилия пользователя
+//  bytes avatar = 5; // Аватар пользователя
+//}
+

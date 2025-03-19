@@ -19,22 +19,22 @@ public class FriendsController {
 
   private static final Logger LOG = LoggerFactory.getLogger(FriendsController.class);
 
-  private final UserService userService;
+//  private final UserService userService;
 
-  @Autowired
-  public FriendsController(UserService userService) {
-    this.userService = userService;
-  }
-
-  @GetMapping("/all")
-  public List<? extends IUserJson> friends(@RequestParam String username,
-                                           @RequestParam(required = false) String searchQuery) {
-    return userService.friends(username, searchQuery);
-  }
-
-  @DeleteMapping("/remove")
-  public void removeFriend(@RequestParam String username,
-                           @RequestParam String targetUsername) {
-    userService.removeFriend(username, targetUsername);
-  }
+//  @Autowired
+//  public FriendsController(UserService userService) {
+//    this.userService = userService;
+//  }
+//
+//  @GetMapping("/all")
+//  public List<? extends IUserJson> friends(@RequestParam String username,
+//                                           @RequestParam(required = false) String searchQuery) {
+//    return userService.friends(username, searchQuery);
+//  }
+//
+//  @DeleteMapping("/remove")
+//  public void removeFriend(@RequestParam String username,
+//                           @RequestParam String targetUsername) {
+//    userService.removeFriend(username, targetUsername);
+//  }
 }

@@ -27,10 +27,10 @@ public class UserV2Controller {
   }
 
 
-  @GetMapping("/all")
-  public Page<? extends IUserJson> allUsers(@RequestParam String username,
-                                            @PageableDefault Pageable pageable,
-                                            @RequestParam(required = false) String searchQuery) {
-    return userService.allUsers(username, pageable, searchQuery);
-  }
+//  @GetMapping("/all")
+//  public Page<? extends IUserJson> allUsers(@RequestParam String username,
+//                                            @PageableDefault Pageable pageable,
+//                                            @RequestParam(required = false) String searchQuery) {
+//    return userService.allUsers(username, pageable, searchQuery);
+//  }
 }

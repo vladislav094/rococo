@@ -25,7 +25,7 @@ public class GrpcCountryClient {
     private static final Logger LOG = LoggerFactory.getLogger(GrpcCountryClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
 
-    @GrpcClient("grpcCustomClient")
+    @GrpcClient("museumGrpcClient")
     private RococoCountryServiceGrpc.RococoCountryServiceBlockingStub rococoCountryServiceStub;
 
     public @Nonnull

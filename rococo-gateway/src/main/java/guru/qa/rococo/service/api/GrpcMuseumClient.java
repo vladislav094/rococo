@@ -24,7 +24,7 @@ public class GrpcMuseumClient {
     private static final Logger LOG = LoggerFactory.getLogger(GrpcMuseumClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
 
-    @GrpcClient("grpcCustomClient")
+    @GrpcClient("museumGrpcClient")
     private RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub rococoMuseumServiceStub;
 
     public @Nonnull
