@@ -1,6 +1,5 @@
 package guru.qa.rococo.controller;
 
-
 import guru.qa.rococo.model.SessionJson;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -15,7 +14,7 @@ import java.util.Date;
 @RequestMapping("/api/session")
 public class SessionController {
 
-  @GetMapping("/current")
+  @GetMapping
   public SessionJson session(@AuthenticationPrincipal Jwt principal) {
     if (principal != null) {
       return new SessionJson(

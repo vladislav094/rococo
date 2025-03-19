@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package guru.qa.grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoMuseumProto";
+
+// Сервис для работы с музеями
+service RococoMuseumService {
+  rpc GetMuseums (PageableRequest) returns (MuseumsResponse);
+  rpc GetMuseumById (ByIdRequest) returns (MuseumResponse);
+  rpc GetMuseumByTitle (PageableRequest) returns (MuseumsResponse);
+  rpc CreateMuseum (CreateMuseumRequest) returns (MuseumResponse);
+  rpc UpdateMuseum (UpdateMuseumRequest) returns (MuseumResponse);
+}
+
+// Сервис для работы со странами
+service RococoCountryService {
+  rpc GetCountries (PageableRequest) returns (CountriesResponse) {}
+}
+
+message PageableRequest {
+  string title = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message ByIdRequest {
+  string id = 1;
+}
+
+message ByTitleRequest {
+  string title = 1;
+}
+
+// ответы для музеев
+message MuseumsResponse {
+  repeated MuseumResponse museum = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message MuseumResponse {
+  string id = 1; // UUID музея
+  string title = 2; // Название музея
+  string description = 3; // Описание музея
+  bytes photo = 4; // Фотография музея (опционально)
+  GeoResponse geo = 5; // Геолокация музея
+}
+
+// Сообщение для запроса создания музея
+message CreateMuseumRequest {
+  string title = 1; // Название музея
+  string description = 2; // Описание музея
+  bytes photo = 3; // Фото музея в формате bytea
+  string city = 4; // Город
+  string country_id = 5; // UUID страны
+}
+
+message UpdateMuseumRequest {
+  string id = 1; // UUID музея
+  string title = 2; // Название музея
+  string description = 3; // Описание музея
+  bytes photo = 4; // Фотография музея (опционально)
+  string city = 5; // Название города
+  string countryId = 6; // UUID страны
+}
+
+// ответы для стран
+message CountriesResponse {
+  repeated CountryResponse country = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message CountryResponse {
+  string id = 1; // UUID страны
+  string name = 2; // Название страны
+}
+
+message GeoResponse {
+  string id = 1; // UUID геолокации
+  string city = 2; // Название города
+  CountryResponse country = 3; // Связанная страна
+}
