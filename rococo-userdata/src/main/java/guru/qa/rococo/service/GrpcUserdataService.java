@@ -1,7 +1,6 @@
 package guru.qa.rococo.service;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Empty;
 import guru.qa.rococo.data.UserEntity;
 import guru.qa.rococo.data.repository.UserRepository;
 import guru.qa.rococo.ex.NotFoundException;
@@ -27,15 +26,28 @@ public class GrpcUserdataService extends RococoUserdataServiceGrpc.RococoUserdat
         this.userRepository = userRepository;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public void getCurrentUser(GetCurrentUserRequest request, StreamObserver<UserdataGrpc> responseObserver) {
         final String username = request.getUsername();
-        final UserEntity museumEntity = userRepository.findByUsername(username)
+        final UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("User with username: " + username + " not found."));
-        responseObserver.onNext(buildResponse(museumEntity));
+        responseObserver.onNext(buildResponse(userEntity));
         responseObserver.onCompleted();
     }
+
+    @Transactional
+    public void updateUser(UserdataGrpc request, StreamObserver<UserdataGrpc> responseObserver) {
+        final String username = request.getUsername();
+        final UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("User with username: " + username + " not found."));
+        userEntity.setFirstname(request.getFirstname());
+        userEntity.setLastname(request.getLastname());
+        userEntity.setAvatar(request.getAvatar().toByteArray());
+
+        responseObserver.onNext(buildResponse(userRepository.save(userEntity)));
+        responseObserver.onCompleted();
+    }
+
 
     private static UserdataGrpc buildResponse(UserEntity entity) {
         return UserdataGrpc.newBuilder()
