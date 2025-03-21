@@ -1,33 +1,5 @@
 package guru.qa.rococo.service;
 
-import guru.qa.rococo.data.UserEntity;
-import guru.qa.rococo.data.projection.UserWithStatus;
-import guru.qa.rococo.data.repository.UserRepository;
-import guru.qa.rococo.ex.NotFoundException;
-import guru.qa.rococo.model.UserJson;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static guru.qa.rococo.model.FriendshipStatus.INVITE_SENT;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-
 //@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 //    private UserService testedObject;

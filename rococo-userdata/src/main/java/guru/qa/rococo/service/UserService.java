@@ -1,27 +1,17 @@
 package guru.qa.rococo.service;
 
 import guru.qa.rococo.data.UserEntity;
-import guru.qa.rococo.data.projection.UserWithStatus;
 import guru.qa.rococo.data.repository.UserRepository;
-import guru.qa.rococo.ex.NotFoundException;
-import guru.qa.rococo.ex.SameUsernameException;
 import guru.qa.rococo.model.UserJson;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
 
 
 @Component

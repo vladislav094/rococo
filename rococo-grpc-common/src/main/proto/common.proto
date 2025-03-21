@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package guru.qa.grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoCommonProto";
+
+// Общие запросы
+message PageableRequest {
+  string title = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message ByIdRequest {
+  string id = 1;
+}
+
+message ByTitleRequest {
+  string title = 1;
+}

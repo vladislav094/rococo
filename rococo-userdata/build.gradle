@@ -21,13 +21,10 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-vault-config:${project.ext.springVaultVersion}"
     implementation "org.flywaydb:flyway-core:${project.ext.flywayVersion}"
     implementation "org.flywaydb:flyway-database-postgresql:${project.ext.flywayVersion}"
-    implementation "wsdl4j:wsdl4j:${project.ext.wsdl4jVersion}"
     implementation "net.coobird:thumbnailator:${project.ext.thumbnailatorVersion}"
     annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
     compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
     runtimeOnly "org.postgresql:postgresql:${project.ext.postgresDriverVersion}"
-
-    xjc "org.glassfish.jaxb:jaxb-xjc:${project.ext.jakartaJaxbVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "com.h2database:h2:${project.ext.h2Version}"
@@ -35,7 +32,7 @@ dependencies {
 
 jib {
     container {
-        ports = ['8089']
+        ports = ['8092']
         jvmFlags = ["-Dspring.profiles.active=${System.env.PROFILE}"]
         environment = ['VAULT_TOKEN': "${System.env.VAULT_TOKEN}".toString()]
         creationTime = 'USE_CURRENT_TIMESTAMP'

@@ -1,13 +1,13 @@
 server:
-  port: 8092
+  port: 8093
 
 grpc:
   server:
-    port: 8072
+    port: 8073
 
 spring:
   application:
-    name: rococo-userdata
+    name: rococo-artist
   datasource:
     hikari:
       connection-timeout: 20000
@@ -21,7 +21,7 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     schemas: public
-    locations: classpath:db/migration/rococo-userdata
+    locations: classpath:db/migration/rococo-artist
   jpa:
     hibernate:
       ddl-auto: none
@@ -37,12 +37,12 @@ spring:
 
 logging:
   file:
-    path: ./logs/rococo-userdata
+    path: ./logs/rococo-artist
   level:
     root: INFO
-    org.springframework.kafka: INFO
     org.springframework.web: INFO
-    org.springframework.ws: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
     org.springframework.boot.autoconfigure: INFO
 
 ---
@@ -55,17 +55,10 @@ spring:
       - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
-  kafka:
-    bootstrap-servers: 'localhost:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/rococo-userdata'
     username: postgres
     password: secret
-rococo-userdata:
-  base-uri: 'http://127.0.0.1:8089'
+    url: 'jdbc:postgresql://localhost:5432/rococo-artist'
 ---
 spring:
   config:
@@ -76,14 +69,7 @@ spring:
       - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
-  kafka:
-    bootstrap-servers: 'kafka:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://rococo-all-db:5432/rococo-userdata'
     username: postgres
     password: secret
-rococo-userdata:
-  base-uri: 'http://userdata.rococo.dc:8089'
+    url: 'jdbc:postgresql://rococo-all-db:5432/rococo-artist'

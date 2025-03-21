@@ -23,7 +23,7 @@ public record UserJson(
     String avatar) implements IUserJson {
 
 
-  public static @Nonnull UserJson fromEntity(@Nonnull UserEntity entity, @Nullable FriendshipStatus friendshipStatus) {
+  public static @Nonnull UserJson fromEntity(@Nonnull UserEntity entity) {
     return new UserJson(
         entity.getId(),
         entity.getUsername(),
@@ -31,9 +31,5 @@ public record UserJson(
         entity.getLastname(),
         entity.getAvatar() != null && entity.getAvatar().length > 0 ? new String(entity.getAvatar(), StandardCharsets.UTF_8) : null
     );
-  }
-
-  public static @Nonnull UserJson fromEntity(@Nonnull UserEntity entity) {
-    return fromEntity(entity, null);
   }
 }

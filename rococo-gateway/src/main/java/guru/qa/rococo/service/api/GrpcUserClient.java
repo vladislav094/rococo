@@ -6,6 +6,7 @@ import guru.qa.rococo.grpc.GetCurrentUserRequest;
 import guru.qa.rococo.grpc.RococoUserdataServiceGrpc;
 import guru.qa.rococo.grpc.UserdataGrpc;
 import guru.qa.rococo.model.UserJson;
+import guru.qa.rococo.service.UserDataClient;
 import io.grpc.StatusRuntimeException;
 import jakarta.annotation.Nonnull;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class GrpcUserClient {
+public class GrpcUserClient implements UserDataClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(GrpcUserClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
