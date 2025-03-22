@@ -36,17 +36,6 @@ dependencies {
     testImplementation "org.wiremock:wiremock-grpc-extension-jetty12:0.9.0"
 }
 
-//xjcGeneration {
-//    defaultAdditionalXjcOptions = ['encoding': 'UTF-8']
-//    schemas {
-//        wsdlSchema {
-//            schemaFile = 'userdata.wsdl'
-//            javaPackageName = 'jaxb.userdata'
-//            sourceSet = 'main'
-//        }
-//    }
-//}
-
 sourceSets {
     main {
         java {

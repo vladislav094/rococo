@@ -32,15 +32,15 @@ public class UserController {
   public UserJson currentUser(@RequestParam String username) {
     return userService.getCurrentUser(username);
   }
+//
+//  @GetMapping("/all")
+//  public List<? extends IUserJson> allUsers(@RequestParam String username,
+//                                            @RequestParam(required = false) String searchQuery) {
+//    return userService.allUsers(username, searchQuery);
+//  }
 
-  @GetMapping("/all")
-  public List<? extends IUserJson> allUsers(@RequestParam String username,
-                                            @RequestParam(required = false) String searchQuery) {
-    return userService.allUsers(username, searchQuery);
-  }
-
-  @PostMapping("/update")
-  public UserJson updateUserInfo(@RequestBody UserJson user) {
-    return userService.update(user);
-  }
+//  @PostMapping("/update")
+//  public UserJson updateUserInfo(@RequestBody UserJson user) {
+//    return userService.update(user);
+//  }
 }

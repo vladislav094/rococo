@@ -24,25 +24,29 @@ public class GrpcMuseumClient {
     private static final Logger LOG = LoggerFactory.getLogger(GrpcMuseumClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
 
-    @GrpcClient("grpcCustomClient")
+    @GrpcClient("museumGrpcClient")
     private RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub rococoMuseumServiceStub;
 
-    public @Nonnull
-    Page<MuseumJson> getAllMuseums(String title, Pageable pageable) {
+    public @Nonnull Page<MuseumJson> getMuseumsPage(Pageable pageable, String title) {
         try {
-            // gRPC запрос с пагинацией
-            PageableRequest request = PageableRequest.newBuilder()
+            // Создаем gRPC запрос
+            PageableRequest.Builder requestBuilder = PageableRequest.newBuilder()
                     .setPage(pageable.getPageNumber())
-                    .setSize(pageable.getPageSize())
-                    .setTitle(title != null && !title.isEmpty() ? title : "")
-                    .build();
-            // выполняем gRPC запрос
-            MuseumsResponse response = rococoMuseumServiceStub.getMuseums(request);
-            // преобразуем ответ в Page<MuseumJson>
-            List<MuseumJson> museums = response.getMuseumList().stream()
+                    .setSize(pageable.getPageSize());
+            // Добавляем title, если он передан
+            if (title != null && !title.isEmpty()) {
+                requestBuilder.setTitle(title);
+            }
+            // Выполняем gRPC запрос
+            MuseumsResponse response = title != null && !title.isEmpty()
+                    ? rococoMuseumServiceStub.getMuseumByTitle(requestBuilder.build())
+                    : rococoMuseumServiceStub.getMuseums(requestBuilder.build());
+            // Преобразуем ответ в List<MuseumJson>
+            List<MuseumJson> museums = response.getMuseumList()
+                    .stream()
                     .map(MuseumJson::fromGrpcMessage)
                     .toList();
-
+            // Возвращаем Page<MuseumJson>
             return new PageImpl<>(museums, pageable, response.getTotalElements());
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);

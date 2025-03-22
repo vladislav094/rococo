@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "common.proto"; // Общие сообщения, такие как PageableRequest, ByIdRequest и т.д.
+import "country.proto"; // Для использования CountryResponse
 
 package guru.qa.grpc.rococo;
 
@@ -17,26 +19,7 @@ service RococoMuseumService {
   rpc UpdateMuseum (UpdateMuseumRequest) returns (MuseumResponse);
 }
 
-// Сервис для работы со странами
-service RococoCountryService {
-  rpc GetCountries (PageableRequest) returns (CountriesResponse) {}
-}
-
-message PageableRequest {
-  string title = 1;
-  int32 page = 2;
-  int32 size = 3;
-}
-
-message ByIdRequest {
-  string id = 1;
-}
-
-message ByTitleRequest {
-  string title = 1;
-}
-
-// ответы для музеев
+// Ответы для музеев
 message MuseumsResponse {
   repeated MuseumResponse museum = 1;
   int32  totalPages = 2;
@@ -67,18 +50,6 @@ message UpdateMuseumRequest {
   bytes photo = 4; // Фотография музея (опционально)
   string city = 5; // Название города
   string countryId = 6; // UUID страны
-}
-
-// ответы для стран
-message CountriesResponse {
-  repeated CountryResponse country = 1;
-  int32  totalPages = 2;
-  int64  totalElements = 3;
-}
-
-message CountryResponse {
-  string id = 1; // UUID страны
-  string name = 2; // Название страны
 }
 
 message GeoResponse {

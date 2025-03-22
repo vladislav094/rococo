@@ -4,18 +4,15 @@ import com.google.protobuf.ByteString;
 import guru.qa.rococo.data.CountryEntity;
 import guru.qa.rococo.data.GeoEntity;
 import guru.qa.rococo.data.MuseumEntity;
-import guru.qa.rococo.data.repository.CountryRepository;
-import guru.qa.rococo.data.repository.GeoRepository;
 import guru.qa.rococo.grpc.CountryResponse;
 import guru.qa.rococo.grpc.GeoResponse;
 import guru.qa.rococo.grpc.MuseumResponse;
-
-import java.util.UUID;
+import guru.qa.rococo.grpc.MuseumsResponse;
+import org.springframework.data.domain.Page;
 
 public class GrpcResponseConverter {
 
-
-    public static MuseumResponse buildResponse(MuseumEntity entity) {
+    public static MuseumResponse buildMuseumResponse(MuseumEntity entity) {
         return MuseumResponse.newBuilder()
                 .setId(entity.getId().toString())
                 .setTitle(entity.getTitle())
@@ -23,6 +20,16 @@ public class GrpcResponseConverter {
                 .setPhoto(entity.getPhoto() != null ?
                         ByteString.copyFrom(entity.getPhoto()) : ByteString.EMPTY)
                 .setGeo(toGrpcGeo(entity.getGeo()))
+                .build();
+    }
+
+    public static MuseumsResponse buildMuseumsResponse(Page<MuseumEntity> museumPage) {
+        return MuseumsResponse.newBuilder()
+                .addAllMuseum(museumPage.getContent().stream()
+                        .map(GrpcResponseConverter::toGrpcMuseum)
+                        .toList())
+                .setTotalPages(museumPage.getTotalPages())
+                .setTotalElements(museumPage.getTotalElements())
                 .build();
     }
 
@@ -50,5 +57,4 @@ public class GrpcResponseConverter {
                 .setName(countryEntity.getName())
                 .build();
     }
-
 }

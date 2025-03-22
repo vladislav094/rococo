@@ -23,8 +23,9 @@ public class MuseumController {
     public Page<MuseumJson> getAllMuseums(@RequestParam(name = "title", required = false) String title,
                                           @RequestParam(name = "page", required = false, defaultValue = "0") int page,
                                           @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+
         Pageable pageable = PageRequest.of(page, size);
-        return grpcMuseumClient.getAllMuseums(title, pageable);
+        return grpcMuseumClient.getMuseumsPage(pageable, title);
     }
 
     @GetMapping("/{id}")

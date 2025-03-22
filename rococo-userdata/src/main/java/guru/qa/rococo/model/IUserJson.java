@@ -1,23 +1,15 @@
 package guru.qa.rococo.model;
 
-import guru.qa.rococo.data.CurrencyValues;
-
 import java.util.UUID;
 
 public interface IUserJson {
-  UUID id();
+    UUID id();
 
-  String username();
+    String username();
 
-  String firstname();
+    String firstname();
 
-  String surname();
+    String lastname();
 
-  CurrencyValues currency();
-
-  String photo();
-
-  String photoSmall();
-
-  FriendshipStatus friendshipStatus();
+    String avatar();
 }
