@@ -12,28 +12,17 @@ import org.springframework.data.domain.Page;
 
 public class GrpcResponseConverter {
 
-    public static MuseumResponse buildMuseumResponse(MuseumEntity entity) {
-        return MuseumResponse.newBuilder()
-                .setId(entity.getId().toString())
-                .setTitle(entity.getTitle())
-                .setDescription(entity.getDescription())
-                .setPhoto(entity.getPhoto() != null ?
-                        ByteString.copyFrom(entity.getPhoto()) : ByteString.EMPTY)
-                .setGeo(toGrpcGeo(entity.getGeo()))
-                .build();
-    }
-
-    public static MuseumsResponse buildMuseumsResponse(Page<MuseumEntity> museumPage) {
+    public static MuseumsResponse toGrpcMuseumsResponse(Page<MuseumEntity> museumPage) {
         return MuseumsResponse.newBuilder()
                 .addAllMuseum(museumPage.getContent().stream()
-                        .map(GrpcResponseConverter::toGrpcMuseum)
+                        .map(GrpcResponseConverter::toGrpcMuseumResponse)
                         .toList())
                 .setTotalPages(museumPage.getTotalPages())
                 .setTotalElements(museumPage.getTotalElements())
                 .build();
     }
 
-    public static MuseumResponse toGrpcMuseum(MuseumEntity museumEntity) {
+    public static MuseumResponse toGrpcMuseumResponse(MuseumEntity museumEntity) {
         return MuseumResponse.newBuilder()
                 .setId(museumEntity.getId().toString())
                 .setTitle(museumEntity.getTitle())

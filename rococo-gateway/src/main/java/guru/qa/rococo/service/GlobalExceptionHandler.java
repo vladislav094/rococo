@@ -1,9 +1,11 @@
 package guru.qa.rococo.service;
 
 import guru.qa.rococo.model.ErrorJson;
+import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -35,4 +37,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         ((ServletWebRequest) request).getRequest().getRequestURI()
                 ));
     }
+
+//    private ResponseStatusException handleStatusRuntimeException(StatusRuntimeException e) {
+//        HttpStatus httpStatus = switch (e.getStatus().getCode()) {
+//            case INVALID_ARGUMENT -> HttpStatus.BAD_REQUEST;
+//            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+//            default -> HttpStatus.SERVICE_UNAVAILABLE;
+//        };
+//        return new ResponseStatusException(httpStatus, e.getStatus().getDescription(), e);
+//    }
 }
