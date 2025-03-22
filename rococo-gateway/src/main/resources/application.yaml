@@ -46,6 +46,9 @@ grpc:
     artistGrpcClient:
       address: 'static://localhost:8073'
       negotiationType: PLAINTEXT
+    paintingGrpcClient:
+      address: 'static://localhost:8074'
+      negotiationType: PLAINTEXT
 
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
@@ -57,6 +60,8 @@ rococo-userdata:
   base-uri: 'http://127.0.0.1:8092'
 rococo-artist:
   base-uri: 'http://127.0.0.1:8093'
+rococo-painting:
+  base-uri: 'http://127.0.0.1:8094'
 ---
 spring:
   config:

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package guru.qa.grpc.rococo;
+
+import "google/protobuf/empty.proto";
+import "common.proto"; // Общие сообщения, такие как PageableRequest, ByIdRequest и т.д.
+import "artist.proto"; // Для использования ArtistResponse
+import "museum.proto"; // Для использования MuseumResponse
+
+//package guru.qa.grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoPaintingProto";
+
+
+// Сервис для работы с музеями
+service RococoPaintingService {
+  rpc GetPaintings (PageableRequest) returns (PaintingsResponse);
+  rpc GetPaintingByAuthorId (PaintingByAuthorRequest) returns (PaintingResponse);
+//  rpc GetMuseumByTitle (PageableRequest) returns (MuseumsResponse);
+//  rpc CreateMuseum (CreateMuseumRequest) returns (MuseumResponse);
+//  rpc UpdateMuseum (UpdateMuseumRequest) returns (MuseumResponse);
+}
+
+// Ответы для картины
+message PaintingsResponse {
+  repeated PaintingResponse museum = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message PaintingResponse {
+  string id = 1; // UUID картины
+  string title = 2; // Название картины
+  string description = 3; // Описание картины
+  ArtistResponse artist = 4; // Автор картины
+  MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
+  bytes content = 6; // Фотография картины (опционально)
+}
+
+// Общие запросы
+message PaintingByAuthorRequest {
+  string authorId = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
