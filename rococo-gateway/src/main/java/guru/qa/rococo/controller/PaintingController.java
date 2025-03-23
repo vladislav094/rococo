@@ -1,8 +1,6 @@
 package guru.qa.rococo.controller;
 
-import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.model.PaintingJson;
-import guru.qa.rococo.service.api.GrpcMuseumClient;
 import guru.qa.rococo.service.api.GrpcPaintingClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,15 +25,21 @@ public class PaintingController {
                                            @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-//        return grpcPaintingClient.getMuseumsPage(pageable, title);
-        return null;
+        return grpcPaintingClient.getPaintingsPage(pageable, title);
+    }
+
+    @GetMapping("/{id}")
+    public PaintingJson getPaintingById(@PathVariable("id") String id) {
+        return grpcPaintingClient.getPaintingById(id);
     }
 
     @GetMapping("/author/{id}")
-    public Page<PaintingJson> getMuseumById(@PathVariable("id") String id,
-                                    @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                    @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
-//        return grpcPaintingClient.getPaintingById(id);
-        return null;
+    public PaintingJson getPaintingByAuthorId(@PathVariable("id") String id) {
+        return grpcPaintingClient.getPaintingById(id);
+    }
+
+    @PostMapping
+    public PaintingJson createPainting(@RequestBody PaintingJson painting) {
+        return grpcPaintingClient.createPainting(painting);
     }
 }

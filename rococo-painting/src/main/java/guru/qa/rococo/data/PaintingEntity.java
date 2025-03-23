@@ -29,7 +29,6 @@ public class PaintingEntity {
     @Column(name = "museum_id", columnDefinition = "UUID")
     private UUID museumId;
 
-    @Lob
     @Column(name = "content", columnDefinition = "bytea")
     private byte[] content;
 }
