@@ -36,7 +36,7 @@ message PaintingResponse {
   string title = 2; // Название картины
   string description = 3; // Описание картины
   ArtistResponse artist = 4; // Автор картины
-  MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
+  optional MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
   bytes content = 6; // Фотография картины (опционально)
 }
 
@@ -52,9 +52,7 @@ message CreatePaintingRequest {
   string title = 1; // Название картины
   string description = 2; // Описание картины
   string artistId = 3;
-  string museumId = 4;
-//  ArtistResponse artist = 3; // Автор картины
-//  MuseumResponse museum = 4; // Музей, где хранится картина (опционально)
+  optional string museumId = 4;
   bytes content = 5; // Фотография картины (опционально)
 }
 
@@ -63,6 +61,6 @@ message UpdatePaintingRequest {
   string title = 2; // Название картины
   string description = 3; // Описание картины
   ArtistResponse artist = 4; // Автор картины
-  MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
+  optional MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
   bytes content = 6; // Фотография картины (опционально)
 }

@@ -32,8 +32,4 @@ public class GrpcMuseumClient {
             }
         });
     }
-
-//    public Mono<MuseumResponse> getMuseumReactive(String museumId) {
-//        return Mono.fromFuture(() -> futureStub.getMuseum(MuseumRequest.newBuilder().setMuseumId(museumId).build()));
-//    }
 }

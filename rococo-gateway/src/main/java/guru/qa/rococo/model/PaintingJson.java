@@ -3,6 +3,7 @@ package guru.qa.rococo.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.protobuf.ByteString;
 import guru.qa.rococo.config.RococoGatewayServiceConfig;
+import guru.qa.rococo.grpc.MuseumResponse;
 import guru.qa.rococo.grpc.PaintingResponse;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotBlank;
@@ -38,10 +39,23 @@ public record PaintingJson(
                 UUID.fromString(painting.getId()),
                 painting.getTitle(),
                 painting.getDescription(),
-                painting.hasMuseum() ? ArtistJson.fromGrpcMessage(painting.getArtist()) : null,
-                painting.hasMuseum() ? MuseumJson.fromGrpcMessage(painting.getMuseum()) : null,
+                parseArtist(painting),
+                parseMuseum(painting),
                 convertPhotoFromBase64(painting.getContent())
         );
+    }
+
+    private static ArtistJson parseArtist(PaintingResponse painting) {
+        return painting.hasArtist()
+                ? ArtistJson.fromGrpcMessage(painting.getArtist())
+                : null;
+    }
+
+    private static MuseumJson parseMuseum(PaintingResponse painting) {
+        MuseumResponse museum = painting.getMuseum();
+        return !museum.equals(museum.getDefaultInstanceForType())
+                ? MuseumJson.fromGrpcMessage(museum)
+                : null;
     }
 
     private static String convertPhotoFromBase64(ByteString photo) {
