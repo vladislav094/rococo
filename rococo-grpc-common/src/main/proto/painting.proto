@@ -19,7 +19,7 @@ service RococoPaintingService {
   rpc GetPaintings (PageableRequest) returns (PaintingsResponse);
   rpc GetPaintingById (ByIdRequest) returns (PaintingResponse);
   rpc GetPaintingByTitle (PageableRequest) returns (PaintingsResponse);
-  rpc GetPaintingByAuthorId (PaintingByAuthorRequest) returns (PaintingResponse);
+  rpc GetPaintingByAuthorId (PaintingByAuthorRequest) returns (PaintingsResponse);
   rpc CreatePainting (CreatePaintingRequest) returns (PaintingResponse);
   rpc UpdatePainting (UpdatePaintingRequest) returns (PaintingResponse);
 }

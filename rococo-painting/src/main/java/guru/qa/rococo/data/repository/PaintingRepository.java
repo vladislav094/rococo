@@ -14,4 +14,7 @@ public interface PaintingRepository extends JpaRepository<PaintingEntity, UUID> 
 
     @Nonnull
     Page<PaintingEntity> findByTitle(String title, Pageable pageable);
+
+    @Nonnull
+    Page<PaintingEntity> findPaintingEntitiesByArtistId(UUID uuid, Pageable pageable);
 }

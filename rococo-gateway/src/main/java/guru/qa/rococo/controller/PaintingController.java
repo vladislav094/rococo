@@ -34,8 +34,11 @@ public class PaintingController {
     }
 
     @GetMapping("/author/{id}")
-    public PaintingJson getPaintingByAuthorId(@PathVariable("id") String id) {
-        return grpcPaintingClient.getPaintingById(id);
+    public Page<PaintingJson>  getPaintingByAuthorId(@PathVariable("id") String id,
+                                        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                        @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return grpcPaintingClient.getPaintingByAuthorId(id, pageable);
     }
 
     @PostMapping

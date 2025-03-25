@@ -67,6 +67,28 @@ public class GrpcPaintingClient {
         }
     }
 
+    public @Nonnull Page<PaintingJson> getPaintingByAuthorId(String authorId, Pageable pageable) {
+        try {
+            PaintingByAuthorRequest request = PaintingByAuthorRequest.newBuilder()
+                    .setAuthorId(authorId)
+                    .setPage(pageable.getPageNumber())
+                    .setSize(pageable.getPageSize())
+                    .build();
+
+            PaintingsResponse response = rococoPaintingServiceStub.getPaintingByAuthorId(request);
+
+            List<PaintingJson> museums = response.getPaintingList()
+                    .stream()
+                    .map(PaintingJson::fromGrpcMessage)
+                    .toList();
+
+            return new PageImpl<>(museums, pageable, response.getTotalElements());
+        } catch (StatusRuntimeException e) {
+            LOG.error("### Error while calling gRPC server ", e);
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+        }
+    }
+
     public @Nonnull PaintingJson createPainting(PaintingJson paintingJson) {
         try {
             CreatePaintingRequest request = CreatePaintingRequest.newBuilder()

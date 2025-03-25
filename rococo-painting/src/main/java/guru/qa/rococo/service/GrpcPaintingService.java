@@ -115,6 +115,25 @@ public class GrpcPaintingService extends RococoPaintingServiceGrpc.RococoPaintin
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public void getPaintingByAuthorId(PaintingByAuthorRequest request, StreamObserver<PaintingsResponse> responseObserver) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<PaintingEntity> paintingPage = paintingRepository.findPaintingEntitiesByArtistId(
+                UUID.fromString(request.getAuthorId()), pageable
+        );
+
+        toGrpcPaintingsResponse(paintingPage)
+                .whenComplete((response, ex) -> {
+                    if (ex != null) {
+                        handleError(responseObserver, "Error converting paintings", ex);
+                    } else {
+                        responseObserver.onNext(response);
+                        responseObserver.onCompleted();
+                    }
+                });
+    }
+
+    @Override
     @Transactional
     public void createPainting(CreatePaintingRequest request, StreamObserver<PaintingResponse> responseObserver) {
         try {
