@@ -1,9 +1,7 @@
 package guru.qa.rococo.service.api;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Empty;
 import guru.qa.rococo.grpc.*;
-import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.model.PaintingJson;
 import io.grpc.StatusRuntimeException;
 import jakarta.annotation.Nonnull;
@@ -23,7 +21,6 @@ import java.util.List;
 public class GrpcPaintingClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(GrpcPaintingClient.class);
-    private static final Empty EMPTY = Empty.getDefaultInstance();
 
     @GrpcClient("paintingGrpcClient")
     private RococoPaintingServiceGrpc.RococoPaintingServiceBlockingStub rococoPaintingServiceStub;
