@@ -25,7 +25,7 @@ message ArtistsResponse {
 }
 
 message ArtistResponse {
-  string id = 1; // UUID музея
+  string id = 1; // UUID художника
   string name = 2; // Имя художника
   string biography = 3; // Биография художника
   bytes photo = 4; // Фотография художника (опционально)

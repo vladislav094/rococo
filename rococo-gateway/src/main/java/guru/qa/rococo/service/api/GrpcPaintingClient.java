@@ -27,7 +27,7 @@ public class GrpcPaintingClient {
 
     public @Nonnull Page<PaintingJson> getPaintingsPage(Pageable pageable, String title) {
         try {
-            // Создаем gRPC запрос
+            // создаем gRPC запрос из тела REST запроса
             PageableRequest.Builder requestBuilder = PageableRequest.newBuilder()
                     .setPage(pageable.getPageNumber())
                     .setSize(pageable.getPageSize());
@@ -39,7 +39,7 @@ public class GrpcPaintingClient {
             PaintingsResponse response = title != null && !title.isEmpty()
                     ? rococoPaintingServiceStub.getPaintingByTitle(requestBuilder.build())
                     : rococoPaintingServiceStub.getPaintings(requestBuilder.build());
-            // Преобразуем ответ в List<MuseumJson>
+            // Преобразуем ответ в List<PaintingJson>
             List<PaintingJson> museums = response.getPaintingList()
                     .stream()
                     .map(PaintingJson::fromGrpcMessage)
@@ -54,6 +54,7 @@ public class GrpcPaintingClient {
 
     public @Nonnull PaintingJson getPaintingById(String id) {
         try {
+            // создаем gRPC запрос из тела REST запроса
             ByIdRequest request = ByIdRequest.newBuilder()
                     .setId(id)
                     .build();
@@ -66,14 +67,15 @@ public class GrpcPaintingClient {
 
     public @Nonnull Page<PaintingJson> getPaintingByAuthorId(String authorId, Pageable pageable) {
         try {
+            // создаем gRPC запрос из тела REST запроса
             PaintingByAuthorRequest request = PaintingByAuthorRequest.newBuilder()
                     .setAuthorId(authorId)
                     .setPage(pageable.getPageNumber())
                     .setSize(pageable.getPageSize())
                     .build();
-
+            // вызываем gRPC-сервис
             PaintingsResponse response = rococoPaintingServiceStub.getPaintingByAuthorId(request);
-
+            // преобразуем ответ в List<PaintingJson>
             List<PaintingJson> museums = response.getPaintingList()
                     .stream()
                     .map(PaintingJson::fromGrpcMessage)
@@ -88,6 +90,7 @@ public class GrpcPaintingClient {
 
     public @Nonnull PaintingJson createPainting(PaintingJson paintingJson) {
         try {
+            // создаем gRPC запрос из тела REST запроса
             CreatePaintingRequest request = CreatePaintingRequest.newBuilder()
                     .setTitle(paintingJson.title())
                     .setDescription(paintingJson.description())
@@ -97,7 +100,28 @@ public class GrpcPaintingClient {
                     .build();
             // вызываем gRPC-сервис
             PaintingResponse response = rococoPaintingServiceStub.createPainting(request);
-            // преобразуем ответ в MuseumJson
+            // преобразуем ответ в PaintingJson
+            return PaintingJson.fromGrpcMessage(response);
+        } catch (StatusRuntimeException e) {
+            LOG.error("### Error while calling gRPC server ", e);
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "The gRPC operation was cancelled", e);
+        }
+    }
+
+    public @Nonnull PaintingJson updatePainting(PaintingJson paintingJson) {
+        try {
+            // создаем gRPC запрос из тела REST запроса
+            UpdatePaintingRequest request = UpdatePaintingRequest.newBuilder()
+                    .setId(paintingJson.id().toString())
+                    .setTitle(paintingJson.title())
+                    .setDescription(paintingJson.description())
+                    .setArtistId(paintingJson.artist().id().toString())
+                    .setMuseumId(paintingJson.museum().id() != null ? paintingJson.museum().id().toString() : "")
+                    .setContent(ByteString.copyFromUtf8(paintingJson.content()))
+                    .build();
+            // вызываем gRPC-сервис
+            PaintingResponse response = rococoPaintingServiceStub.updatePainting(request);
+            // преобразуем ответ в PaintingJson
             return PaintingJson.fromGrpcMessage(response);
         } catch (StatusRuntimeException e) {
             LOG.error("### Error while calling gRPC server ", e);

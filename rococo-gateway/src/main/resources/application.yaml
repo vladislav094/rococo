@@ -80,8 +80,17 @@ spring:
 
 grpc:
   client:
-    grpcCurrencyClient:
-      address: 'static://currency.rococo.dc:8092'
+    museumGrpcClient:
+      address: 'static://museum.rococo.dc:8071'
+      negotiationType: PLAINTEXT
+    userdataGrpcClient:
+      address: 'static://userdata.rococo.dc:8072'
+      negotiationType: PLAINTEXT
+    artistGrpcClient:
+      address: 'static://artist.rococo.dc:8073'
+      negotiationType: PLAINTEXT
+    paintingGrpcClient:
+      address: 'static://painting.rococo.dc:8074'
       negotiationType: PLAINTEXT
 
 rococo-userdata:

@@ -36,7 +36,7 @@ else
   fi
 fi
 
-# Проверяем, существуют ли образы для текущего проекта
+ Проверяем, существуют ли образы для текущего проекта
 if ! docker images --format '{{.Repository}}:{{.Tag}}' | grep -q 'rococo'; then
   echo "Rococo images not found, building..."
   bash ./gradlew clean

@@ -175,6 +175,48 @@ public class GrpcPaintingService extends RococoPaintingServiceGrpc.RococoPaintin
         }
     }
 
+    @Override
+    @Transactional
+    public void updatePainting(UpdatePaintingRequest request, StreamObserver<PaintingResponse> responseObserver) {
+        try {
+            final String artistId = request.getArtistId();
+            final String museumId = !request.getMuseumId().isEmpty() ? request.getMuseumId() : null;
+            LOG.info("Update painting '{}', set artistId: '{}', set: '{}'", request.getId(), artistId, museumId);
+            // Асинхронный запрос к микросервису artist
+            final CompletableFuture<ArtistResponse> artistFuture = grpcArtistClient.getArtistAsync(artistId);
+            // Асинхронный запрос к микросервису museum (если museumId указан)
+            final CompletableFuture<MuseumResponse> museumFuture = getMuseum(museumId);
+            // Ожидание завершения всех запросов
+            CompletableFuture.allOf(artistFuture, museumFuture)
+                    .thenAccept(ignored -> {
+                        try {
+                            PaintingEntity paintingEntity = findPaintingById(request.getId());
+                            paintingEntity.setTitle(request.getTitle());
+                            paintingEntity.setDescription(request.getDescription());
+                            paintingEntity.setArtistId(UUID.fromString(artistId));
+                            paintingEntity.setMuseumId(museumId != null ? UUID.fromString(museumId) : null);
+                            paintingEntity.setContent(request.getContent().toByteArray());
+
+                            PaintingResponse paintingResponse = paintingResponseBuilder(
+                                    paintingRepository.save(paintingEntity),
+                                    artistFuture.get(),
+                                    museumFuture.get()  // Может быть null, если museumId не указан
+                            );
+                            responseObserver.onNext(paintingResponse);
+                            responseObserver.onCompleted();
+                        } catch (Exception e) {
+                            handleError(responseObserver, "Error creating painting", e);
+                        }
+                    })
+                    .exceptionally(ex -> {
+                        handleError(responseObserver, "Error processing gRPC requests", ex);
+                        return null;
+                    });
+        } catch (Exception e) {
+            handleError(responseObserver, "Error in create painting", e);
+        }
+    }
+
     private PaintingEntity findPaintingById(String id) {
         return paintingRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new PaintingNotFoundException("Painting with id: " + id + " not found."));
@@ -192,13 +234,6 @@ public class GrpcPaintingService extends RococoPaintingServiceGrpc.RococoPaintin
                 .setMuseum(museumResponse != null ? museumResponse : MuseumResponse.getDefaultInstance())
                 .setContent(entity.getContent() != null ? ByteString.copyFrom(entity.getContent()) : ByteString.EMPTY)
                 .build();
-    }
-
-    private void handleError(StreamObserver<?> responseObserver, String message, Throwable ex) {
-        LOG.error(message, ex);
-        responseObserver.onError(Status.INTERNAL
-                .withDescription(message + ": " + ex.getMessage())
-                .asRuntimeException());
     }
 
     private CompletableFuture<PaintingsResponse> toGrpcPaintingsResponse(Page<PaintingEntity> page) {
@@ -222,9 +257,7 @@ public class GrpcPaintingService extends RococoPaintingServiceGrpc.RococoPaintin
     }
 
     private CompletableFuture<PaintingResponse> toGrpcPaintingResponseAsync(PaintingEntity entity) {
-
         CompletableFuture<ArtistResponse> artistFuture = grpcArtistClient.getArtistAsync(entity.getArtistId().toString());
-
         CompletableFuture<MuseumResponse> museumFuture = entity.getMuseumId() != null
                 ? grpcMuseumClient.getMuseumAsync(entity.getMuseumId().toString())
                 : CompletableFuture.completedFuture(null);
@@ -256,5 +289,12 @@ public class GrpcPaintingService extends RococoPaintingServiceGrpc.RococoPaintin
             LOG.info("Museum ID not provided, skipping museum fetch");
             return CompletableFuture.completedFuture(null); // Если museumId не указан, возвращаем null
         }
+    }
+
+    private void handleError(StreamObserver<?> responseObserver, String message, Throwable ex) {
+        LOG.error(message, ex);
+        responseObserver.onError(Status.INTERNAL
+                .withDescription(message + ": " + ex.getMessage())
+                .asRuntimeException());
     }
 }

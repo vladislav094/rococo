@@ -1,7 +1,6 @@
 package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.ArtistJson;
-import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.service.api.GrpcArtistClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

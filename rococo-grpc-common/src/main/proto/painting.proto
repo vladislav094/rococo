@@ -7,8 +7,6 @@ import "common.proto"; // Общие сообщения, такие как Pagea
 import "artist.proto"; // Для использования ArtistResponse
 import "museum.proto"; // Для использования MuseumResponse
 
-//package guru.qa.grpc.rococo;
-
 option java_multiple_files = true;
 option java_package = "guru.qa.rococo.grpc";
 option java_outer_classname = "RococoPaintingProto";
@@ -51,7 +49,7 @@ message PaintingByAuthorRequest {
 message CreatePaintingRequest {
   string title = 1; // Название картины
   string description = 2; // Описание картины
-  string artistId = 3;
+  string artistId = 3; // UUID автора картины
   optional string museumId = 4;
   bytes content = 5; // Фотография картины (опционально)
 }
@@ -60,7 +58,7 @@ message UpdatePaintingRequest {
   string id = 1; // UUID картины
   string title = 2; // Название картины
   string description = 3; // Описание картины
-  ArtistResponse artist = 4; // Автор картины
-  optional MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
+  string artistId = 4; // UUID автора картины
+  optional string museumId = 5; // UUID музея, где хранится картина (опционально)
   bytes content = 6; // Фотография картины (опционально)
 }
