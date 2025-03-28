@@ -1,6 +1,5 @@
 package guru.qa.rococo.service.api;
 
-import com.google.protobuf.Empty;
 import guru.qa.rococo.grpc.CountriesResponse;
 import guru.qa.rococo.grpc.PageableRequest;
 import guru.qa.rococo.grpc.RococoCountryServiceGrpc;
@@ -23,7 +22,6 @@ import java.util.List;
 public class GrpcCountryClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(GrpcCountryClient.class);
-    private static final Empty EMPTY = Empty.getDefaultInstance();
 
     @GrpcClient("museumGrpcClient")
     private RococoCountryServiceGrpc.RococoCountryServiceBlockingStub rococoCountryServiceStub;

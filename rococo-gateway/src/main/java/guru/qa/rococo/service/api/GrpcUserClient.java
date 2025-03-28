@@ -1,7 +1,6 @@
 package guru.qa.rococo.service.api;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Empty;
 import guru.qa.rococo.grpc.GetCurrentUserRequest;
 import guru.qa.rococo.grpc.RococoUserdataServiceGrpc;
 import guru.qa.rococo.grpc.UserdataGrpc;
@@ -20,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class GrpcUserClient implements UserDataClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(GrpcUserClient.class);
-    private static final Empty EMPTY = Empty.getDefaultInstance();
 
     @GrpcClient("userdataGrpcClient")
     private RococoUserdataServiceGrpc.RococoUserdataServiceBlockingStub rococoUserdataServiceStub;

@@ -11,9 +11,10 @@ option java_outer_classname = "RococoArtistProto";
 // Сервис для работы с художниками
 service RococoArtistService {
   rpc GetArtists (PageableRequest) returns (ArtistsResponse);
-  rpc GeArtistById (ByIdRequest) returns (ArtistResponse);
-  rpc CreateMuseum (CreateArtistRequest) returns (ArtistResponse);
-  rpc UpdateMuseum (UpdateArtistRequest) returns (ArtistResponse);
+  rpc GetArtistByName (PageableRequest) returns (ArtistsResponse);
+  rpc GetArtistById (ByIdRequest) returns (ArtistResponse);
+  rpc CreateArtist (CreateArtistRequest) returns (ArtistResponse);
+  rpc UpdateArtist (UpdateArtistRequest) returns (ArtistResponse);
 }
 
 // Ответы для художников
@@ -24,7 +25,7 @@ message ArtistsResponse {
 }
 
 message ArtistResponse {
-  string id = 1; // UUID музея
+  string id = 1; // UUID художника
   string name = 2; // Имя художника
   string biography = 3; // Биография художника
   bytes photo = 4; // Фотография художника (опционально)
@@ -38,7 +39,7 @@ message CreateArtistRequest {
 }
 
 message UpdateArtistRequest {
-  string id = 1; // UUID музея
+  string id = 1; // UUID художника
   string name = 2; // Имя художника
   string biography = 3; // Биография художника
   bytes photo = 4; // Фотография художника (опционально)

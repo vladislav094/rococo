@@ -43,13 +43,25 @@ grpc:
     userdataGrpcClient:
       address: 'static://localhost:8072'
       negotiationType: PLAINTEXT
+    artistGrpcClient:
+      address: 'static://localhost:8073'
+      negotiationType: PLAINTEXT
+    paintingGrpcClient:
+      address: 'static://localhost:8074'
+      negotiationType: PLAINTEXT
 
-rococo-userdata:
-  base-uri: 'http://127.0.0.1:8089'
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 rococo-gateway:
   base-uri: 'http://127.0.0.1:8090'
+rococo-museum:
+  base-uri: 'http://127.0.0.1:8091'
+rococo-userdata:
+  base-uri: 'http://127.0.0.1:8092'
+rococo-artist:
+  base-uri: 'http://127.0.0.1:8093'
+rococo-painting:
+  base-uri: 'http://127.0.0.1:8094'
 ---
 spring:
   config:
@@ -68,8 +80,17 @@ spring:
 
 grpc:
   client:
-    grpcCurrencyClient:
-      address: 'static://currency.rococo.dc:8092'
+    museumGrpcClient:
+      address: 'static://museum.rococo.dc:8071'
+      negotiationType: PLAINTEXT
+    userdataGrpcClient:
+      address: 'static://userdata.rococo.dc:8072'
+      negotiationType: PLAINTEXT
+    artistGrpcClient:
+      address: 'static://artist.rococo.dc:8073'
+      negotiationType: PLAINTEXT
+    paintingGrpcClient:
+      address: 'static://painting.rococo.dc:8074'
       negotiationType: PLAINTEXT
 
 rococo-userdata:

@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
-import static guru.qa.rococo.utils.GrpcResponseConverter.buildMuseumsResponse;
+import static guru.qa.rococo.utils.GrpcResponseConverter.toGrpcMuseumsResponse;
 
 @GrpcService
 public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServiceImplBase {
@@ -46,7 +46,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     public void getMuseums(PageableRequest request, StreamObserver<MuseumsResponse> responseObserver) {
         final Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<MuseumEntity> museumPage = museumRepository.findAll(pageable);
-        MuseumsResponse response = buildMuseumsResponse(museumPage);
+        MuseumsResponse response = toGrpcMuseumsResponse(museumPage);
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -57,7 +57,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     public void getMuseumByTitle(PageableRequest request, StreamObserver<MuseumsResponse> responseObserver) {
         final Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<MuseumEntity> museumPage = museumRepository.findByTitle(request.getTitle(), pageable);
-        MuseumsResponse response = buildMuseumsResponse(museumPage);
+        MuseumsResponse response = toGrpcMuseumsResponse(museumPage);
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -68,7 +68,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     public void getMuseumById(ByIdRequest request, StreamObserver<MuseumResponse> responseObserver) {
         try {
             final MuseumEntity museumEntity = findMuseumById(request.getId());
-            responseObserver.onNext(GrpcResponseConverter.buildMuseumResponse(museumEntity));
+            responseObserver.onNext(GrpcResponseConverter.toGrpcMuseumResponse(museumEntity));
             responseObserver.onCompleted();
         } catch (Exception e) {
             GrpcExceptionHandler.handleException(responseObserver, e);
@@ -87,7 +87,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
             museumEntity.setPhoto(request.getPhoto().toByteArray());
             museumEntity.setGeo(geoEntity);
 
-            responseObserver.onNext(GrpcResponseConverter.buildMuseumResponse(museumRepository.save(museumEntity)));
+            responseObserver.onNext(GrpcResponseConverter.toGrpcMuseumResponse(museumRepository.save(museumEntity)));
             responseObserver.onCompleted();
         } catch (Exception e) {
             GrpcExceptionHandler.handleException(responseObserver, e);
@@ -104,7 +104,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
             GeoEntity geoEntity = processGeoEntity(request.getCity(), request.getCountryId());
             museumEntity.setGeo(geoEntity);
 
-            responseObserver.onNext(GrpcResponseConverter.buildMuseumResponse(museumRepository.save(museumEntity)));
+            responseObserver.onNext(GrpcResponseConverter.toGrpcMuseumResponse(museumRepository.save(museumEntity)));
             responseObserver.onCompleted();
         } catch (Exception e) {
             GrpcExceptionHandler.handleException(responseObserver, e);

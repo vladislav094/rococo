@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/session")
 public class SessionController {
 
-  @GetMapping
-  public SessionJson session(@AuthenticationPrincipal Jwt principal) {
-    if (principal != null) {
-      return new SessionJson(
-          principal.getClaim("sub"),
-          Date.from(principal.getIssuedAt()),
-          Date.from(principal.getExpiresAt())
-      );
-    } else {
-      return SessionJson.empty();
+    @GetMapping
+    public SessionJson session(@AuthenticationPrincipal Jwt principal) {
+        if (principal != null) {
+            return new SessionJson(
+                    principal.getClaim("sub"),
+                    Date.from(Objects.requireNonNull(principal.getIssuedAt())),
+                    Date.from(Objects.requireNonNull(principal.getExpiresAt()))
+            );
+        } else {
+            return SessionJson.empty();
+        }
     }
-  }
 }
