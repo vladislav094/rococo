@@ -13,7 +13,7 @@ public record GeoJson(
         UUID id,
 
         @NotBlank(message = "City can not be blank")
-        @Size(min = 2, max = 15, message = "Allowed city length should be from 2 to 15 characters")
+        @Size(min = 2, max = 50, message = "Allowed city length should be from 2 to 50 characters")
         @JsonProperty("city")
         String city,
 

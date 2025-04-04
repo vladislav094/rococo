@@ -34,11 +34,11 @@ public class ArtistController {
 
     @PostMapping
     public ArtistJson createArtist(@RequestBody ArtistJson artist) {
-        return grpcArtistClient.createMuseum(artist);
+        return grpcArtistClient.createArtist(artist);
     }
 
     @PatchMapping
     public ArtistJson updateArtist(@RequestBody ArtistJson artist) {
-        return grpcArtistClient.updateMuseum(artist);
+        return grpcArtistClient.updateArtist(artist);
     }
 }

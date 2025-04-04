@@ -87,6 +87,14 @@ public class GrpcArtistService extends RococoArtistServiceGrpc.RococoArtistServi
         responseObserver.onCompleted();
     }
 
+    @Transactional
+    @Override
+    public void artistByName(ByNameRequest request, StreamObserver<ArtistResponse> responseObserver) {
+        ArtistEntity artistEntity = artistRepository.findByName(request.getName());
+        responseObserver.onNext(toGrpcArtistResponse(artistEntity));
+        responseObserver.onCompleted();
+    }
+
     private void validateRequest(Object request) {
         if (request == null) {
             throw new IllegalArgumentException("Request or artist data is null");

@@ -116,7 +116,7 @@
                     ignoreIds: [...prevState.ignoreIds, data.id],
                 }
             });
-            successTrigger(`Добавлена картина: ${data.title}`);
+            successTrigger(`ыДобавлена картина: ${data.title}`);
         }
     }
 

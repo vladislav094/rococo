@@ -18,4 +18,6 @@ public interface MuseumRepository extends JpaRepository<MuseumEntity, UUID> {
     @Query("SELECT m FROM MuseumEntity m WHERE LOWER(m.title) LIKE LOWER(CONCAT(:title, '%'))" +
             " OR LOWER(m.title) LIKE LOWER(CONCAT('% ', :title, '%'))")
     Page<MuseumEntity> findByTitle(@Param("title") String title, Pageable pageable);
+
+    MuseumEntity findByTitle(@Param("title") String title);
 }

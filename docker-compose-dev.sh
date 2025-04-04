@@ -24,6 +24,7 @@ java --version
 bash ./gradlew clean
 if [ "$1" = "push" ]; then
   echo "### Build & push images ###"
+  docker compose build frontend.rococo.dc
   bash ./gradlew jib -x :rococo-e-2-e-tests:test
   docker compose push frontend.rococo.dc
 else

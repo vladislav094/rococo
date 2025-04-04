@@ -11,4 +11,3 @@ create table if not exists "artist"
 
 alter table "artist"
     owner to postgres;
-

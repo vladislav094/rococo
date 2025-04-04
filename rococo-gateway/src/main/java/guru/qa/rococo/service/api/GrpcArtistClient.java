@@ -64,7 +64,7 @@ public class GrpcArtistClient {
         }
     }
 
-    public @Nonnull ArtistJson createMuseum(ArtistJson artistJson) {
+    public @Nonnull ArtistJson createArtist(ArtistJson artistJson) {
         try {
             // создаем CreateArtistRequest из тела REST запроса
             CreateArtistRequest request = CreateArtistRequest.newBuilder()
@@ -82,7 +82,7 @@ public class GrpcArtistClient {
         }
     }
 
-    public @Nonnull ArtistJson updateMuseum(ArtistJson artistJson) {
+    public @Nonnull ArtistJson updateArtist(ArtistJson artistJson) {
         try {
             // создаем UpdateArtistRequest из тела REST запроса
             UpdateArtistRequest request = UpdateArtistRequest.newBuilder()
