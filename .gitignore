@@ -29,3 +29,4 @@ out/
 !**/src/test/**/out/
 
 logs
+rococo-e-2-e-tests/tmlog68.log
