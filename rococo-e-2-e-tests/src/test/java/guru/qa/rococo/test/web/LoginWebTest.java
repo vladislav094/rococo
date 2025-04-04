@@ -19,7 +19,7 @@ public class LoginWebTest extends BaseWebTest {
     @Test
     @Story("Успешная авторизация")
     @DisplayName("Выполняем авторизацию пользователя")
-    public void testMainPageShouldBeDisplayedAfterSuccessfulLogin(UserJson user) {
+    void testMainPageShouldBeDisplayedAfterSuccessfulLogin(UserJson user) {
 
         Selenide.open(MainPage.URL, MainPage.class)
                 .getHeader()
@@ -32,7 +32,7 @@ public class LoginWebTest extends BaseWebTest {
     @Test
     @Story("Неуспешная авторизация")
     @DisplayName("Выполняем авторизацию пользователя с невалидным паролем")
-    public void testUserShouldStayOnLoginPageAfterLoginWithBadCredential(UserJson user) {
+    void testUserShouldStayOnLoginPageAfterLoginWithBadCredential(UserJson user) {
 
         final String badCredentialsMessage = "Неверные учетные данные пользователя";
 

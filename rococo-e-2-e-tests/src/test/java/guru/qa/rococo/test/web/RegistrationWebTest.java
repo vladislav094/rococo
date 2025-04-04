@@ -22,7 +22,7 @@ public class RegistrationWebTest extends BaseWebTest {
     @Test
     @Story("Успешная регистрация нового пользователя")
     @DisplayName("Выполняем регистрацию нового пользователя и проверяем текст об успешной регистрации")
-    public void testShouldRegisterNewUser() {
+    void testShouldRegisterNewUser() {
 
         final String successfulRegistrationText = "Добро пожаловать в Rococo";
 
@@ -38,7 +38,7 @@ public class RegistrationWebTest extends BaseWebTest {
     @Test
     @Story("Неуспешная регистрация")
     @DisplayName("Попытка регистрации с username ранее зарегистрированного пользователя")
-    public void testShouldNotRegisterUserWithExistingUsername(UserJson user) {
+    void testShouldNotRegisterUserWithExistingUsername(UserJson user) {
 
         final String earlieRegisterUserName = user.username();
 
@@ -53,7 +53,7 @@ public class RegistrationWebTest extends BaseWebTest {
     @Test
     @Story("Неуспешная регистрация")
     @DisplayName("Попытка регистрации с разными значениями для поля password и passwordSubmit")
-    public void testShouldShowErrorIfPasswordAndConfirmPasswordAreNotEqual() {
+    void testShouldShowErrorIfPasswordAndConfirmPasswordAreNotEqual() {
 
         final String passwordsNotEqualsMessage = "Passwords should be equal";
 
