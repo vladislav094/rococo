@@ -17,7 +17,7 @@ public class RegisterPage extends BasePage<RegisterPage> {
     private final SelenideElement passwordInput = $("input[name='password']");
     private final SelenideElement confirmPassword = $("input[name='passwordSubmit']");
     private final SelenideElement signUpButton = $("button[type=submit]");
-    private final SelenideElement signInLink = $(".form__link");
+    private final SelenideElement signInLink = $(".form__submit");
     private final SelenideElement successfulRegistrationMessage = $(".form__subheader");
     private final SelenideElement errorMessage = $("span.form__error");
 
@@ -74,7 +74,6 @@ public class RegisterPage extends BasePage<RegisterPage> {
     @Step("Check message about username already exist: {0}")
     public void checkMessageThatUsernameAlreadyExist(String username) {
         String usernameAlreadyExistMessage = String.format("Username `%s` already exists", username);
-        System.out.println(usernameAlreadyExistMessage);
         errorMessage.shouldHave(text(usernameAlreadyExistMessage)).shouldBe(visible);
     }
 
