@@ -1,4 +1,4 @@
-package guru.qa.rococo.data;
+package guru.qa.rococo.data.entity.auth;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,24 +12,20 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"user\"")
-public class UserEntity implements Serializable {
+@Table(name = "authority", schema = "public", catalog = "rococo-auth")
+public class AuthAuthorityEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "username", unique = true, nullable = false, length = 50)
-    private String username;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
-    @Column(name = "firstname")
-    private String firstname;
-
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "avatar", columnDefinition = "bytea")
-    private byte[] avatar;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AuthUserEntity user;
 
     @Override
     public final boolean equals(Object o) {
@@ -38,7 +34,7 @@ public class UserEntity implements Serializable {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserEntity that = (UserEntity) o;
+        AuthAuthorityEntity that = (AuthAuthorityEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

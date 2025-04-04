@@ -24,8 +24,6 @@ buildscript {
 plugins {
     id 'io.qameta.allure' version '2.12.0'
     id 'io.qameta.allure-adapter' version '2.12.0'
-    id 'com.github.edeandrea.xjc-generation' version '1.6'
-    id 'com.apollographql.apollo' version '4.1.0'
 }
 
 group = 'guru.qa'
