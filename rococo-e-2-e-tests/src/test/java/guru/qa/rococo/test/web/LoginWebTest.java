@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 
 @WebTest
+@DisplayName("Страница авторизации")
 public class LoginWebTest extends BaseWebTest {
 
     @User
@@ -20,7 +21,7 @@ public class LoginWebTest extends BaseWebTest {
     @DisplayName("Выполняем авторизацию пользователя")
     public void testMainPageShouldBeDisplayedAfterSuccessfulLogin(UserJson user) {
 
-        Selenide.open(CFG.frontUrl(), MainPage.class)
+        Selenide.open(MainPage.URL, MainPage.class)
                 .getHeader()
                 .toLoginPage()
                 .login(user.username(), user.testData().password())
@@ -33,9 +34,9 @@ public class LoginWebTest extends BaseWebTest {
     @DisplayName("Выполняем авторизацию пользователя с невалидным паролем")
     public void testUserShouldStayOnLoginPageAfterLoginWithBadCredential(UserJson user) {
 
-        final String badCredentialsMessage = "Неверные учетные данные пользователя.";
+        final String badCredentialsMessage = "Неверные учетные данные пользователя";
 
-        Selenide.open(CFG.frontUrl(), MainPage.class)
+        Selenide.open(MainPage.URL, MainPage.class)
                 .getHeader()
                 .toLoginPage()
                 .login(user.username(), randomPassword(1, 3));

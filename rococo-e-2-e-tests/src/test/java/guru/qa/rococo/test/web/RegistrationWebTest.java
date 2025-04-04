@@ -13,6 +13,7 @@ import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 import static guru.qa.rococo.utils.RandomDataUtils.randomUsername;
 
 @WebTest
+@DisplayName("Страница регистрации")
 public class RegistrationWebTest extends BaseWebTest {
 
     private final String username = randomUsername();

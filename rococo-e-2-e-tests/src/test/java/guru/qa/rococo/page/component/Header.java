@@ -36,4 +36,9 @@ public class Header extends BaseComponent<Header> {
         profileButton.shouldNotBe(disabled);
         return this;
     }
+
+    public ProfileModal toProfileModal() {
+        profileButton.click();
+        return new ProfileModal();
+    }
 }

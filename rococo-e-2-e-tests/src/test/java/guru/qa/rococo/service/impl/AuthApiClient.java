@@ -17,7 +17,7 @@ public class AuthApiClient extends RestClient {
 
     private static final Config CFG = Config.getInstance();
     private final AuthApi authApi;
-    private final String redirectUri = CFG.authUrl() + "authorized";
+    private final String redirectUri = CFG.frontUrl() + "authorized";
 
     public AuthApiClient() {
         super(CFG.authUrl(), true, new CodeInterceptor());
