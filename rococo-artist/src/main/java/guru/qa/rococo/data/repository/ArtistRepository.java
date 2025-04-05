@@ -18,4 +18,6 @@ public interface ArtistRepository extends JpaRepository<ArtistEntity, UUID> {
     @Query("SELECT a FROM ArtistEntity a WHERE LOWER(a.name) LIKE LOWER(CONCAT(:name, '%'))" +
             " OR LOWER(a.name) LIKE LOWER(CONCAT('% ', :name, '%'))")
     Page<ArtistEntity> findByName(@Param("name") String name, Pageable pageable);
+
+    ArtistEntity findByName(@Param("name") String name);
 }

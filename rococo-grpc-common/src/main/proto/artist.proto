@@ -15,6 +15,7 @@ service RococoArtistService {
   rpc GetArtistById (ByIdRequest) returns (ArtistResponse);
   rpc CreateArtist (CreateArtistRequest) returns (ArtistResponse);
   rpc UpdateArtist (UpdateArtistRequest) returns (ArtistResponse);
+  rpc ArtistByName (ByNameRequest) returns (ArtistResponse);
 }
 
 // Ответы для художников

@@ -20,3 +20,7 @@ message ByIdRequest {
 message ByTitleRequest {
   string title = 1;
 }
+
+message ByNameRequest {
+  string name = 1;
+}

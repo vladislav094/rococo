@@ -23,7 +23,7 @@ public class PaintingEntity {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @Column(name = "artist_id", nullable = false, columnDefinition = "UUID")
+    @Column(name = "artist_id", columnDefinition = "UUID")
     private UUID artistId;
 
     @Column(name = "museum_id", columnDefinition = "UUID")

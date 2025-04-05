@@ -111,6 +111,14 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
         }
     }
 
+    @Transactional
+    @Override
+    public void museumByTitle(ByTitleRequest request, StreamObserver<MuseumResponse> responseObserver) {
+        MuseumEntity museumEntity = museumRepository.findByTitle(request.getTitle());
+        responseObserver.onNext(GrpcResponseConverter.toGrpcMuseumResponse(museumEntity));
+        responseObserver.onCompleted();
+    }
+
     private void validateRequest(Object request) {
         if (request == null) {
             throw new IllegalArgumentException("Request or museum data is null");
