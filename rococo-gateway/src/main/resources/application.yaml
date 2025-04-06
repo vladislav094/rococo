@@ -40,6 +40,8 @@ grpc:
     museumGrpcClient:
       address: 'static://localhost:8071'
       negotiationType: PLAINTEXT
+      maxInboundMessageSize: 10485760
+      withMaxOutboundMessageSize: 10485760
     userdataGrpcClient:
       address: 'static://localhost:8072'
       negotiationType: PLAINTEXT

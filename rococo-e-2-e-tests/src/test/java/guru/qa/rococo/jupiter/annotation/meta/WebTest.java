@@ -15,10 +15,8 @@ import java.lang.annotation.Target;
         BrowserExtension.class,
         AllureJunit5.class,
         UserExtension.class,
-//        CategoryExtension.class,
-//        SpendingExtension.class,
+        MuseumExtension.class,
         ApiLoginExtension.class,
-//        UserQueueExtension.class,
 //        ClearEnvExtension.class})
 })
 public @interface WebTest {

@@ -1,10 +1,12 @@
-package guru.qa.rococo.data;
+package guru.qa.rococo.data.entity.museum;
 
+import guru.qa.rococo.model.rest.CountryJson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -13,23 +15,19 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "geo")
-public class GeoEntity implements Serializable {
+@Table(name = "country")
+public class CountryEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
+    @GeneratedValue
+    @Column(name = "id", columnDefinition = "UUID default uuid_generate_v1()")
     private UUID id;
 
-    @Column(name = "city", unique = true, nullable = false, length = 50)
-    private String city;
+    @Column(name = "name", unique = true, nullable = false, length = 60)
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-    private CountryEntity country;
-
-    @OneToMany(mappedBy = "geo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<MuseumEntity> museums;
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<GeoEntity> geo;
 
     @Override
     public final boolean equals(Object o) {
@@ -38,12 +36,22 @@ public class GeoEntity implements Serializable {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        GeoEntity geoEntity = (GeoEntity) o;
-        return getId() != null && Objects.equals(getId(), geoEntity.getId());
+        CountryEntity that = (CountryEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Nonnull
+    public static CountryEntity fromJson(@Nonnull CountryJson countryJson) {
+        CountryEntity countryEntity = new CountryEntity();
+
+        countryEntity.setId(countryJson.id());
+        countryEntity.setName(countryJson.name());
+
+        return countryEntity;
     }
 }

@@ -1,0 +1,28 @@
+package guru.qa.rococo.utils;
+
+import lombok.SneakyThrows;
+import org.springframework.core.io.ClassPathResource;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class ImageUtils {
+
+    private static final Base64.Encoder encoder = Base64.getEncoder();
+
+    @SneakyThrows
+    public static String imageToStringBytes(String imagePath) {
+
+        BufferedImage bufferedImage = ImageIO.read(new ClassPathResource(imagePath).getInputStream());
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            ImageIO.write(bufferedImage, "jpeg", outputStream);
+            return "data:image/jpeg;base64," + encoder.encodeToString(outputStream.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

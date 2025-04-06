@@ -1,10 +1,12 @@
-package guru.qa.rococo.data;
+package guru.qa.rococo.data.entity.museum;
 
+import guru.qa.rococo.model.rest.GeoJson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -45,5 +47,15 @@ public class GeoEntity implements Serializable {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Nonnull
+    public static GeoEntity fromJson(@Nonnull GeoJson geoJson) {
+        GeoEntity geoEntity = new GeoEntity();
+        geoEntity.setId(geoJson.id());
+        geoEntity.setCity(geoJson.city());
+        geoEntity.setCountry(CountryEntity.fromJson(geoJson.country()));
+
+        return geoEntity;
     }
 }

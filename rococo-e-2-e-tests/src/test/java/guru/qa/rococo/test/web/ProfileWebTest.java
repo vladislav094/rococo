@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
 
-@DisplayName("Страница профиля")
 @WebTest
+@DisplayName("Страница профиля")
 public class ProfileWebTest extends BaseWebTest {
 
     @User

@@ -13,6 +13,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation "net.devh:grpc-server-spring-boot-starter:${project.ext.springGrpcVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-vault-config:${project.ext.springVaultVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${project.ext.springOpenfeignVersion}"
+    implementation "org.springframework.retry:spring-retry:${project.ext.springRetry}"
     implementation "org.flywaydb:flyway-core:${project.ext.flywayVersion}"
     implementation "org.flywaydb:flyway-database-postgresql:${project.ext.flywayVersion}"
     annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
@@ -20,8 +22,6 @@ dependencies {
     runtimeOnly "org.postgresql:postgresql:${project.ext.postgresDriverVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.retry:spring-retry:2.0.11'
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3")
 }
 
 jib {

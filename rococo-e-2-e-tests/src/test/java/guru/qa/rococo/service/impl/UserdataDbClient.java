@@ -46,12 +46,16 @@ public class UserdataDbClient implements UsersClient {
     @Nonnull
     @Step("Create user using SQL")
     public UserJson createUser(@Nonnull String username, @Nonnull String password) {
-        return requireNonNull(xaTxTemplate.execute(() -> {
-            AuthUserEntity authUser = authUserEntity(username, password);
-            authUserRepository.create(authUser);
-            UserJson user = UserJson.fromEntity(userdataUserRepository.create(userEntity(username)));
-            return user.addTestData(new TestData(password));
-        }));
+        return requireNonNull(
+                xaTxTemplate.execute(
+                        () -> {
+                            AuthUserEntity authUser = authUserEntity(username, password);
+                            authUserRepository.create(authUser);
+                            UserJson user = UserJson.fromEntity(userdataUserRepository.create(userEntity(username)));
+                            return user.addTestData(new TestData(password));
+                        }
+                )
+        );
     }
 
     @Nullable

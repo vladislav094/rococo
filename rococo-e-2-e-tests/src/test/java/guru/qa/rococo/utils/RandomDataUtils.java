@@ -14,11 +14,19 @@ public class RandomDataUtils {
         return faker.internet().password(minLength, maxLength);
     }
 
-    public static String randomCategoryName() {
-        return faker.commerce().department() + " and " + faker.country().name();
+    public static String randomMuseumName() {
+        return String.format("%s %s", faker.educator().university().split(" ")[0], "Museum");
     }
 
     public static String randomDescription() {
-        return faker.commerce().productName();
+        return faker.lorem().sentence(10);
+    }
+
+    public static String randomCountry() {
+        return faker.country().name();
+    }
+
+    public static String randomCity() {
+        return faker.country().capital();
     }
 }
