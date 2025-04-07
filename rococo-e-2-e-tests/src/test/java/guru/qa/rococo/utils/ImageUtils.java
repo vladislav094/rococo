@@ -19,8 +19,8 @@ public class ImageUtils {
         BufferedImage bufferedImage = ImageIO.read(new ClassPathResource(imagePath).getInputStream());
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            ImageIO.write(bufferedImage, "jpeg", outputStream);
-            return "data:image/jpeg;base64," + encoder.encodeToString(outputStream.toByteArray());
+            ImageIO.write(bufferedImage, "jpg", outputStream);
+            return "data:image/jpg;base64," + encoder.encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

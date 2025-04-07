@@ -13,14 +13,13 @@ import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 import static guru.qa.rococo.utils.RandomDataUtils.randomUsername;
 
 @WebTest
-@DisplayName("Страница регистрации")
+@DisplayName("Регистрация пользователя")
 public class RegistrationWebTest extends BaseWebTest {
 
     private final String username = randomUsername();
     private final String validPassword = randomPassword(4, 10);
 
     @Test
-    @Story("Успешная регистрация нового пользователя")
     @DisplayName("Выполняем регистрацию нового пользователя и проверяем текст об успешной регистрации")
     void testShouldRegisterNewUser() {
 
@@ -36,7 +35,6 @@ public class RegistrationWebTest extends BaseWebTest {
 
     @User
     @Test
-    @Story("Неуспешная регистрация")
     @DisplayName("Попытка регистрации с username ранее зарегистрированного пользователя")
     void testShouldNotRegisterUserWithExistingUsername(UserJson user) {
 
@@ -51,7 +49,6 @@ public class RegistrationWebTest extends BaseWebTest {
     }
 
     @Test
-    @Story("Неуспешная регистрация")
     @DisplayName("Попытка регистрации с разными значениями для поля password и passwordSubmit")
     void testShouldShowErrorIfPasswordAndConfirmPasswordAreNotEqual() {
 

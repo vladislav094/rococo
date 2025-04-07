@@ -14,8 +14,13 @@ public class RandomDataUtils {
         return faker.internet().password(minLength, maxLength);
     }
 
-    public static String randomMuseumName() {
-        return String.format("%s %s", faker.educator().university().split(" ")[0], "Museum");
+    public static String randomMuseumTitle() {
+        return String.format(
+                "%s %s %s",
+                faker.educator().university().split(" ")[0],
+                faker.educator().campus(),
+                "Museum"
+        );
     }
 
     public static String randomDescription() {

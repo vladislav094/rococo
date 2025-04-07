@@ -16,13 +16,12 @@ public class MuseumExtension implements ParameterResolver, BeforeEachCallback {
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(MuseumExtension.class);
 
     private final MuseumClient museumClient = new MuseumDbClient();
-    private final String imagePath = "img/museum.jpeg";
 
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class)
                 .ifPresent(anno -> {
-                            final String title = anno.title().isEmpty() ? RandomDataUtils.randomMuseumName() : anno.title();
+                            final String title = anno.title().isEmpty() ? RandomDataUtils.randomMuseumTitle() : anno.title();
                             final String country = anno.country().isEmpty() ? RandomDataUtils.randomCountry() : anno.country();
                             final String city = anno.city().isEmpty() ? RandomDataUtils.randomCity() : anno.city();
                             // создаем MuseumJson из данных аннотации
@@ -30,7 +29,7 @@ public class MuseumExtension implements ParameterResolver, BeforeEachCallback {
                                     null,
                                     title,
                                     RandomDataUtils.randomDescription(),
-                                    ImageUtils.imageToStringBytes(imagePath),
+                                    ImageUtils.imageToStringBytes("img/museum.jpeg"),
                                     new GeoJson(
                                             null,
                                             city,

@@ -29,7 +29,7 @@ public class MuseumDbClient implements MuseumClient {
                             CountryEntity countryEntity = CountryEntity.fromJson(museumJson.geo().country());
 
                             if (museumEntity.getGeo().getId() == null) {
-                                Optional<GeoEntity> existingGeoEntity = museumRepository.findGeoByCity(museumJson.geo().city());
+                                Optional<GeoEntity> existingGeoEntity = museumRepository.findGeoByCity(museumEntity.getGeo().getCity());
                                 if (existingGeoEntity.isPresent()) {
                                     museumEntity.setGeo(existingGeoEntity.get());
                                 } else {

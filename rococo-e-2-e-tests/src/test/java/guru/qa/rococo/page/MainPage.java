@@ -11,14 +11,12 @@ import java.awt.image.BufferedImage;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MainPage extends BasePage<MainPage> {
 
     public static final String URL = CFG.frontUrl();
-    private final SelenideElement pageContent = $("#page-content");
     private final SelenideElement avatar = $$("img[src^='data:image/png;base64']").get(0);
 
     @Step("Check that page is loaded")

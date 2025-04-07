@@ -12,12 +12,11 @@ import org.junit.jupiter.api.Test;
 import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 
 @WebTest
-@DisplayName("Страница авторизации")
+@Story("Страница авторизации")
 public class LoginWebTest extends BaseWebTest {
 
     @User
     @Test
-    @Story("Успешная авторизация")
     @DisplayName("Выполняем авторизацию пользователя")
     void testMainPageShouldBeDisplayedAfterSuccessfulLogin(UserJson user) {
 
@@ -30,7 +29,6 @@ public class LoginWebTest extends BaseWebTest {
 
     @User
     @Test
-    @Story("Неуспешная авторизация")
     @DisplayName("Выполняем авторизацию пользователя с невалидным паролем")
     void testUserShouldStayOnLoginPageAfterLoginWithBadCredential(UserJson user) {
 

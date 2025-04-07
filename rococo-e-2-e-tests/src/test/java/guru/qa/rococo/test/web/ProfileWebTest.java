@@ -14,13 +14,12 @@ import org.junit.jupiter.api.Test;
 import java.awt.image.BufferedImage;
 
 @WebTest
-@DisplayName("Страница профиля")
+@Story("Управление профилем пользователя")
 public class ProfileWebTest extends BaseWebTest {
 
     @User
     @ApiLogin
     @Test
-    @Story("Успешное редактирование профиля")
     @DisplayName("Обновляем имя и фамилию пользователя в профиле")
     void testUserDataShouldChangedAfterEditInProfile() {
 
@@ -33,29 +32,27 @@ public class ProfileWebTest extends BaseWebTest {
                 .getProfileModal()
                 .setFirstname(randomFirstname)
                 .setLastname(randomLastname)
-                .updateProfile()
-                .checkAlertMessage(successfulUpdateMessage);
+                .clickSubmitButton();
+        new MainPage().checkAlertMessage(successfulUpdateMessage);
     }
 
     @User
     @ApiLogin
     @ScreenShotTest(value = "img/expected-avatar-screen.png")
     @Test
-    @Story("Успешное редактирование профиля")
     @DisplayName("Обновляем аватар профиля")
     void testAvatarAfterUploading(BufferedImage expected) {
 
         Selenide.open(MainPage.URL, MainPage.class)
                 .getProfileModal()
                 .uploadPicture("img/avatar-for-upload.png")
-                .updateProfile()
-                .checkThatAvatarEqualsUploadingImage(expected);
+                .clickSubmitButton();
+        new MainPage().checkThatAvatarEqualsUploadingImage(expected);
     }
 
     @User
     @ApiLogin
     @Test
-    @Story("Успешное разлогирование пользователя")
     @DisplayName("Выполняем выход из сессии пользователя")
     void testUserSessionShouldStoppedAfterLogout() {
 

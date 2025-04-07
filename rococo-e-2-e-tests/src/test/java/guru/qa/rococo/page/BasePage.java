@@ -3,7 +3,7 @@ package guru.qa.rococo.page;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.page.component.Header;
-import guru.qa.rococo.page.component.ProfileModal;
+import guru.qa.rococo.page.modal.ProfileModal;
 import io.qameta.allure.Step;
 
 import javax.annotation.Nonnull;
@@ -19,6 +19,7 @@ public abstract class BasePage<T extends BasePage<?>> {
     protected final Header header = new Header();
     protected final ProfileModal profileModal = new ProfileModal();
     protected final SelenideElement alert = $("div[role='alertdialog']");
+    protected final SelenideElement pageContent = $("#page-content");
 
     public abstract T checkThatPageLoaded();
 
