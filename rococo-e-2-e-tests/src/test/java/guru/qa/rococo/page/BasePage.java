@@ -20,6 +20,8 @@ public abstract class BasePage<T extends BasePage<?>> {
     protected final ProfileModal profileModal = new ProfileModal();
     protected final SelenideElement alert = $("div[role='alertdialog']");
     protected final SelenideElement pageContent = $("#page-content");
+    protected final SelenideElement searchInput = $("input[type='search']");
+    protected final SelenideElement searchButton = $("button[class='btn-icon variant-soft-surface ml-4']");
 
     public abstract T checkThatPageLoaded();
 
@@ -39,5 +41,13 @@ public abstract class BasePage<T extends BasePage<?>> {
     @Nonnull
     public ProfileModal getProfileModal() {
         return header.toProfileModal();
+    }
+
+    @Step("Fill input for searching: {name}")
+    public T fillSearchInput(String name) {
+        searchInput.clear();
+        searchInput.setValue(name);
+        searchButton.click();
+        return (T) this;
     }
 }

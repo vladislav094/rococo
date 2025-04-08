@@ -2,7 +2,6 @@ package guru.qa.rococo.page.modal;
 
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.rococo.page.MainPage;
-import guru.qa.rococo.page.component.BaseComponent;
 import io.qameta.allure.Step;
 
 import javax.annotation.Nonnull;
@@ -14,7 +13,6 @@ public class ProfileModal extends BaseModal<ProfileModal> {
     private final SelenideElement firstnameInput = $("input[name='firstname']");
     private final SelenideElement lastnameInput = $("input[name='surname']");
     private final SelenideElement closeModalButton = $("button.btn.variant-ringed[type='button']");
-    private final SelenideElement updateProfileButton = $(".btn.variant-filled-primary[type='submit']");
     private final SelenideElement logoutButton = $(".btn.variant-ghost[type='button']");
     private final SelenideElement uploadPictureButton = $("input[name='content']");
 

@@ -12,3 +12,6 @@ create table if not exists "user"
 
 alter table "user"
     owner to postgres;
+
+insert into "user"(username)
+values ('root');

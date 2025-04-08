@@ -1,4 +1,5 @@
 create extension if not exists "uuid-ossp";
+create extension if not exists pgcrypto;
 
 create table if not exists "user"
 (

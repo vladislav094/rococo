@@ -108,6 +108,8 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
     // Awaitility
     testImplementation 'org.awaitility:awaitility:4.3.0'
+    // AssertJ
+    testImplementation("org.assertj:assertj-core:3.27.3")
 }
 
 tasks.withType(JavaCompile).configureEach {
