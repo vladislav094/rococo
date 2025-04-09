@@ -15,7 +15,9 @@ import java.lang.annotation.Target;
         BrowserExtension.class,
         AllureJunit5.class,
         UserExtension.class,
+        ArtistExtension.class,
         MuseumExtension.class,
+        PaintingExtension.class,
         ApiLoginExtension.class,
 //        ClearEnvExtension.class})
 })

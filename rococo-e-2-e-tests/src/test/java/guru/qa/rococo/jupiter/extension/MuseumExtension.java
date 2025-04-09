@@ -21,10 +21,21 @@ public class MuseumExtension implements ParameterResolver, BeforeEachCallback {
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class)
                 .ifPresent(anno -> {
-                            final String title = anno.title().isEmpty() ? RandomDataUtils.randomMuseumTitle() : anno.title();
-                            final String country = anno.country().isEmpty() ? RandomDataUtils.randomCountry() : anno.country();
-                            final String city = anno.city().isEmpty() ? RandomDataUtils.randomCity() : anno.city();
-                            // создаем MuseumJson из данных аннотации
+                            final String title = anno.title().isEmpty()
+                                    || anno.title().isBlank()
+                                    ? RandomDataUtils.randomMuseumTitle()
+                                    : anno.title();
+
+                            final String country = anno.country().isEmpty()
+                                    || anno.country().isBlank()
+                                    ? RandomDataUtils.randomCountry()
+                                    : anno.country();
+
+                            final String city = anno.city().isEmpty()
+                                    || anno.city().isBlank()
+                                    ? RandomDataUtils.randomCity()
+                                    : anno.city();
+
                             MuseumJson museumFromAnno = new MuseumJson(
                                     null,
                                     title,
@@ -39,9 +50,9 @@ public class MuseumExtension implements ParameterResolver, BeforeEachCallback {
                                             )
                                     )
                             );
-                            // создаем новую запись MuseumJson в БД
+
                             MuseumJson createdMuseum = museumClient.createMuseum(museumFromAnno);
-                            // устанавливаем контекст
+
                             context.getStore(NAMESPACE).put(context.getUniqueId(), createdMuseum);
                         }
                 );
@@ -54,7 +65,6 @@ public class MuseumExtension implements ParameterResolver, BeforeEachCallback {
 
     @Override
     public MuseumJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(context.getUniqueId(), MuseumJson.class);
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), MuseumJson.class);
     }
 }

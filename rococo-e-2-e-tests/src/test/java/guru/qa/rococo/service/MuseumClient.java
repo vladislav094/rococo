@@ -8,4 +8,6 @@ public interface MuseumClient {
 
     @Nonnull
     MuseumJson createMuseum(MuseumJson museum);
+
+    MuseumJson getMuseumByTitle(@Nonnull String title);
 }

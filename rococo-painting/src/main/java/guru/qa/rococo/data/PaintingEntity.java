@@ -19,7 +19,7 @@ public class PaintingEntity {
     @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "title", nullable = false, length = 255)
+    @Column(name = "title", unique = true, nullable = false, length = 255)
     private String title;
 
     @Column(name = "description", length = 1000)

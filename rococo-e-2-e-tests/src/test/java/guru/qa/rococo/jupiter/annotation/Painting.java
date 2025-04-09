@@ -16,7 +16,6 @@ public @interface Painting {
 
     String title() default "";
 
-    Artist artist();
-
-    Museum museum();
+    Artist artist() default @Artist;
+    Museum museum() default @Museum;
 }

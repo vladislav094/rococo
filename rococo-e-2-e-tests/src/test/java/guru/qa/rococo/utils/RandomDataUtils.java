@@ -36,6 +36,10 @@ public class RandomDataUtils {
     }
 
     public static String randomPaintingTitle() {
-        return faker.book().title();
+        return String.format("%s %s", faker.book().title(), faker.book().publisher());
+    }
+
+    public static String randomArtistName() {
+        return String.format("%s %s", faker.artist().name(), faker.book().author());
     }
 }

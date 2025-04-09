@@ -11,6 +11,8 @@ import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.service.MuseumClient;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,6 +50,13 @@ public class MuseumDbClient implements MuseumClient {
                             return MuseumJson.fromEntity(museumRepository.createMuseum(museumEntity));
                         }
                 )
+        );
+    }
+
+    @Nullable
+    public MuseumJson getMuseumByTitle(@Nonnull String title) {
+        return MuseumJson.fromEntity(museumRepository.findMuseumByTitle(title)
+                .orElseThrow()
         );
     }
 }
