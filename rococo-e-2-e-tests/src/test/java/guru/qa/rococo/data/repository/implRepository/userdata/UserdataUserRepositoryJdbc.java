@@ -5,6 +5,7 @@ import guru.qa.rococo.data.dao.implDao.userdata.UserdataUserDaoJdbc;
 import guru.qa.rococo.data.dao.userdata.UserdataUserDao;
 import guru.qa.rococo.data.entity.userdata.UserEntity;
 import guru.qa.rococo.data.repository.UserdataUserRepository;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,27 +17,29 @@ public class UserdataUserRepositoryJdbc implements UserdataUserRepository {
     private final UserdataUserDao userdataUserDao = new UserdataUserDaoJdbc();
 
     @Override
-    public UserEntity create(UserEntity user) {
+    @NotNull
+    public UserEntity create(@NotNull UserEntity user) {
         return userdataUserDao.create(user);
     }
 
     @Override
-    public UserEntity update(UserEntity user) {
+    @NotNull
+    public UserEntity update(@NotNull UserEntity user) {
         return userdataUserDao.update(user);
     }
 
     @Override
-    public Optional<UserEntity> findById(UUID id) {
+    public Optional<UserEntity> findById(@NotNull UUID id) {
         return userdataUserDao.findById(id);
     }
 
     @Override
-    public Optional<UserEntity> findByUsername(String username) {
+    public Optional<UserEntity> findByUsername(@NotNull String username) {
         return userdataUserDao.findByUsername(username);
     }
 
     @Override
-    public void remove(UserEntity user) {
+    public void remove(@NotNull UserEntity user) {
         userdataUserDao.remove(user);
     }
 }

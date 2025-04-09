@@ -1,33 +1,42 @@
-package guru.qa.rococo.data.entity.museum;
+package guru.qa.rococo.data.entity.artist;
 
-import guru.qa.rococo.model.rest.CountryJson;
+import guru.qa.rococo.model.rest.ArtistJson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.annotation.Nonnull;
-import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "country")
-public class CountryEntity implements Serializable {
+@Table(name = "artist")
+public class ArtistEntity {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id", columnDefinition = "UUID default uuid_generate_v1()")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "name", unique = true, nullable = false, length = 60)
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<GeoEntity> geo;
+    @Column(name = "biography", nullable = false, length = 2000)
+    private String biography;
+
+    @Column(name = "photo", columnDefinition = "bytea")
+    private byte[] photo;
+
+    public static ArtistEntity fromJson(ArtistJson artist) {
+        ArtistEntity ae = new ArtistEntity();
+        ae.setName(artist.name());
+        ae.setBiography(artist.biography());
+        ae.setPhoto(artist.photo().getBytes(StandardCharsets.UTF_8));
+        return ae;
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -36,21 +45,12 @@ public class CountryEntity implements Serializable {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        CountryEntity that = (CountryEntity) o;
+        ArtistEntity that = (ArtistEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    @Nonnull
-    public static CountryEntity fromJson(@Nonnull CountryJson countryJson) {
-        CountryEntity ce = new CountryEntity();
-        ce.setId(countryJson.id());
-        ce.setName(countryJson.name());
-
-        return ce;
     }
 }

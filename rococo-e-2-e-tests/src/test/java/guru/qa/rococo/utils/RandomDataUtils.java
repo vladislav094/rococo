@@ -34,4 +34,8 @@ public class RandomDataUtils {
     public static String randomCity() {
         return faker.country().capital();
     }
+
+    public static String randomPaintingTitle() {
+        return faker.book().title();
+    }
 }

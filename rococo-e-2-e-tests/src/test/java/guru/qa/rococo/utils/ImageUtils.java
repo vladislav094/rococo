@@ -1,8 +1,10 @@
 package guru.qa.rococo.utils;
 
+import com.google.protobuf.ByteString;
 import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -24,5 +26,13 @@ public class ImageUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Nonnull
+    public static String convertPhotoFromBase64(ByteString photo) {
+        if (photo == null || photo.isEmpty()) {
+            return "";
+        }
+        return photo.toStringUtf8();
     }
 }

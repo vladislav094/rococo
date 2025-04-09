@@ -1,13 +1,15 @@
 package guru.qa.rococo.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.protobuf.ByteString;
 import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import guru.qa.rococo.grpc.MuseumResponse;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+
+import static guru.qa.rococo.utils.ImageUtils.convertPhotoFromBase64;
 
 public record MuseumJson(
         @JsonProperty("id")
@@ -21,6 +23,18 @@ public record MuseumJson(
         @JsonProperty("geo")
         GeoJson geo) {
 
+    public MuseumJson(@Nonnull UUID id) {
+        this(id, null, null, null, null);
+    }
+
+    public MuseumJson(UUID id, String title, String description, String photo, GeoJson geo) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.photo = photo;
+        this.geo = geo;
+    }
+
     public static @Nonnull MuseumJson fromGrpcMessage(@Nonnull MuseumResponse museum) {
         return new MuseumJson(
                 UUID.fromString(museum.getId()),
@@ -31,13 +45,6 @@ public record MuseumJson(
         );
     }
 
-    private static String convertPhotoFromBase64(ByteString photo) {
-        if (photo == null || photo.isEmpty()) {
-            return "";
-        }
-        return photo.toStringUtf8();
-    }
-
     public static @Nonnull MuseumJson fromEntity(MuseumEntity museumEntity) {
         return new MuseumJson(
                 museumEntity.getId(),
@@ -46,14 +53,8 @@ public record MuseumJson(
                 museumEntity.getPhoto() != null
                         ? new String(museumEntity.getPhoto(), StandardCharsets.UTF_8)
                         : null,
-                new GeoJson(
-                        museumEntity.getGeo().getId(),
-                        museumEntity.getGeo().getCity(),
-                        new CountryJson(
-                                museumEntity.getGeo().getCountry().getId(),
-                                museumEntity.getGeo().getCountry().getName()
-                        )
-                )
+                GeoJson.fromEntity(museumEntity.getGeo())
         );
     }
+
 }

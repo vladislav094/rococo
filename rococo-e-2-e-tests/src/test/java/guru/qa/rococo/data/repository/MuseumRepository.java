@@ -5,21 +5,22 @@ import guru.qa.rococo.data.entity.museum.GeoEntity;
 import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public interface MuseumRepository {
 
-    MuseumEntity createMuseum(MuseumEntity user);
+    @NotNull
+    MuseumEntity createMuseum(@NotNull MuseumEntity museum);
 
     Optional<MuseumEntity> findMuseumByTitle(@NotNull String title);
 
+    @NotNull
     GeoEntity createGeo(GeoEntity geo);
 
-    Optional<GeoEntity> findGeoByCity(@Nonnull String city);
+    Optional<GeoEntity> findGeoByCity(@NotNull String city);
 
     CountryEntity createCountry(CountryEntity country);
 
-    Optional<CountryEntity> findCountryByName(@Nonnull String name);
+    Optional<CountryEntity> findCountryByName(@NotNull String name);
 
 }

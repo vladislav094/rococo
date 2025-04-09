@@ -1,6 +1,6 @@
 package guru.qa.rococo.jupiter.annotation;
 
-import guru.qa.rococo.jupiter.extension.MuseumExtension;
+import guru.qa.rococo.jupiter.extension.ArtistExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.ElementType;
@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@ExtendWith(MuseumExtension.class)
-public @interface Museum {
+@ExtendWith(ArtistExtension.class)
+public @interface Artist {
 
-    String title() default "";
-    String country() default "";
-    String city() default "";
+    String name() default "";
+
+    String biography() default "";
 }

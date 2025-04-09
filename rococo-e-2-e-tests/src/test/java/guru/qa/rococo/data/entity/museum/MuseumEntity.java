@@ -38,6 +38,17 @@ public class MuseumEntity implements Serializable {
     @JoinColumn(name = "geo_id", referencedColumnName = "id", nullable = false)
     private GeoEntity geo;
 
+    @Nonnull
+    public static MuseumEntity fromJson(@Nonnull MuseumJson museum) {
+        MuseumEntity me = new MuseumEntity();
+        me.setId(museum.id());
+        me.setTitle(museum.title());
+        me.setDescription(museum.description());
+        me.setPhoto(museum.photo() != null ? museum.photo().getBytes(StandardCharsets.UTF_8) : null);
+        me.setGeo(GeoEntity.fromJson(museum.geo()));
+        return me;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -52,16 +63,5 @@ public class MuseumEntity implements Serializable {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    @Nonnull
-    public static MuseumEntity fromJson(@Nonnull MuseumJson museum) {
-        MuseumEntity museumEntity = new MuseumEntity();
-        museumEntity.setId(museum.id());
-        museumEntity.setTitle(museum.title());
-        museumEntity.setDescription(museum.description());
-        museumEntity.setPhoto(museum.photo() != null ? museum.photo().getBytes(StandardCharsets.UTF_8) : null);
-        museumEntity.setGeo(GeoEntity.fromJson(museum.geo()));
-        return museumEntity;
     }
 }

@@ -51,11 +51,11 @@ public class GeoEntity implements Serializable {
 
     @Nonnull
     public static GeoEntity fromJson(@Nonnull GeoJson geoJson) {
-        GeoEntity geoEntity = new GeoEntity();
-        geoEntity.setId(geoJson.id());
-        geoEntity.setCity(geoJson.city());
-        geoEntity.setCountry(CountryEntity.fromJson(geoJson.country()));
+        GeoEntity ge = new GeoEntity();
+        ge.setId(geoJson.id());
+        ge.setCity(geoJson.city());
+        ge.setCountry(CountryEntity.fromJson(geoJson.country()));
 
-        return geoEntity;
+        return ge;
     }
 }

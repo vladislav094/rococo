@@ -1,21 +1,23 @@
 package guru.qa.rococo.data.repository;
 
 import guru.qa.rococo.data.entity.auth.AuthUserEntity;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface AuthUserRepository {
 
+    @NotNull
     AuthUserEntity create(AuthUserEntity user);
 
+    @NotNull
     AuthUserEntity update(AuthUserEntity user);
 
-    Optional<AuthUserEntity> findById(UUID id);
+    Optional<AuthUserEntity> findById(@NotNull UUID id);
 
-    Optional<AuthUserEntity> findByUsername(String username);
+    Optional<AuthUserEntity> findByUsername(@NotNull String username);
 
-    void remove(AuthUserEntity user);
+    void remove(@NotNull AuthUserEntity user);
 
 }

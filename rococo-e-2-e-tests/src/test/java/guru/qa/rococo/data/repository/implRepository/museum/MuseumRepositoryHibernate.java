@@ -7,6 +7,7 @@ import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import jakarta.persistence.EntityManager;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,8 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     private final EntityManager entityManager = EntityManagers.em(CFG.museumJdbcUrl());
 
     @Override
-    public MuseumEntity createMuseum(MuseumEntity museum) {
+    @NotNull
+    public MuseumEntity createMuseum(@NotNull MuseumEntity museum) {
         entityManager.joinTransaction();
         entityManager.persist(museum);
         return museum;
@@ -43,6 +45,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @NotNull
     public GeoEntity createGeo(GeoEntity geo) {
         entityManager.joinTransaction();
         entityManager.persist(geo);

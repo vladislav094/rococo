@@ -1,10 +1,16 @@
-package guru.qa.rococo.data;
+package guru.qa.rococo.data.entity.painting;
 
+import guru.qa.rococo.data.entity.museum.GeoEntity;
+import guru.qa.rococo.data.entity.museum.MuseumEntity;
+import guru.qa.rococo.model.rest.MuseumJson;
+import guru.qa.rococo.model.rest.PaintingJson;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import javax.annotation.Nonnull;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,6 +39,18 @@ public class PaintingEntity {
 
     @Column(name = "content", columnDefinition = "bytea")
     private byte[] content;
+
+    @Nonnull
+    public static PaintingEntity fromJson(PaintingJson painting) {
+        PaintingEntity pe = new PaintingEntity();
+        pe.setId(painting.id());
+        pe.setTitle(painting.title());
+        pe.setDescription(painting.description());
+        pe.setContent(painting.content().getBytes(StandardCharsets.UTF_8));
+        pe.setArtistId(painting.artist().id());
+        pe.setMuseumId(painting.museum().id());
+        return pe;
+    }
 
     @Override
     public final boolean equals(Object o) {

@@ -1,6 +1,7 @@
 package guru.qa.rococo.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import guru.qa.rococo.data.entity.museum.CountryEntity;
 import guru.qa.rococo.grpc.CountryResponse;
 
 import javax.annotation.Nonnull;
@@ -15,6 +16,13 @@ public record CountryJson(@JsonProperty("id")
         return new CountryJson(
                 UUID.fromString(country.getId()),
                 country.getName()
+        );
+    }
+
+    public static @Nonnull CountryJson fromEntity(CountryEntity countryEntity) {
+        return new CountryJson(
+                countryEntity.getId(),
+                countryEntity.getName()
         );
     }
 }

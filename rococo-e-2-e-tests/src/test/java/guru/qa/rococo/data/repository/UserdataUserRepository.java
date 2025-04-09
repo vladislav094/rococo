@@ -1,19 +1,22 @@
 package guru.qa.rococo.data.repository;
 
 import guru.qa.rococo.data.entity.userdata.UserEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserdataUserRepository {
 
-    UserEntity create(UserEntity user);
+    @NotNull
+    UserEntity create(@NotNull UserEntity user);
 
-    Optional<UserEntity> findById(UUID id);
+    Optional<UserEntity> findById(@NotNull UUID id);
 
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByUsername(@NotNull String username);
 
-    UserEntity update(UserEntity user);
+    @NotNull
+    UserEntity update(@NotNull UserEntity user);
 
-    void remove(UserEntity user);
+    void remove(@NotNull UserEntity user);
 }
