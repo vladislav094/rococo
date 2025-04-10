@@ -8,4 +8,6 @@ public interface PaintingClient {
 
     @Nonnull
     PaintingJson createPainting(PaintingJson paintingJson);
+
+    PaintingJson getPaintingByTitle(@Nonnull String title);
 }

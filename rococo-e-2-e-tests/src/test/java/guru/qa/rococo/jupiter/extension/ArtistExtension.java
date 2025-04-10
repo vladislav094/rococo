@@ -2,11 +2,7 @@ package guru.qa.rococo.jupiter.extension;
 
 import guru.qa.rococo.jupiter.annotation.Artist;
 import guru.qa.rococo.model.rest.ArtistJson;
-import guru.qa.rococo.model.rest.MuseumJson;
-import guru.qa.rococo.service.ArtistClient;
-import guru.qa.rococo.service.impl.ArtistDbClient;
-import guru.qa.rococo.utils.ImageUtils;
-import guru.qa.rococo.utils.RandomDataUtils;
+import guru.qa.rococo.utils.ExtensionUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
@@ -14,25 +10,14 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(ArtistExtension.class);
 
-    private final ArtistClient artistClient = new ArtistDbClient();
-
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Artist.class)
                 .ifPresent(anno -> {
-                    final String name = anno.name().isEmpty() || anno.name().isBlank() ? RandomDataUtils.randomArtistName() : anno.name();
-
-                    ArtistJson artistFromAnno = new ArtistJson(
-                            null,
-                            name,
-                            RandomDataUtils.randomDescription(),
-                            ImageUtils.imageToStringBytes("img/picasso.jpeg")
-                    );
-
-                    ArtistJson createdArtist = artistClient.createArtist(artistFromAnno);
-
-                    context.getStore(NAMESPACE).put(context.getUniqueId(), createdArtist);
-                });
+                            ArtistJson artistFromAnno = ExtensionUtils.setArtistFromAnno(anno);
+                            context.getStore(NAMESPACE).put(context.getUniqueId(), artistFromAnno);
+                        }
+                );
     }
 
     @Override

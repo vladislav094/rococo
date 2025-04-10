@@ -8,6 +8,7 @@ import guru.qa.rococo.data.tpl.XaTransactionTemplate;
 import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.service.ArtistClient;
 import org.jetbrains.annotations.NotNull;
+import org.openqa.selenium.NotFoundException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,7 +34,7 @@ public class ArtistDbClient implements ArtistClient {
     @Nullable
     public ArtistJson getArtistByName(@Nonnull String name) {
         return ArtistJson.fromEntity(artistRepository.findByName(name)
-                .orElseThrow()
+                .orElseThrow(() -> new NotFoundException("Artist with name: '" + name + "' not found"))
         );
     }
 }

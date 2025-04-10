@@ -15,6 +15,7 @@ public class BaseModal<T extends BaseModal<?>> {
     protected final SelenideElement self;
 
     protected final SelenideElement submitButton = $(".btn.variant-filled-primary[type='submit']");
+    protected final SelenideElement closeButton = $(".btn.variant-ringed[type='button']");
 
     public BaseModal() {
         this.self = $(".modal.contents");

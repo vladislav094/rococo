@@ -2,10 +2,7 @@ package guru.qa.rococo.test.web;
 
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.jupiter.extension.BrowserExtension;
-import guru.qa.rococo.page.LoginPage;
-import guru.qa.rococo.page.MainPage;
-import guru.qa.rococo.page.MuseumPage;
-import guru.qa.rococo.page.RegisterPage;
+import guru.qa.rococo.page.*;
 import guru.qa.rococo.page.modal.ProfileModal;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -21,5 +18,6 @@ public class BaseWebTest {
         protected final RegisterPage registerPage = new RegisterPage();
         protected final MainPage mainPage = new MainPage();
         protected final MuseumPage museumPage = new MuseumPage();
+        protected final PaintingPage paintingPage = new PaintingPage();
     }
 }

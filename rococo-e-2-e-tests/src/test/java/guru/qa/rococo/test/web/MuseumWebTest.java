@@ -21,7 +21,7 @@ public class MuseumWebTest extends BaseWebTest {
 
     @ApiLogin(username = "root", password = "1234")
     @Test
-    @DisplayName("Добавление музея")
+    @DisplayName("Создание нового музея")
     void testAddingNewMuseum() {
 
         final String randomMuseumTitle = RandomDataUtils.randomMuseumTitle();

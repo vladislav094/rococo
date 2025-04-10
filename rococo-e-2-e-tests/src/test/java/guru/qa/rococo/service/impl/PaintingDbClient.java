@@ -7,11 +7,15 @@ import guru.qa.rococo.data.repository.PaintingRepository;
 import guru.qa.rococo.data.repository.implRepository.museum.MuseumRepositoryHibernate;
 import guru.qa.rococo.data.repository.implRepository.painting.PaintingRepositoryHibernate;
 import guru.qa.rococo.data.tpl.XaTransactionTemplate;
+import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.model.rest.PaintingJson;
 import guru.qa.rococo.service.PaintingClient;
 import io.qameta.allure.Step;
+import org.jetbrains.annotations.NotNull;
+import org.openqa.selenium.NotFoundException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class PaintingDbClient implements PaintingClient {
@@ -30,5 +34,12 @@ public class PaintingDbClient implements PaintingClient {
                         paintingRepository.create(PaintingEntity.fromJson(paintingJson))
                 )
         ));
+    }
+
+    @Override
+    public PaintingJson getPaintingByTitle(@NotNull String title) {
+        return PaintingJson.fromEntity(paintingRepository.findByTitle(title)
+                .orElseThrow(() -> new NotFoundException("Painting with title: '" + title + "' not found"))
+        );
     }
 }

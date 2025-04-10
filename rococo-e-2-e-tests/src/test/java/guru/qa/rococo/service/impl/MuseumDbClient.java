@@ -7,9 +7,11 @@ import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import guru.qa.rococo.data.repository.implRepository.museum.MuseumRepositoryHibernate;
 import guru.qa.rococo.data.tpl.XaTransactionTemplate;
+import guru.qa.rococo.model.rest.GeoJson;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.service.MuseumClient;
 import org.jetbrains.annotations.NotNull;
+import org.openqa.selenium.NotFoundException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,7 +58,13 @@ public class MuseumDbClient implements MuseumClient {
     @Nullable
     public MuseumJson getMuseumByTitle(@Nonnull String title) {
         return MuseumJson.fromEntity(museumRepository.findMuseumByTitle(title)
-                .orElseThrow()
+                .orElseThrow(() -> new NotFoundException("Museum with title: '" + title + "' not found"))
         );
+    }
+
+    @Nullable
+    public GeoJson getGeoByCity(@Nonnull String cityName) {
+        return GeoJson.fromEntity(museumRepository.findGeoByCity(cityName)
+                .orElseThrow(() -> new NotFoundException("Geo with city: '" + cityName + "' not found")));
     }
 }
