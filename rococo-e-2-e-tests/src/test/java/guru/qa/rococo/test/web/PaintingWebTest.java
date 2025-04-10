@@ -1,13 +1,11 @@
 package guru.qa.rococo.test.web;
 
 import com.codeborne.selenide.Selenide;
-import guru.qa.rococo.jupiter.annotation.ApiLogin;
-import guru.qa.rococo.jupiter.annotation.Artist;
-import guru.qa.rococo.jupiter.annotation.Museum;
-import guru.qa.rococo.jupiter.annotation.Painting;
+import guru.qa.rococo.jupiter.annotation.*;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.model.rest.MuseumJson;
+import guru.qa.rococo.model.rest.PaintingJson;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.page.PaintingPage;
 import guru.qa.rococo.utils.RandomDataUtils;
@@ -45,14 +43,29 @@ public class PaintingWebTest extends BaseWebTest {
     }
 
 
-    @Painting(museum = @Museum(city = "Борисов"), artist = @Artist(name = "Левитан"))
-    @ApiLogin(username = "root", password = "1234")
+    @Artist
+    @Museum
+    @Painting
+    @User
+    @ApiLogin
     @Test
     @DisplayName("Создание новой картины")
-    void testCheck() throws InterruptedException {
+    void testPaintingShouldChangedAfterEdit(PaintingJson paintingJson, ArtistJson artistJson, MuseumJson museumJson) {
+        System.out.println(paintingJson.artist().name());
+        System.out.println(paintingJson.museum().title());
 
+        System.out.println(artistJson.name());
+        System.out.println(museumJson.title());
 
-        Selenide.open(MuseumPage.URL, MuseumPage.class);
-        Thread.sleep(1000);
+        final String currentPaintingPage = String.format("%s/%s", PaintingPage.URL, paintingJson.id());
+        final String randomPaintingTitle = RandomDataUtils.randomPaintingTitle();
+        final String randomAuthorName = RandomDataUtils.randomArtistName();
+        final String successfulUpdateMessage = String.format("Обновлен музей: %s", randomPaintingTitle);
+
+        Selenide.open(currentPaintingPage, PaintingPage.class)
+                .clickEditPaintingButton()
+                .setTitle(randomPaintingTitle)
+                .uploadPhoto(paintingPhotoPath);
+//        page.museumPage.checkAlertMessage(successfulUpdateMessage);
     }
 }

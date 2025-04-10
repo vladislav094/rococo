@@ -1,6 +1,7 @@
 package guru.qa.rococo.data.repository.implRepository.museum;
 
 import guru.qa.rococo.config.Config;
+import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import guru.qa.rococo.data.entity.museum.CountryEntity;
 import guru.qa.rococo.data.entity.museum.GeoEntity;
 import guru.qa.rococo.data.entity.museum.MuseumEntity;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MuseumRepositoryHibernate implements MuseumRepository {
 
@@ -85,5 +87,10 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
             LOG.error("Error finding CountryEntity by name: {}", name, e);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<MuseumEntity> findMuseumById(@NotNull UUID id) {
+        return Optional.ofNullable(entityManager.find(MuseumEntity.class, id));
     }
 }

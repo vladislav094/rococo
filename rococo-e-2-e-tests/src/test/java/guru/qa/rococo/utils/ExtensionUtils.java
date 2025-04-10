@@ -24,6 +24,7 @@ public class ExtensionUtils {
 
     public static PaintingJson setPaintingFromAnno(Painting paintingAnno) {
         if (paintingAnno.title().isEmpty() || paintingAnno.title().isBlank()) {
+
             PaintingJson paintingJson = new PaintingJson(
                     null,
                     RandomDataUtils.randomPaintingTitle(),
@@ -32,7 +33,17 @@ public class ExtensionUtils {
                     setMuseumFromAnno(paintingAnno.museum()),
                     ImageUtils.imageToStringBytes(paintingPhotoPath)
             );
-            return paintingClient.createPainting(paintingJson);
+
+            PaintingJson createdPainting = paintingClient.createPainting(paintingJson);
+
+            return new PaintingJson(
+                    createdPainting.id(),
+                    createdPainting.title(),
+                    createdPainting.description(),
+                    artistClient.getArtistById(createdPainting.artist().id().toString()),
+                    museumClient.getMuseumById(createdPainting.museum().id().toString()),
+                    createdPainting.content()
+            );
         } else {
             return paintingClient.getPaintingByTitle(paintingAnno.title());
         }
@@ -69,14 +80,11 @@ public class ExtensionUtils {
 
     public static GeoJson setGeoFromAnno(Museum anno) {
         if (anno.city().isEmpty() || anno.city().isBlank()) {
-            final String country = anno.country().isEmpty()
-                    || anno.country().isBlank()
+            final String country = anno.country().isEmpty() || anno.country().isBlank()
                     ? RandomDataUtils.randomCountry()
                     : anno.country();
 
-            return new GeoJson(
-                    null, RandomDataUtils.randomCity(), new CountryJson(null, country)
-            );
+            return new GeoJson(null, RandomDataUtils.randomCity(), new CountryJson(null, country));
         } else {
             return museumClient.getGeoByCity(anno.city());
         }

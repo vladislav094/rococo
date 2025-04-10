@@ -33,7 +33,7 @@ public class PaintingPage extends BasePage<PaintingPage> {
     }
 
     @Step("Click on the edit painting button")
-    public PaintingModal clickEditMuseumButton() {
+    public PaintingModal clickEditPaintingButton() {
         editPaintingButton.shouldBe(visible).shouldHave(text("Редактировать"));
         editPaintingButton.click();
         return new PaintingModal();

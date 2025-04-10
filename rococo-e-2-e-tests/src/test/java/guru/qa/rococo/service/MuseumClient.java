@@ -1,5 +1,6 @@
 package guru.qa.rococo.service;
 
+import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.model.rest.GeoJson;
 import guru.qa.rococo.model.rest.MuseumJson;
 
@@ -13,6 +14,9 @@ public interface MuseumClient {
 
     @Nullable
     MuseumJson getMuseumByTitle(@Nonnull String title);
+
+    @Nullable
+    MuseumJson getMuseumById(@Nonnull String id);
 
     @Nullable
     GeoJson getGeoByCity(@Nonnull String cityName);

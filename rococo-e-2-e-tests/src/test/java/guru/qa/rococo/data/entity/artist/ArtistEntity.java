@@ -30,11 +30,12 @@ public class ArtistEntity {
     @Column(name = "photo", columnDefinition = "bytea")
     private byte[] photo;
 
-    public static ArtistEntity fromJson(ArtistJson artist) {
+    public static ArtistEntity fromJson(ArtistJson artistJson) {
         ArtistEntity ae = new ArtistEntity();
-        ae.setName(artist.name());
-        ae.setBiography(artist.biography());
-        ae.setPhoto(artist.photo().getBytes(StandardCharsets.UTF_8));
+        ae.setId(artistJson.id());
+        ae.setName(artistJson.name());
+        ae.setBiography(artistJson.biography());
+        ae.setPhoto(artistJson.photo().getBytes(StandardCharsets.UTF_8));
         return ae;
     }
 

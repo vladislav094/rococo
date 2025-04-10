@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
 public @interface Painting {
 
     String title() default "";
-
     Artist artist() default @Artist;
     Museum museum() default @Museum;
 }

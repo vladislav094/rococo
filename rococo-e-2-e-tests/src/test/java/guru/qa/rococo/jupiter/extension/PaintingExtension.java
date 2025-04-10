@@ -2,8 +2,6 @@ package guru.qa.rococo.jupiter.extension;
 
 import guru.qa.rococo.jupiter.annotation.Painting;
 import guru.qa.rococo.model.rest.PaintingJson;
-import guru.qa.rococo.service.PaintingClient;
-import guru.qa.rococo.service.impl.PaintingDbClient;
 import guru.qa.rococo.utils.ExtensionUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -11,8 +9,6 @@ import org.junit.platform.commons.support.AnnotationSupport;
 public class PaintingExtension implements ParameterResolver, BeforeEachCallback {
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(PaintingExtension.class);
-
-    private final PaintingClient paintingClient = new PaintingDbClient();
 
     @Override
     public void beforeEach(ExtensionContext context) {

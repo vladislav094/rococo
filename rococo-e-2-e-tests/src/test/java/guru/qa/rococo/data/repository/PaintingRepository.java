@@ -11,9 +11,6 @@ public interface PaintingRepository {
     @NotNull
     PaintingEntity create(@NotNull PaintingEntity painting);
 
-//    @NotNull
-//    PaintingEntity update(@NotNull PaintingEntity painting);
-
     Optional<PaintingEntity> findById(@NotNull UUID id);
 
     Optional<PaintingEntity> findByTitle(@NotNull String title);

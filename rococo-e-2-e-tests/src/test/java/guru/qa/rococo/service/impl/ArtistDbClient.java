@@ -13,6 +13,8 @@ import org.openqa.selenium.NotFoundException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class ArtistDbClient implements ArtistClient {
 
@@ -36,5 +38,12 @@ public class ArtistDbClient implements ArtistClient {
         return ArtistJson.fromEntity(artistRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException("Artist with name: '" + name + "' not found"))
         );
+    }
+
+    @Nullable
+    public ArtistJson getArtistById(@Nonnull String id) {
+        Optional<ArtistEntity> entity = artistRepository.findById(UUID.fromString(id));
+        return entity.map(ArtistJson::fromEntity)
+                .orElseThrow(() -> new NotFoundException("Artist with id: '" + id + "' not found"));
     }
 }

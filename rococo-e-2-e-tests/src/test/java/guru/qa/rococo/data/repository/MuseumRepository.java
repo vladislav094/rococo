@@ -1,11 +1,13 @@
 package guru.qa.rococo.data.repository;
 
+import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import guru.qa.rococo.data.entity.museum.CountryEntity;
 import guru.qa.rococo.data.entity.museum.GeoEntity;
 import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MuseumRepository {
 
@@ -13,6 +15,8 @@ public interface MuseumRepository {
     MuseumEntity createMuseum(@NotNull MuseumEntity museum);
 
     Optional<MuseumEntity> findMuseumByTitle(@NotNull String title);
+
+    Optional<MuseumEntity> findMuseumById(@NotNull UUID id);
 
     @NotNull
     GeoEntity createGeo(GeoEntity geo);

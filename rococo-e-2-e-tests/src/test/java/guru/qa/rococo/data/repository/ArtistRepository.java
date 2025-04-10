@@ -11,9 +11,6 @@ public interface ArtistRepository {
     @NotNull
     ArtistEntity create(ArtistEntity artist);
 
-//    @NotNull
-//    ArtistEntity update(ArtistEntity artist);
-
     Optional<ArtistEntity> findById(@NotNull UUID id);
 
     Optional<ArtistEntity> findByName(@NotNull String title);

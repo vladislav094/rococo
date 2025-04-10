@@ -36,15 +36,15 @@ public class PaintingModal extends BaseModal<PaintingModal> {
         return this;
     }
 
-    @Step("Select museum with name: {museum}")
-    public PaintingModal selectMuseum(String museum) {
-        scrollToElement(museumIdSelect, museum);
+    @Step("Select museum with title: {title}")
+    public PaintingModal selectMuseum(String title) {
+        scrollToElement(museumIdSelect, title);
         return this;
     }
 
-    @Step("Select author with name: {author}")
-    public PaintingModal selectAuthor(String author) {
-        scrollToElement(authorIdSelect, author);
+    @Step("Select author with name: {name}")
+    public PaintingModal selectAuthor(String name) {
+        scrollToElement(authorIdSelect, name);
         return this;
     }
 
