@@ -3,6 +3,7 @@ package guru.qa.rococo.test.web;
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
 import guru.qa.rococo.jupiter.annotation.Museum;
+import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.page.MuseumPage;
@@ -19,7 +20,8 @@ public class MuseumWebTest extends BaseWebTest {
 
     private final String museumPhotoPath = "img/museum.jpeg";
 
-    @ApiLogin(username = "root", password = "1234")
+    @User
+    @ApiLogin
     @Test
     @DisplayName("Создание нового музея")
     void testAddingNewMuseum() {
@@ -28,7 +30,9 @@ public class MuseumWebTest extends BaseWebTest {
         final String successfulCreateMessage = String.format("Добавлен музей: %s", randomMuseumTitle);
 
         Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkThatPageLoaded()
                 .clickAddMuseumButton()
+                .checkThatModalLoaded()
                 .setTitle(randomMuseumTitle)
                 .setCity(randomCity())
                 .selectCountry(randomCountry())
@@ -39,7 +43,8 @@ public class MuseumWebTest extends BaseWebTest {
     }
 
     @Museum
-    @ApiLogin(username = "root", password = "1234")
+    @User
+    @ApiLogin
     @Test
     @DisplayName("Редактирование музея")
     void testMuseumShouldChangedAfterEdit(MuseumJson museumJson) {
@@ -49,7 +54,9 @@ public class MuseumWebTest extends BaseWebTest {
         final String successfulUpdateMessage = String.format("Обновлен музей: %s", randomMuseumTitle);
 
         Selenide.open(currentMuseumPage, MuseumPage.class)
+                .checkMuseumCardData(museumJson)
                 .clickEditMuseumButton()
+                .checkThatEditModalLoaded()
                 .setTitle(randomMuseumTitle)
                 .setCity(randomCity())
                 .selectCountry(randomCountry())
@@ -60,7 +67,8 @@ public class MuseumWebTest extends BaseWebTest {
     }
 
     @Museum
-    @ApiLogin(username = "root", password = "1234")
+    @User
+    @ApiLogin
     @Test
     @DisplayName("Поиск музея по названию в строке поиска")
     void testMuseumShouldFindingByTitleInSearchField(MuseumJson museumJson) {
@@ -68,6 +76,7 @@ public class MuseumWebTest extends BaseWebTest {
         final String currentMuseumTitle = museumJson.title();
 
         Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkThatPageLoaded()
                 .fillSearchInput(currentMuseumTitle)
                 .toMuseumCardByTitle(currentMuseumTitle)
                 .checkMuseumCardData(museumJson);

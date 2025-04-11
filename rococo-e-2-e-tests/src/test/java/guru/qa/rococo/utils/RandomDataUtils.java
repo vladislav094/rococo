@@ -15,6 +15,7 @@ public class RandomDataUtils {
     }
 
     public static String randomMuseumTitle() {
+
         return String.format(
                 "%s %s %s",
                 faker.educator().university().split(" ")[0],

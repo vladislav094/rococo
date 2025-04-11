@@ -6,6 +6,8 @@ import io.qameta.allure.Step;
 
 import javax.annotation.Nonnull;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -17,8 +19,24 @@ public class PaintingModal extends BaseModal<PaintingModal> {
     private final SelenideElement descriptionTextarea = $("textarea[name='description']");
     private final ElementsCollection museumIdSelect = $$("select[name='museumId'] option");
 
-    public PaintingModal() {
-        super();
+    @Override
+    @Step("Check that edit painting modal successful loaded")
+    public PaintingModal checkThatModalLoaded() {
+        modalContent.should(visible).shouldHave(text("Название картины"));
+        titleInput.shouldBe(visible);
+        uploadPhotoButton.shouldBe(visible);
+        descriptionTextarea.shouldBe(visible);
+        return this;
+    }
+
+    @Override
+    @Step("Check that edit painting modal successful loaded")
+    public PaintingModal checkThatEditModalLoaded() {
+        modalContent.should(visible).shouldHave(text("Редактировать картину"));
+        titleInput.shouldBe(visible);
+        uploadPhotoButton.shouldBe(visible);
+        descriptionTextarea.shouldBe(visible);
+        return this;
     }
 
     @Step("Set painting title: {title}")

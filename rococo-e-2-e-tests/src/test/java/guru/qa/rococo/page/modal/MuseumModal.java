@@ -6,6 +6,8 @@ import io.qameta.allure.Step;
 
 import javax.annotation.Nonnull;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -17,8 +19,27 @@ public class MuseumModal extends BaseModal<MuseumModal> {
     private final SelenideElement descriptionTextarea = $("textarea[name='description']");
     private final ElementsCollection countryIdSelect = $$("select[name='countryId'] option");
 
-    public MuseumModal() {
-        super();
+
+    @Override
+    @Step("Check that edit museum modal successful loaded")
+    public MuseumModal checkThatModalLoaded() {
+        modalContent.should(visible).shouldHave(text("Название музея"));
+        titleInput.shouldBe(visible);
+        cityInput.shouldBe(visible);
+        uploadPhotoButton.shouldBe(visible);
+        descriptionTextarea.shouldBe(visible);
+        return this;
+    }
+
+    @Override
+    @Step("Check that edit museum modal successful loaded")
+    public MuseumModal checkThatEditModalLoaded() {
+        modalContent.should(visible).shouldHave(text("Редактировать музей"));
+        titleInput.shouldBe(visible);
+        cityInput.shouldBe(visible);
+        uploadPhotoButton.shouldBe(visible);
+        descriptionTextarea.shouldBe(visible);
+        return this;
     }
 
     @Step("Set museum title: {title}")

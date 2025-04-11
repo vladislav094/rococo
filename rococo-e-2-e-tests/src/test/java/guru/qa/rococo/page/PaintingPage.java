@@ -2,8 +2,7 @@ package guru.qa.rococo.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.rococo.model.rest.MuseumJson;
-import guru.qa.rococo.page.modal.MuseumModal;
+import guru.qa.rococo.model.rest.PaintingJson;
 import guru.qa.rococo.page.modal.PaintingModal;
 import io.qameta.allure.Step;
 
@@ -22,6 +21,9 @@ public class PaintingPage extends BasePage<PaintingPage> {
     @Override
     public PaintingPage checkThatPageLoaded() {
         pageContent.should(visible).shouldHave(text("Картины"));
+        addPaintingButton.shouldBe(visible);
+        searchInput.shouldBe(visible);
+        searchButton.shouldBe(visible);
         return this;
     }
 
@@ -45,19 +47,14 @@ public class PaintingPage extends BasePage<PaintingPage> {
         return this;
     }
 
-    @Step("Check all painting data on the page")
-    public void checkMuseumCardData(MuseumJson museumJson) {
-        final String formattedGeo = String.format(
-                "%s, %s",
-                museumJson.geo().country().name(),
-                museumJson.geo().city()
-        );
-
+    @Step("Check painting data on the page")
+    public PaintingPage checkPaintingCardData(PaintingJson paintingJson) {
         pageContent.shouldBe(visible)
                 .shouldHave(
-                        text(museumJson.title()),
-                        text(formattedGeo),
-                        text(museumJson.description())
+                        text(paintingJson.title()),
+                        text(paintingJson.artist().name()),
+                        text(paintingJson.description())
                 );
+        return this;
     }
 }

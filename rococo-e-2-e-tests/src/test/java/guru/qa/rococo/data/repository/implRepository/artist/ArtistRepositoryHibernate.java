@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class ArtistRepositoryHibernate implements ArtistRepository {
 
     @NotNull
     @Override
+    @Transactional
     public ArtistEntity create(ArtistEntity artist) {
         entityManager.joinTransaction();
         entityManager.persist(artist);
@@ -29,11 +31,13 @@ public class ArtistRepositoryHibernate implements ArtistRepository {
     }
 
     @Override
+    @Transactional
     public Optional<ArtistEntity> findById(@NotNull UUID id) {
         return Optional.ofNullable(entityManager.find(ArtistEntity.class, id));
     }
 
     @Override
+    @Transactional
     public Optional<ArtistEntity> findByName(@NotNull String name) {
         Objects.requireNonNull(name, "Artist name cannot be null");
         try {

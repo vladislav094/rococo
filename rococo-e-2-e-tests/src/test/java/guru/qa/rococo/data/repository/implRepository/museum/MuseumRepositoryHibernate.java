@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
 
     @Override
     @NotNull
+    @Transactional
     public MuseumEntity createMuseum(@NotNull MuseumEntity museum) {
         entityManager.joinTransaction();
         entityManager.persist(museum);
@@ -33,6 +35,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @Transactional
     public Optional<MuseumEntity> findMuseumByTitle(@Nonnull String title) {
         Objects.requireNonNull(title, "Museum title cannot be null");
         try {
@@ -48,6 +51,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
 
     @Override
     @NotNull
+    @Transactional
     public GeoEntity createGeo(GeoEntity geo) {
         entityManager.joinTransaction();
         entityManager.persist(geo);
@@ -55,6 +59,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @Transactional
     public Optional<GeoEntity> findGeoByCity(@Nonnull String city) {
         Objects.requireNonNull(city, "City name cannot be null");
         try {
@@ -69,6 +74,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @Transactional
     public CountryEntity createCountry(CountryEntity country) {
         entityManager.joinTransaction();
         entityManager.persist(country);
@@ -76,6 +82,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @Transactional
     public Optional<CountryEntity> findCountryByName(@Nonnull String name) {
         Objects.requireNonNull(name, "Country name cannot be null");
         try {
@@ -90,6 +97,7 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     }
 
     @Override
+    @Transactional
     public Optional<MuseumEntity> findMuseumById(@NotNull UUID id) {
         return Optional.ofNullable(entityManager.find(MuseumEntity.class, id));
     }

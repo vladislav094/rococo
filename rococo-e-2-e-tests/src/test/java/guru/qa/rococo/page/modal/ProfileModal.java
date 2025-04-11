@@ -6,6 +6,8 @@ import io.qameta.allure.Step;
 
 import javax.annotation.Nonnull;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ProfileModal extends BaseModal<ProfileModal> {
@@ -17,8 +19,21 @@ public class ProfileModal extends BaseModal<ProfileModal> {
     private final SelenideElement uploadPictureButton = $("input[name='content']");
 
 
-    public ProfileModal() {
-        super();
+    @Override
+    @Step("Check that profile modal successful loaded")
+    public ProfileModal checkThatModalLoaded() {
+        modalContent.should(visible).shouldHave(text("Профиль"));
+        firstnameInput.shouldBe(visible);
+        lastnameInput.shouldBe(visible);
+        closeModalButton.shouldBe(visible);
+        logoutButton.shouldBe(visible);
+        uploadPictureButton.shouldBe(visible);
+        return this;
+    }
+
+    @Override
+    public ProfileModal checkThatEditModalLoaded() {
+        return this;
     }
 
     @Step("Logout from profile")

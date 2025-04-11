@@ -6,6 +6,7 @@ import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.AuthUserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +17,7 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
     private final EntityManager entityManager = EntityManagers.em(CFG.authJdbcUrl());
 
     @Override
+    @Transactional
     public AuthUserEntity create(AuthUserEntity user) {
         entityManager.joinTransaction();
         entityManager.persist(user);
@@ -23,17 +25,20 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
     }
 
     @Override
+    @Transactional
     public AuthUserEntity update(AuthUserEntity user) {
         entityManager.joinTransaction();
         return entityManager.merge(user);
     }
 
     @Override
+    @Transactional
     public Optional<AuthUserEntity> findById(UUID id) {
         return Optional.ofNullable(entityManager.find(AuthUserEntity.class, id));
     }
 
     @Override
+    @Transactional
     public Optional<AuthUserEntity> findByUsername(String username) {
         try {
             return Optional.of(
@@ -47,6 +52,7 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
     }
 
     @Override
+    @Transactional
     public void remove(AuthUserEntity user) {
         entityManager.joinTransaction();
         entityManager.remove(user);

@@ -21,6 +21,7 @@ public class LoginWebTest extends BaseWebTest {
     void testMainPageShouldBeDisplayedAfterSuccessfulLogin(UserJson user) {
 
         Selenide.open(MainPage.URL, MainPage.class)
+                .checkThatPageLoaded()
                 .getHeader()
                 .toLoginPage()
                 .login(user.username(), user.testData().password())

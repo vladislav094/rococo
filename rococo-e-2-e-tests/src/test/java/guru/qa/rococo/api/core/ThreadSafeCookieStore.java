@@ -1,9 +1,6 @@
 package guru.qa.rococo.api.core;
 
-import java.net.CookieManager;
-import java.net.CookieStore;
-import java.net.HttpCookie;
-import java.net.URI;
+import java.net.*;
 import java.util.List;
 
 public enum ThreadSafeCookieStore implements CookieStore {
@@ -14,7 +11,9 @@ public enum ThreadSafeCookieStore implements CookieStore {
     );
 
     private static CookieStore inMemoryCookieStore() {
-     return new CookieManager().getCookieStore();
+        CookieManager manager = new CookieManager();
+        manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        return manager.getCookieStore();
     }
 
     @Override
@@ -52,10 +51,18 @@ public enum ThreadSafeCookieStore implements CookieStore {
     }
 
     public String cookieValue(String cookieName) {
-        return getCookies().stream()
+        List<HttpCookie> cookies = getCookies();
+        if (cookies.isEmpty()) {
+            throw new IllegalStateException("No cookies available. Make sure authorize() was called first");
+        }
+        return cookies.stream()
                 .filter(c -> c.getName().equals(cookieName))
                 .map(HttpCookie::getValue)
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalStateException(
+                                "Cookie '" + cookieName + "' not found. Available cookies: "
+                                        + cookies.stream().map(HttpCookie::getName).toList()
+                        )
+                );
     }
 }

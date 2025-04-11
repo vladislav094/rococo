@@ -26,6 +26,7 @@ public class RegistrationWebTest extends BaseWebTest {
         final String successfulRegistrationText = "Добро пожаловать в Rococo";
 
         Selenide.open(RegisterPage.URL, RegisterPage.class)
+                .checkThatPageLoaded()
                 .setUsername(username)
                 .setPassword(validPassword)
                 .setConfirmPassword(validPassword)

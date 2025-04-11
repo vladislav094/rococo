@@ -10,21 +10,16 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 
-public class BaseModal<T extends BaseModal<?>> {
+public abstract class BaseModal<T extends BaseModal<?>> {
 
-    protected final SelenideElement self;
+    protected final SelenideElement modalContent = $(".modal.contents");
 
     protected final SelenideElement submitButton = $(".btn.variant-filled-primary[type='submit']");
     protected final SelenideElement closeButton = $(".btn.variant-ringed[type='button']");
 
-    public BaseModal() {
-        this.self = $(".modal.contents");
-    }
+    public abstract T checkThatModalLoaded();
 
-    @Nonnull
-    public SelenideElement getSelf() {
-        return self;
-    }
+    public abstract T checkThatEditModalLoaded();
 
     @Step("Click submit button")
     @Nonnull

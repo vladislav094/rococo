@@ -29,7 +29,9 @@ public class ProfileWebTest extends BaseWebTest {
         String randomLastname = RandomDataUtils.randomUsername().split("\\.")[1];
 
         Selenide.open(MainPage.URL, MainPage.class)
+                .checkThatPageLoaded()
                 .getProfileModal()
+                .checkThatModalLoaded()
                 .setFirstname(randomFirstname)
                 .setLastname(randomLastname)
                 .clickSubmitButton();
@@ -44,7 +46,9 @@ public class ProfileWebTest extends BaseWebTest {
     void testAvatarAfterUploading(BufferedImage expected) {
 
         Selenide.open(MainPage.URL, MainPage.class)
+                .checkThatPageLoaded()
                 .getProfileModal()
+                .checkThatModalLoaded()
                 .uploadPicture("img/avatar-for-upload.png")
                 .clickSubmitButton();
         new MainPage().checkThatAvatarEqualsUploadingImage(expected);
@@ -59,7 +63,9 @@ public class ProfileWebTest extends BaseWebTest {
         final String sessionStoppedMessage = "Сессия завершена";
 
         Selenide.open(MainPage.URL, MainPage.class)
+                .checkThatPageLoaded()
                 .getProfileModal()
+                .checkThatModalLoaded()
                 .logout()
                 .checkAlertMessage(sessionStoppedMessage);
     }

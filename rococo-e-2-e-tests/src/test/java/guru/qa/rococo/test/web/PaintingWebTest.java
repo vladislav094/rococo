@@ -13,7 +13,7 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static guru.qa.rococo.utils.RandomDataUtils.*;
+import static guru.qa.rococo.utils.RandomDataUtils.randomDescription;
 
 @WebTest
 @Story("Управлением разделом картины")
@@ -32,7 +32,9 @@ public class PaintingWebTest extends BaseWebTest {
         final String successfulCreateMessage = String.format("Добавлена картина: %s", randomTitle);
 
         Selenide.open(PaintingPage.URL, PaintingPage.class)
+                .checkThatPageLoaded()
                 .clickAddPaintingButton()
+                .checkThatModalLoaded()
                 .setTitle(randomTitle)
                 .uploadPhoto(paintingPhotoPath)
                 .selectAuthor(artist.name())
@@ -42,30 +44,45 @@ public class PaintingWebTest extends BaseWebTest {
         page.paintingPage.checkAlertMessage(successfulCreateMessage);
     }
 
-
     @Artist
     @Museum
     @Painting
     @User
     @ApiLogin
     @Test
-    @DisplayName("Создание новой картины")
+    @DisplayName("Редактирование картины")
     void testPaintingShouldChangedAfterEdit(PaintingJson paintingJson, ArtistJson artistJson, MuseumJson museumJson) {
-        System.out.println(paintingJson.artist().name());
-        System.out.println(paintingJson.museum().title());
-
-        System.out.println(artistJson.name());
-        System.out.println(museumJson.title());
 
         final String currentPaintingPage = String.format("%s/%s", PaintingPage.URL, paintingJson.id());
         final String randomPaintingTitle = RandomDataUtils.randomPaintingTitle();
-        final String randomAuthorName = RandomDataUtils.randomArtistName();
-        final String successfulUpdateMessage = String.format("Обновлен музей: %s", randomPaintingTitle);
+        final String successfulUpdateMessage = String.format("Обновлена картина: %s", randomPaintingTitle);
 
         Selenide.open(currentPaintingPage, PaintingPage.class)
+                .checkPaintingCardData(paintingJson)
                 .clickEditPaintingButton()
+                .checkThatEditModalLoaded()
                 .setTitle(randomPaintingTitle)
-                .uploadPhoto(paintingPhotoPath);
-//        page.museumPage.checkAlertMessage(successfulUpdateMessage);
+                .uploadPhoto(paintingPhotoPath)
+                .selectAuthor(artistJson.name())
+                .setDescription(randomDescription())
+                .selectMuseum(museumJson.title())
+                .clickSubmitButton();
+        page.paintingPage.checkAlertMessage(successfulUpdateMessage);
+    }
+
+    @Painting
+    @User
+    @ApiLogin
+    @Test
+    @DisplayName("Поиск картины по названию в строке поиска")
+    void testPaintingShouldFindingByTitleInSearchField(PaintingJson paintingJson) {
+
+        final String currentPaintingTitle = paintingJson.title();
+
+        Selenide.open(PaintingPage.URL, PaintingPage.class)
+                .checkThatPageLoaded()
+                .fillSearchInput(currentPaintingTitle)
+                .toPaintingCardByTitle(currentPaintingTitle)
+                .checkPaintingCardData(paintingJson);
     }
 }

@@ -22,6 +22,9 @@ public class MuseumPage extends BasePage<MuseumPage> {
     @Step("Check that page has been loaded")
     public MuseumPage checkThatPageLoaded() {
         pageContent.should(visible).shouldHave(text("Музеи"));
+        addMuseumButton.shouldBe(visible);
+        searchInput.shouldBe(visible);
+        searchButton.shouldBe(visible);
         return this;
     }
 
@@ -45,8 +48,8 @@ public class MuseumPage extends BasePage<MuseumPage> {
         return this;
     }
 
-    @Step("Check all museum data on the page")
-    public void checkMuseumCardData(MuseumJson museumJson) {
+    @Step("Check museum data on the page")
+    public MuseumPage checkMuseumCardData(MuseumJson museumJson) {
         final String formattedGeo = String.format(
                 "%s, %s",
                 museumJson.geo().country().name(),
@@ -59,5 +62,6 @@ public class MuseumPage extends BasePage<MuseumPage> {
                         text(formattedGeo),
                         text(museumJson.description())
                 );
+        return this;
     }
 }

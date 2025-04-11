@@ -7,6 +7,7 @@ import guru.qa.rococo.data.repository.UserdataUserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class UserdataUserRepositoryHibernate implements UserdataUserRepository {
 
     @Override
     @NotNull
+    @Transactional
     public UserEntity create(@NotNull UserEntity user) {
         entityManager.joinTransaction();
         entityManager.persist(user);
@@ -26,17 +28,20 @@ public class UserdataUserRepositoryHibernate implements UserdataUserRepository {
 
     @Override
     @NotNull
+    @Transactional
     public UserEntity update(@NotNull UserEntity user) {
         entityManager.joinTransaction();
         return entityManager.merge(user);
     }
 
     @Override
+    @Transactional
     public Optional<UserEntity> findById(@NotNull UUID id) {
         return Optional.ofNullable(entityManager.find(UserEntity.class, id));
     }
 
     @Override
+    @Transactional
     public Optional<UserEntity> findByUsername(@NotNull String username) {
         try {
             return Optional.of(
@@ -49,6 +54,7 @@ public class UserdataUserRepositoryHibernate implements UserdataUserRepository {
     }
 
     @Override
+    @Transactional
     public void remove(@NotNull UserEntity user) {
         entityManager.joinTransaction();
         entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
