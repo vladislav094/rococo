@@ -6,6 +6,8 @@ import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.AuthUserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -14,8 +16,11 @@ import java.util.UUID;
 public class AuthUserRepositoryHibernate implements AuthUserRepository {
 
     private static final Config CFG = Config.getInstance();
+
+    @PersistenceContext
     private final EntityManager entityManager = EntityManagers.em(CFG.authJdbcUrl());
 
+    @NotNull
     @Override
     @Transactional
     public AuthUserEntity create(AuthUserEntity user) {
@@ -24,6 +29,7 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
         return user;
     }
 
+    @NotNull
     @Override
     @Transactional
     public AuthUserEntity update(AuthUserEntity user) {
@@ -33,13 +39,13 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
 
     @Override
     @Transactional
-    public Optional<AuthUserEntity> findById(UUID id) {
+    public Optional<AuthUserEntity> findById(@NotNull UUID id) {
         return Optional.ofNullable(entityManager.find(AuthUserEntity.class, id));
     }
 
     @Override
     @Transactional
-    public Optional<AuthUserEntity> findByUsername(String username) {
+    public Optional<AuthUserEntity> findByUsername(@NotNull String username) {
         try {
             return Optional.of(
                     entityManager.createQuery(
@@ -53,7 +59,7 @@ public class AuthUserRepositoryHibernate implements AuthUserRepository {
 
     @Override
     @Transactional
-    public void remove(AuthUserEntity user) {
+    public void remove(@NotNull AuthUserEntity user) {
         entityManager.joinTransaction();
         entityManager.remove(user);
     }

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 
-@WebTest
 @Story("Страница авторизации")
 public class LoginWebTest extends BaseWebTest {
 

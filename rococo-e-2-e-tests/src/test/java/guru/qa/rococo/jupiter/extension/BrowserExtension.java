@@ -28,7 +28,7 @@ public class BrowserExtension implements
 
         Configuration.timeout = 8000;
         Configuration.pageLoadStrategy = "eager";
-        Configuration.browserSize = "1920x1080";
+//        Configuration.browserSize = "1920x1080";
 
         if ("docker".equals(System.getProperty("test.env"))) {
             Configuration.remote = "http://selenoid:4444/wd/hub";

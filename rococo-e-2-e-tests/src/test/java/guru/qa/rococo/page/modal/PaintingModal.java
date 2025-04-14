@@ -56,13 +56,15 @@ public class PaintingModal extends BaseModal<PaintingModal> {
 
     @Step("Select museum with title: {title}")
     public PaintingModal selectMuseum(String title) {
-        scrollToElement(museumIdSelect, title);
+        SelenideElement selectElement = $("select.select[name='museumId']");
+        scrollToElement(selectElement,title);
         return this;
     }
 
     @Step("Select author with name: {name}")
     public PaintingModal selectAuthor(String name) {
-        scrollToElement(authorIdSelect, name);
+        SelenideElement selectElement = $("select.select[name='authorId']");
+        scrollToElement(selectElement,name);
         return this;
     }
 

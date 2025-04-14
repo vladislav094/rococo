@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
         MuseumExtension.class,
         PaintingExtension.class,
         ApiLoginExtension.class,
-//        ClearEnvExtension.class})
+        ClearEnvExtension.class
 })
 public @interface WebTest {
 }

@@ -1,13 +1,18 @@
 package guru.qa.rococo.utils;
 
 import com.github.javafaker.Faker;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.platform.commons.util.StringUtils;
+
+import java.util.List;
+import java.util.Random;
 
 public class RandomDataUtils {
 
     private static final Faker faker = new Faker();
 
     public static String randomUsername() {
-        return faker.name().username();
+        return faker.name().username() + RandomStringUtils.randomAlphabetic(5);
     }
 
     public static String randomPassword(int minLength, int maxLength) {
@@ -21,15 +26,17 @@ public class RandomDataUtils {
                 faker.educator().university().split(" ")[0],
                 faker.educator().campus(),
                 "Museum"
-        );
+        ) + RandomStringUtils.randomAlphabetic(5);
     }
 
     public static String randomDescription() {
         return faker.lorem().sentence(10);
     }
 
-    public static String randomCountry() {
-        return faker.country().name();
+    public static String getRandomCountry() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(randomCountries.size());
+        return randomCountries.get(randomIndex);
     }
 
     public static String randomCity() {
@@ -43,4 +50,28 @@ public class RandomDataUtils {
     public static String randomArtistName() {
         return String.format("%s %s", faker.artist().name(), faker.book().author());
     }
+
+    private static final List<String> randomCountries = List.of(
+            "Belarus",
+            "Russian Federation",
+            "France",
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "Andorra",
+            "Angola",
+            "Antigua and Barbuda",
+            "Argentina",
+            "Armenia",
+            "Australia",
+            "Austria",
+            "Azerbaijan",
+            "Bahamas",
+            "Bahrain",
+            "Bangladesh",
+            "Barbados",
+            "Belgium",
+            "Belize"
+    );
+
 }

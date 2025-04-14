@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import static guru.qa.rococo.utils.RandomDataUtils.randomDescription;
 
-@WebTest
 @Story("Управлением разделом картины")
 public class PaintingWebTest extends BaseWebTest {
 
@@ -23,7 +22,8 @@ public class PaintingWebTest extends BaseWebTest {
 
     @Artist
     @Museum
-    @ApiLogin(username = "root", password = "1234")
+    @User
+    @ApiLogin
     @Test
     @DisplayName("Создание новой картины")
     void testAddingNewPainting(ArtistJson artist, MuseumJson museum) {

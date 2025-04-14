@@ -40,8 +40,11 @@ public class AuthApiClient extends RestClient {
                 )
                 .execute();
 
+        final String csrfToken = ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN");
+
+
         authApi.login(
-                ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN"),
+                csrfToken,
                 username,
                 password
         ).execute();
@@ -58,5 +61,9 @@ public class AuthApiClient extends RestClient {
         return Objects.requireNonNull(tokenResponse.body())
                 .get("id_token")
                 .asText();
+    }
+
+    public void reset() {
+        ThreadSafeCookieStore.INSTANCE.removeAll();
     }
 }

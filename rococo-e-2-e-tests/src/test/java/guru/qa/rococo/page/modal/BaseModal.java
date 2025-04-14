@@ -1,14 +1,15 @@
 package guru.qa.rococo.page.modal;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.openqa.selenium.Keys;
 
 import javax.annotation.Nonnull;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 public abstract class BaseModal<T extends BaseModal<?>> {
 
@@ -29,30 +30,18 @@ public abstract class BaseModal<T extends BaseModal<?>> {
     }
 
     @Step("Scroll to element: {elementName}")
-    public T scrollToElement(ElementsCollection selectCollection, String elementName) {
+    public T scrollToElement(SelenideElement selectElement, String elementName) {
 
-        int maxAttempts = 30;
-        String lastElement = "";
+//        SelenideElement selectElement = $("select.select");
+        ElementsCollection selectElementOption = $$("select.select option");
 
-        for (int attempt = 0; attempt < maxAttempts; attempt++) {
-
-            SelenideElement target = selectCollection.findBy(text(elementName));
-            if (target.exists() && target.isDisplayed()) {
-                target.scrollIntoView("{block: 'center'}").click();
-                return (T) this;
-            }
-
-            String currentLast = selectCollection.last().getText();
-            if (currentLast.equals(lastElement)) {
-                break;
-            }
-            lastElement = currentLast;
-
-            selectCollection.last()
-                    .scrollIntoView("{behavior: 'smooth', block: 'end'}");
-            sleep(200);
+        selectElement.click(); // Открываем список
+        while (selectElementOption.filterBy(Condition.text(elementName)).isEmpty()) {
+            selectElement.sendKeys(Keys.PAGE_DOWN);
+            sleep(100);
         }
+        selectElementOption.findBy(text(elementName)).click();
 
-        throw new IllegalArgumentException("Element '" + elementName + "' was not found.");
+        return (T) this;
     }
 }

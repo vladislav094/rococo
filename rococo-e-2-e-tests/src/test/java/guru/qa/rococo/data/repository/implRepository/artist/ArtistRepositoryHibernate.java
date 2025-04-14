@@ -5,6 +5,7 @@ import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.ArtistRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ public class ArtistRepositoryHibernate implements ArtistRepository {
     private static final Logger LOG = LoggerFactory.getLogger(ArtistRepositoryHibernate.class);
 
     private static final Config CFG = Config.getInstance();
+
+    @PersistenceContext
     private final EntityManager entityManager = EntityManagers.em(CFG.artistJdbcUrl());
 
     @NotNull

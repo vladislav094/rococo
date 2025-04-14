@@ -12,7 +12,7 @@ import guru.qa.rococo.data.repository.implRepository.userdata.UserdataUserReposi
 import guru.qa.rococo.data.tpl.XaTransactionTemplate;
 import guru.qa.rococo.model.rest.TestData;
 import guru.qa.rococo.model.rest.UserJson;
-import guru.qa.rococo.service.UsersClient;
+import guru.qa.rococo.service.UserdataClieint;
 import io.qameta.allure.Step;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +28,7 @@ import static guru.qa.rococo.utils.RandomDataUtils.randomUsername;
 import static java.util.Objects.requireNonNull;
 
 @ParametersAreNonnullByDefault
-public class UserdataDbClient implements UsersClient {
+public class UserdataDbClient implements UserdataClieint {
 
     private static final Config CFG = Config.getInstance();
     private static final PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();

@@ -1,4 +1,4 @@
-package guru.qa.rococo.data.repository;
+package guru.qa.rococo.data.dao.artist;
 
 import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import org.jetbrains.annotations.NotNull;
@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ArtistRepository {
+public interface ArtistDao {
 
     @NotNull
     ArtistEntity create(ArtistEntity artist);

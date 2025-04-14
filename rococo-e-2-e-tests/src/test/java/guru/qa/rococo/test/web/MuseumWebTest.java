@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
 import guru.qa.rococo.jupiter.annotation.Museum;
 import guru.qa.rococo.jupiter.annotation.User;
-import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.utils.RandomDataUtils;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import static guru.qa.rococo.utils.RandomDataUtils.*;
 
-@WebTest
 @Story("Управлением разделом Музеи")
 public class MuseumWebTest extends BaseWebTest {
 
@@ -35,7 +33,7 @@ public class MuseumWebTest extends BaseWebTest {
                 .checkThatModalLoaded()
                 .setTitle(randomMuseumTitle)
                 .setCity(randomCity())
-                .selectCountry(randomCountry())
+                .selectCountry(getRandomCountry())
                 .setDescription(randomDescription())
                 .uploadPhoto(museumPhotoPath)
                 .clickSubmitButton();
@@ -59,7 +57,7 @@ public class MuseumWebTest extends BaseWebTest {
                 .checkThatEditModalLoaded()
                 .setTitle(randomMuseumTitle)
                 .setCity(randomCity())
-                .selectCountry(randomCountry())
+                .selectCountry(getRandomCountry())
                 .setDescription(randomDescription())
                 .uploadPhoto(museumPhotoPath)
                 .clickSubmitButton();

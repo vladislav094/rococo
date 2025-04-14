@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
 
-@WebTest
 @Story("Управление профилем пользователя")
 public class ProfileWebTest extends BaseWebTest {
 

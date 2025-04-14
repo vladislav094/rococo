@@ -9,8 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-@ExtendWith(ArtistExtension.class)
+@Target(ElementType.METHOD)
 public @interface Artist {
 
     String name() default "";

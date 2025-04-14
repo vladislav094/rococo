@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@ExtendWith(PaintingExtension.class)
 public @interface Painting {
 
     String title() default "";

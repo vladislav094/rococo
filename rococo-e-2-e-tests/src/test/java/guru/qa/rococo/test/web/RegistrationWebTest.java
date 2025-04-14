@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import static guru.qa.rococo.utils.RandomDataUtils.randomPassword;
 import static guru.qa.rococo.utils.RandomDataUtils.randomUsername;
 
-@WebTest
 @DisplayName("Регистрация пользователя")
 public class RegistrationWebTest extends BaseWebTest {
 

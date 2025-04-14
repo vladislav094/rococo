@@ -61,6 +61,7 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
                         userToLogin = userFromApiLoginAnno;
                     }
 
+//                    authApiClient.reset();
                     final String token = authApiClient.login(
                             userToLogin.username(),
                             userToLogin.testData().password()

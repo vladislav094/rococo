@@ -8,10 +8,6 @@ create table if not exists "country"
 
 alter table "country"
     owner to postgres;
-insert into country (name)
-values ('Belarus'),
-       ('Russian Federation'),
-       ('France');
 
 create table if not exists "geo"
 (
@@ -23,10 +19,6 @@ create table if not exists "geo"
 
 alter table "geo"
     owner to postgres;
-insert into geo(city, country_id)
-values ('Minsk', (select id from country where name = 'Belarus')),
-       ('Moscow', (select id from country where name = 'Russian Federation')),
-       ('Paris', (select id from country where name = 'France'));
 
 create table if not exists "museum"
 (
@@ -40,17 +32,3 @@ create table if not exists "museum"
 
 alter table "museum"
     owner to postgres;
-
-insert into museum(title, description, geo_id)
-values ('Национальный художественный музей Беларуси',
-        'Национальный художественный музей Беларуси — это крупнейшее в стране собрание произведений искусства,' ||
-        ' включающее более 30 тысяч экспонатов.',
-        (select id from geo where city = 'Minsk')),
-
-       ('Третьяковская галерея',
-        'Государственная Третьяковская галерея — российский государственный художественный музей в Москве.',
-        (select id from geo where city = 'Moscow')),
-
-       ('Лувр', 'Один из крупнейших и самый популярный художественный музей мира. Музей расположен в ' ||
-                'центре Парижа, на правом берегу Сены, на улице Риволи, в 1-м округе столицы.',
-        (select id from geo where city = 'Paris'));

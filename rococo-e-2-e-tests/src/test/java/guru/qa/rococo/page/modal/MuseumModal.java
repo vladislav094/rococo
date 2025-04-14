@@ -1,15 +1,16 @@
 package guru.qa.rococo.page.modal;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.openqa.selenium.Keys;
 
 import javax.annotation.Nonnull;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 
 public class MuseumModal extends BaseModal<MuseumModal> {
 
@@ -67,7 +68,18 @@ public class MuseumModal extends BaseModal<MuseumModal> {
 
     @Step("Select country with name: {country}")
     public MuseumModal selectCountry(String country) {
-        scrollToElement(countryIdSelect, country);
+        SelenideElement selectElement = $("select.select[name='countryId']");
+        scrollToElement(selectElement,country);
+//        SelenideElement selectElement = $("select.select");
+//        ElementsCollection selectElementOption = $$("select.select option");
+//
+//        selectElement.click(); // Открываем список
+//        while (selectElementOption.filterBy(Condition.text(country)).isEmpty()) {
+//            selectElement.sendKeys(Keys.PAGE_DOWN);
+//            sleep(100);
+//        }
+//        selectElementOption.findBy(text(country)).click();
+
         return this;
     }
 

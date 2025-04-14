@@ -8,6 +8,7 @@ import guru.qa.rococo.data.entity.museum.MuseumEntity;
 import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class MuseumRepositoryHibernate implements MuseumRepository {
     private static final Logger LOG = LoggerFactory.getLogger(MuseumRepositoryHibernate.class);
 
     private static final Config CFG = Config.getInstance();
+
+    @PersistenceContext
     private final EntityManager entityManager = EntityManagers.em(CFG.museumJdbcUrl());
 
     @Override
