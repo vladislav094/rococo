@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "common.proto"; // Общие сообщения, такие как PageableRequest
+
+package guru.qa.grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoArtistProto";
+
+// Сервис для работы с художниками
+service RococoArtistService {
+  rpc GetArtists (PageableRequest) returns (ArtistsResponse);
+  rpc GetArtistByName (PageableRequest) returns (ArtistsResponse);
+  rpc GetArtistById (ByIdRequest) returns (ArtistResponse);
+  rpc CreateArtist (CreateArtistRequest) returns (ArtistResponse);
+  rpc UpdateArtist (UpdateArtistRequest) returns (ArtistResponse);
+  rpc ArtistByName (ByNameRequest) returns (ArtistResponse);
+}
+
+// Ответы для художников
+message ArtistsResponse {
+  repeated ArtistResponse artist = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message ArtistResponse {
+  string id = 1; // UUID художника
+  string name = 2; // Имя художника
+  string biography = 3; // Биография художника
+  bytes photo = 4; // Фотография художника (опционально)
+}
+
+// Сообщение для запроса создания музея
+message CreateArtistRequest {
+  string name = 2; // Имя художника
+  string biography = 3; // Биография художника
+  bytes photo = 4; // Фотография художника (опционально)
+}
+
+message UpdateArtistRequest {
+  string id = 1; // UUID художника
+  string name = 2; // Имя художника
+  string biography = 3; // Биография художника
+  bytes photo = 4; // Фотография художника (опционально)
+}

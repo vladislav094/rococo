@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common.proto"; // Общие сообщения, такие как PageableRequest
+
+package guru.qa.grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoCountryProto";
+
+// Сервис для работы со странами
+service RococoCountryService {
+  rpc GetCountries (PageableRequest) returns (CountriesResponse);
+}
+
+// Ответы для стран
+message CountriesResponse {
+  repeated CountryResponse country = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message CountryResponse {
+  string id = 1; // UUID страны
+  string name = 2; // Название страны
+}

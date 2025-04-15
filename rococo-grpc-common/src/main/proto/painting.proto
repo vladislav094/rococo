@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package guru.qa.grpc.rococo;
+
+import "google/protobuf/empty.proto";
+import "common.proto"; // Общие сообщения, такие как PageableRequest, ByIdRequest и т.д.
+import "artist.proto"; // Для использования ArtistResponse
+import "museum.proto"; // Для использования MuseumResponse
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoPaintingProto";
+
+
+// Сервис для работы с музеями
+service RococoPaintingService {
+  rpc GetPaintings (PageableRequest) returns (PaintingsResponse);
+  rpc GetPaintingById (ByIdRequest) returns (PaintingResponse);
+  rpc GetPaintingByTitle (PageableRequest) returns (PaintingsResponse);
+  rpc GetPaintingByAuthorId (PaintingByAuthorRequest) returns (PaintingsResponse);
+  rpc CreatePainting (CreatePaintingRequest) returns (PaintingResponse);
+  rpc UpdatePainting (UpdatePaintingRequest) returns (PaintingResponse);
+}
+
+// Ответы для картины
+message PaintingsResponse {
+  repeated PaintingResponse painting = 1;
+  int32  totalPages = 2;
+  int64  totalElements = 3;
+}
+
+message PaintingResponse {
+  string id = 1; // UUID картины
+  string title = 2; // Название картины
+  string description = 3; // Описание картины
+  ArtistResponse artist = 4; // Автор картины
+  optional MuseumResponse museum = 5; // Музей, где хранится картина (опционально)
+  bytes content = 6; // Фотография картины (опционально)
+}
+
+// Общие запросы
+message PaintingByAuthorRequest {
+  string authorId = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+// Сообщение для запроса создания картины
+message CreatePaintingRequest {
+  string title = 1; // Название картины
+  string description = 2; // Описание картины
+  string artistId = 3; // UUID автора картины
+  optional string museumId = 4;
+  bytes content = 5; // Фотография картины (опционально)
+}
+
+message UpdatePaintingRequest {
+  string id = 1; // UUID картины
+  string title = 2; // Название картины
+  string description = 3; // Описание картины
+  string artistId = 4; // UUID автора картины
+  optional string museumId = 5; // UUID музея, где хранится картина (опционально)
+  bytes content = 6; // Фотография картины (опционально)
+}

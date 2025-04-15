@@ -27,3 +27,6 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
+logs
+rococo-e-2-e-tests/tm*
