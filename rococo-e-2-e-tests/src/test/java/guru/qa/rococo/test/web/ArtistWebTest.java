@@ -16,14 +16,13 @@ import static guru.qa.rococo.utils.RandomDataUtils.randomDescription;
 @Story("Управлением разделом Художники")
 public class ArtistWebTest extends BaseWebTest {
 
-    private static final String artistPhotoPath = "img/picasso.jpeg";
-
     @User
     @ApiLogin
     @Test
     @DisplayName("Создание нового художника")
     void testAddingNewArtist() {
 
+        final String artistPhotoPath = "img/picasso.jpeg";
         final String randomArtistName = RandomDataUtils.randomArtistName();
         final String successfulCreateMessage = String.format("Добавлен художник: %s", randomArtistName);
 

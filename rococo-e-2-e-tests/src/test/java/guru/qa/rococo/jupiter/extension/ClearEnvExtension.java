@@ -22,10 +22,10 @@ public class ClearEnvExtension implements SuiteExtension {
     @Override
     public void afterSuite() {
 //        authDb.execute("TRUNCATE TABLE authority, \"user\" CASCADE;");
-//        artistDb.execute("TRUNCATE TABLE artist CASCADE;");
-//        museumDb.execute("TRUNCATE TABLE museum, geo CASCADE;");
-//        paintingDb.execute("TRUNCATE TABLE painting CASCADE;");
-//        userdataDb.execute("TRUNCATE TABLE \"user\"  CASCADE;");
+        artistDb.execute("TRUNCATE TABLE artist CASCADE;");
+        museumDb.execute("TRUNCATE TABLE museum, geo CASCADE;");
+        paintingDb.execute("TRUNCATE TABLE painting CASCADE;");
+        userdataDb.execute("TRUNCATE TABLE \"user\"  CASCADE;");
     }
 
 }
