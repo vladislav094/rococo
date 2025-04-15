@@ -207,9 +207,10 @@ OpenAPI (Swagger) сервиса rococo-gateway доступен по адрес
 
 #### 4. Прописать в etc/hosts элиас для Docker-имени
 
-- frontend:  127.0.0.1 frontend.rococo.dc,
+- frontend:  127.0.0.1 frontend.rococo.dc
 - auth:      127.0.0.1 auth.rococo.dc
 - gateway:   127.0.0.1 gateway.rococo.dc
+- allure:    127.0.0.1 allure
 
 ```posh
 User-MacBook-Pro rococo % vi /etc/hosts
@@ -226,6 +227,7 @@ User-MacBook-Pro rococo % vi /etc/hosts
 127.0.0.1       frontend.rococo.dc
 127.0.0.1       auth.rococo.dc
 127.0.0.1       gateway.rococo.dc
+127.0.0.1       allure
 ```
 
 #### 5. Перейти в корневой каталог проекта
@@ -346,3 +348,7 @@ User-MacBook-Pro  rococo % bash docker-compose-e2e.sh
 #### 3. Selenoid UI доступен по адресу: http://localhost:9090/
 
 #### 4. Allure доступен по адресу: http://localhost:5050/allure-docker-service/projects/rococo/reports/latest/index.html
+
+<img src="allure-1.png" width="600">
+<img src="allure-2.png" width="600">
+<img src="allure-3.png" width="600">
