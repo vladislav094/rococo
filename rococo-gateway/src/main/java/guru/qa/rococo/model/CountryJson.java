@@ -13,7 +13,7 @@ public record CountryJson(
         UUID id,
 
         @NotBlank(message = "Country can not be blank")
-        @Size(min = 2, max = 20, message = "Allowed country length should be from 2 to 20 characters")
+        @Size(min = 2, max = 60, message = "Allowed country length should be from 2 to 60 characters")
         @JsonProperty("name")
         String name) {
 

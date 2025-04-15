@@ -21,7 +21,7 @@ public class CountryEntity implements Serializable {
     @Column(name = "id", columnDefinition = "UUID default uuid_generate_v1()")
     private UUID id;
 
-    @Column(name = "name", unique = true, nullable = false, length = 20)
+    @Column(name = "name", unique = true, nullable = false, length = 60)
     private String name;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

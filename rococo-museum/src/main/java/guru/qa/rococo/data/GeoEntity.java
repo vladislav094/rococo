@@ -21,7 +21,7 @@ public class GeoEntity implements Serializable {
     @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "city", unique = true, nullable = false, length = 15)
+    @Column(name = "city", unique = true, nullable = false, length = 50)
     private String city;
 
     @ManyToOne(fetch = FetchType.LAZY)
