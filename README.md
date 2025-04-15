@@ -1,29 +1,43 @@
-### **Технологии, использованные в Rococo**
+# Rococo - Платформа для коллекционеров искусства
 
-- [Spring Authorization Server](https://spring.io/projects/spring-authorization-server)
-- [Spring OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
-- [Spring data JPA](https://spring.io/projects/spring-data-jpa)
-- [Spring Web](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#spring-web)
-- [Spring actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
-- [Spring gRPC by https://github.com/yidongnan](https://yidongnan.github.io/grpc-spring-boot-starter/en/server/getting-started.html)
-- [Spring web-services](https://docs.spring.io/spring-ws/docs/current/reference/html/)
-- [Apache Kafka](https://developer.confluent.io/quickstart/kafka-docker/)
-- [Docker](https://www.docker.com/resources/what-container/)
-- [Docker-compose](https://docs.docker.com/compose/)
-- [Postgres](https://www.postgresql.org/about/)
-- [Thymeleaf](https://www.thymeleaf.org/)
-- [Jakarta Bean Validation](https://beanvalidation.org/)
-- [Jakarta JAXB](https://eclipse-ee4j.github.io/jaxb-ri/)
-- [JUnit 5 (Extensions, Resolvers, etc)](https://junit.org/junit5/docs/current/user-guide/)
-- [Retrofit 2](https://square.github.io/retrofit/)
-- [Allure](https://docs.qameta.io/allure/)
-- [Selenide](https://selenide.org/)
-- [Selenoid & Selenoid-UI](https://aerokube.com/selenoid/latest/)
-- [Allure-docker-service](https://github.com/fescobar/allure-docker-service)
-- [Java 21](https://adoptium.net/en-GB/temurin/releases/)
-- [Gradle 8.6](https://docs.gradle.org/8.6/release-notes.html)
-- [GHA](https://docs.github.com/en/actions)
-- И многие другие
+<img src="rococo.png" width="800" alt="Логотип проекта Rococo">
+
+## 📋 Описание проекта
+
+**Rococo** - это платформа для каталогизации произведений искусства, предоставляющая:
+
+- 🎨 Полноценный каталог художников, музеев и картин
+- 🔐 Безопасную аутентификацию через OAuth 2.0
+- 📚 Возможность создания персональных коллекций
+- 🏗 Микросервисную архитектуру
+
+## 🔥 Основные возможности
+
+### Безопасность и аутентификация
+- Авторизация через Spring Authorization Server
+- Поддержка OAuth 2.0 и JWT
+- Персонализированный доступ к управлению контентом
+
+### Управление контентом
+- CRUD операции для художников, музеев и картин
+- Гибкая система поиска и фильтрации
+- Поддержка загрузки изображений
+
+### Пользовательский функционал
+- Личные коллекции произведений
+- История просмотров
+- Избранные работы
+
+## ⚙️ Технологический стек
+
+### Основные технологии
+| Категория       | Технологии                     |
+|-----------------|--------------------------------|
+| Бэкенд          | Java 21, Spring Boot 3.2, gRPC |
+| Базы данных     | PostgreSQL 15                  |
+| Брокер сообщений| Apache Kafka 7.3.2             |
+| Фронтенд        | Svelte, Thymeleaf              |
+| Инфраструктура  | Docker, Selenoid, Allure       |
 
 **Схема проекта Rococo**
 
@@ -236,9 +250,6 @@ User-MacBook-Pro rococo % cd rococo
 ```
 
 #### 6. Запустить все сервисы:
-
-для REST:
-
 ```posh
 User-MacBook-Pro  rococo % bash docker-compose-dev.sh
 ```
@@ -337,9 +348,6 @@ User-MacBook-Pro rococo % cd rococo
 ```
 
 #### 2. Запустить все сервисы и тесты:
-
-для REST:
-
 ```posh
 User-MacBook-Pro  rococo % bash docker-compose-e2e.sh
 ```
