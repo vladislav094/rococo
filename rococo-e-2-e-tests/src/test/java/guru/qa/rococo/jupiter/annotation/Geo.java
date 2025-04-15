@@ -7,7 +7,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Artist {
+public @interface Geo {
 
-    String name() default "";
+    String city() default "";
+
+    String country() default "";
+
 }

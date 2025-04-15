@@ -20,4 +20,7 @@ public interface MuseumClient {
 
     @Nullable
     GeoJson getGeoByCity(@Nonnull String cityName);
+
+    @Nonnull
+    GeoJson createGeo(GeoJson geoJson);
 }

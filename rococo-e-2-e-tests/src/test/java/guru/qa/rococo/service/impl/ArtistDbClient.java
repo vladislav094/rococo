@@ -4,7 +4,6 @@ import guru.qa.rococo.config.Config;
 import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import guru.qa.rococo.data.repository.ArtistRepository;
 import guru.qa.rococo.data.repository.implRepository.artist.ArtistRepositoryHibernate;
-import guru.qa.rococo.data.repository.implRepository.artist.ArtistRepositorySpringJdbc;
 import guru.qa.rococo.data.tpl.XaTransactionTemplate;
 import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.service.ArtistClient;

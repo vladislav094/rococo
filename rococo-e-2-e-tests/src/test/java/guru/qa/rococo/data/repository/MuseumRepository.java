@@ -1,6 +1,5 @@
 package guru.qa.rococo.data.repository;
 
-import guru.qa.rococo.data.entity.artist.ArtistEntity;
 import guru.qa.rococo.data.entity.museum.CountryEntity;
 import guru.qa.rococo.data.entity.museum.GeoEntity;
 import guru.qa.rococo.data.entity.museum.MuseumEntity;

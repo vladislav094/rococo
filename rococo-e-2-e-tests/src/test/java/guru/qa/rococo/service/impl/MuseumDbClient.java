@@ -9,6 +9,7 @@ import guru.qa.rococo.data.repository.MuseumRepository;
 import guru.qa.rococo.data.repository.implRepository.museum.MuseumRepositoryHibernate;
 import guru.qa.rococo.data.tpl.XaTransactionTemplate;
 import guru.qa.rococo.model.rest.ArtistJson;
+import guru.qa.rococo.model.rest.CountryJson;
 import guru.qa.rococo.model.rest.GeoJson;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.service.MuseumClient;
@@ -24,8 +25,13 @@ import java.util.UUID;
 public class MuseumDbClient implements MuseumClient {
 
     private static final Config CFG = Config.getInstance();
-    private final MuseumRepository museumRepository = new MuseumRepositoryHibernate();
-    private final XaTransactionTemplate xaTransactionTemplate = new XaTransactionTemplate(CFG.museumJdbcUrl());
+    private final MuseumRepository museumRepository;
+    private final XaTransactionTemplate xaTransactionTemplate;
+
+    public MuseumDbClient() {
+        this.museumRepository = new MuseumRepositoryHibernate();
+        this.xaTransactionTemplate = new XaTransactionTemplate(CFG.museumJdbcUrl());
+    }
 
     @NotNull
     @Override
@@ -33,25 +39,8 @@ public class MuseumDbClient implements MuseumClient {
         return Objects.requireNonNull(
                 xaTransactionTemplate.execute(() -> {
                             MuseumEntity museumEntity = MuseumEntity.fromJson(museumJson);
-                            CountryEntity countryEntity = CountryEntity.fromJson(museumJson.geo().country());
-
-                            if (museumEntity.getGeo().getId() == null) {
-                                Optional<GeoEntity> existingGeoEntity = museumRepository.findGeoByCity(museumEntity.getGeo().getCity());
-                                if (existingGeoEntity.isPresent()) {
-                                    museumEntity.setGeo(existingGeoEntity.get());
-                                } else {
-                                    CountryEntity savedCountry = museumRepository.findCountryByName(museumJson.geo().country().name())
-                                            .orElseGet(
-                                                    () -> museumRepository.createCountry(countryEntity)
-                                            );
-                                    GeoEntity geoEntity = new GeoEntity();
-                                    geoEntity.setCity(museumJson.geo().city());
-                                    geoEntity.setCountry(savedCountry);
-                                    GeoEntity savedGeo = museumRepository.createGeo(geoEntity);
-
-                                    museumEntity.setGeo(savedGeo);
-                                }
-                            }
+                            GeoEntity geoEntity = resolveOrCreateGeo(museumJson.geo());
+                            museumEntity.setGeo(geoEntity);
                             return MuseumJson.fromEntity(museumRepository.createMuseum(museumEntity));
                         }
                 )
@@ -76,5 +65,36 @@ public class MuseumDbClient implements MuseumClient {
         Optional<MuseumEntity> entity = museumRepository.findMuseumById(UUID.fromString(id));
         return entity.map(MuseumJson::fromEntity)
                 .orElseThrow(() -> new NotFoundException("Museum with id: '" + id + "' not found"));
+    }
+
+    @NotNull
+    public GeoJson createGeo(GeoJson geoJson) {
+        return Objects.requireNonNull(xaTransactionTemplate.execute(() ->
+                GeoJson.fromEntity(resolveOrCreateGeo(geoJson))
+        ));
+    }
+
+    private GeoEntity resolveOrCreateGeo(GeoJson geoJson) {
+        return museumRepository.findGeoByCity(geoJson.city())
+                .orElseGet(() -> createGeoEntity(geoJson));
+    }
+
+    private GeoEntity createGeoEntity(GeoJson geoJson) {
+        CountryEntity country = resolveOrCreateCountry(geoJson.country());
+
+        GeoEntity geo = new GeoEntity();
+        geo.setCity(geoJson.city());
+        geo.setCountry(country);
+
+        return museumRepository.createGeo(geo);
+    }
+
+    private CountryEntity resolveOrCreateCountry(CountryJson countryJson) {
+        return museumRepository.findCountryByName(countryJson.name())
+                .orElseGet(() -> createCountryEntity(countryJson));
+    }
+
+    private CountryEntity createCountryEntity(CountryJson countryJson) {
+        return museumRepository.createCountry(CountryEntity.fromJson(countryJson));
     }
 }

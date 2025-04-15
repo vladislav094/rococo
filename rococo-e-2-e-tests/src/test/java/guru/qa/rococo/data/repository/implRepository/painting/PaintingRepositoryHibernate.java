@@ -5,6 +5,7 @@ import guru.qa.rococo.data.entity.painting.PaintingEntity;
 import guru.qa.rococo.data.jpa.EntityManagers;
 import guru.qa.rococo.data.repository.PaintingRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ public class PaintingRepositoryHibernate implements PaintingRepository {
     private static final Logger LOG = LoggerFactory.getLogger(PaintingRepositoryHibernate.class);
 
     private static final Config CFG = Config.getInstance();
+
+    @PersistenceContext
     private final EntityManager entityManager = EntityManagers.em(CFG.paintingJdbcUrl());
 
     @NotNull

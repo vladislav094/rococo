@@ -22,11 +22,12 @@ public class RandomDataUtils {
     public static String randomMuseumTitle() {
 
         return String.format(
-                "%s %s %s",
+                "%s %s %s %s",
                 faker.educator().university().split(" ")[0],
-                faker.educator().campus(),
-                "Museum"
-        ) + RandomStringUtils.randomAlphabetic(5);
+                faker.educator().campus().split(" ")[0],
+                "Museum",
+                RandomStringUtils.randomAlphabetic(5)
+        );
     }
 
     public static String randomDescription() {
