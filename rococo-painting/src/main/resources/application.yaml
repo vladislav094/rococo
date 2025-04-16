@@ -80,3 +80,14 @@ spring:
     username: postgres
     password: secret
     url: 'jdbc:postgresql://rococo-all-db:5432/rococo-painting'
+
+grpc:
+  server:
+    port: 8074
+  client:
+    museumGrpcClient:
+      address: 'static://museum.rococo.dc:8071'
+      negotiationType: PLAINTEXT
+    artistGrpcClient:
+      address: 'static://artist.rococo.dc:8073'
+      negotiationType: PLAINTEXT
