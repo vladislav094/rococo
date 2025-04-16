@@ -38,7 +38,7 @@ public class RandomDataUtils {
     public static String getRandomCountry() {
         Random random = new Random();
         int randomIndex = random.nextInt(randomCountries.size());
-        return randomCountries.get(ThreadLocalRandom.current().nextInt(randomIndex));
+        return randomCountries.get(randomIndex);
     }
 
     public static String randomCity() {

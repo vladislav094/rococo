@@ -73,3 +73,6 @@ spring:
     username: postgres
     password: secret
     url: 'jdbc:postgresql://rococo-all-db:5432/rococo-museum'
+grpc:
+  server:
+    port: 8071
