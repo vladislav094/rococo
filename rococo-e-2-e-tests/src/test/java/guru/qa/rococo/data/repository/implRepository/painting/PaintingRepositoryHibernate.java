@@ -26,7 +26,6 @@ public class PaintingRepositoryHibernate implements PaintingRepository {
 
     @NotNull
     @Override
-    @Transactional
     public PaintingEntity create(@NotNull PaintingEntity painting) {
         entityManager.joinTransaction();
         entityManager.persist(painting);

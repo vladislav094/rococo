@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.metamodel.Metamodel;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class ThreadSafeEntityManager implements EntityManager {
     private final ThreadLocal<EntityManager> threadEm = new ThreadLocal<>();
     private final EntityManagerFactory emf;
 
-    public ThreadSafeEntityManager(EntityManager delegate) {
+    public ThreadSafeEntityManager(@Nonnull EntityManager delegate) {
         threadEm.set(delegate);
         emf = delegate.getEntityManagerFactory();
     }
@@ -25,18 +26,15 @@ public class ThreadSafeEntityManager implements EntityManager {
         if (threadEm.get() == null || !threadEm.get().isOpen()) {
             threadEm.set(emf.createEntityManager());
         }
-        if(TransactionSynchronizationManager.isActualTransactionActive()) {
-            threadEm.get().joinTransaction();
-        }
         return threadEm.get();
     }
 
     @Override
     public void close() {
-        if (threadEm.get() != null && threadEm.get().isOpen()) {
+        if (threadEm.get() != null || !threadEm.get().isOpen()) {
             threadEm.get().close();
+            threadEm.remove();
         }
-        threadEm.remove();
     }
 
     @Override

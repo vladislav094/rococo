@@ -7,7 +7,7 @@ import guru.qa.rococo.api.core.ThreadSafeCookieStore;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.model.rest.TestData;
 import guru.qa.rococo.model.rest.UserJson;
-import guru.qa.rococo.service.UserdataClieint;
+import guru.qa.rococo.service.UserdataClient;
 import io.qameta.allure.Step;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,18 +16,14 @@ import retrofit2.Response;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 
-import static java.util.Objects.requireNonNull;
-
-public class UserdataApiClient implements UserdataClieint {
+public class UserdataApiClient implements UserdataClient {
 
     private static final Config CFG = Config.getInstance();
-    private static final String defaultPassword = "12345";
 
-    private final GatewayApi gatewayApi = new RestClient.EmptyClient("http://127.0.0.1:8090/").create(GatewayApi.class);
+    private final GatewayApi gatewayApi = new RestClient.EmptyClient(CFG.gatewayUrl()).create(GatewayApi.class);
     private final AuthApi authApi = new RestClient.EmptyClient(CFG.authUrl()).create(AuthApi.class);
 
     private final AuthApiClient authApiClient = new AuthApiClient();
-    private final UserdataClieint userdataClieint = new UserdataDbClient();
 
     @Override
     @Nonnull
@@ -35,7 +31,7 @@ public class UserdataApiClient implements UserdataClieint {
     public UserJson createUser(String username, String password) {
         try {
             Response<Void> registerFrormResponse = authApi.getRegisterForm().execute();
-            if(!registerFrormResponse.isSuccessful()) {
+            if (!registerFrormResponse.isSuccessful()) {
                 throw new RuntimeException("Failed to get register form: " + registerFrormResponse.code());
             }
             String csrfToken = ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN");

@@ -2,7 +2,7 @@ package guru.qa.rococo.jupiter.extension;
 
 import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.model.rest.UserJson;
-import guru.qa.rococo.service.UserdataClieint;
+import guru.qa.rococo.service.UserdataClient;
 import guru.qa.rococo.service.impl.UserdataDbClient;
 import guru.qa.rococo.utils.RandomDataUtils;
 import org.junit.jupiter.api.extension.*;
@@ -13,7 +13,7 @@ public class UserExtension implements ParameterResolver, BeforeEachCallback {
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(UserExtension.class);
     private static final String defaultPassword = "12345";
 
-    private static final ThreadLocal<UserdataClieint> userdataClient = ThreadLocal.withInitial(UserdataDbClient::new);
+    private static final ThreadLocal<UserdataClient> userdataClient = ThreadLocal.withInitial(UserdataDbClient::new);
 
 
     @Override

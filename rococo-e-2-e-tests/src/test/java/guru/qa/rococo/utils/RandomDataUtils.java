@@ -6,6 +6,7 @@ import org.junit.platform.commons.util.StringUtils;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomDataUtils {
 
@@ -37,7 +38,7 @@ public class RandomDataUtils {
     public static String getRandomCountry() {
         Random random = new Random();
         int randomIndex = random.nextInt(randomCountries.size());
-        return randomCountries.get(randomIndex);
+        return randomCountries.get(ThreadLocalRandom.current().nextInt(randomIndex));
     }
 
     public static String randomCity() {
