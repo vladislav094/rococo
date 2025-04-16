@@ -12,14 +12,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ExtendWith({
-        BrowserExtension.class,
         AllureJunit5.class,
         UserExtension.class,
         ArtistExtension.class,
         MuseumExtension.class,
         PaintingExtension.class,
-        ApiLoginExtension.class,
-//        ClearEnvExtension.class
+        GeoExtension.class
 })
-public @interface WebTest {
+public @interface RestTest {
 }

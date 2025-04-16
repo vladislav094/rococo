@@ -42,7 +42,7 @@ public class ArtistWebTest extends BaseWebTest {
     @ApiLogin
     @Test
     @DisplayName("Редактирование художника")
-    void testMuseumShouldChangedAfterEdit(ArtistJson artistJson) {
+    void testArtistShouldChangedAfterEdit(ArtistJson artistJson) {
 
         final String newArtistPhotoPath = "img/malevich.jpg";
 
@@ -59,5 +59,21 @@ public class ArtistWebTest extends BaseWebTest {
                 .uploadPhoto(newArtistPhotoPath)
                 .clickSubmitButton();
         page.artistPage.checkAlertMessage(successfulUpdateMessage);
+    }
+
+    @Artist
+    @User
+    @ApiLogin
+    @Test
+    @DisplayName("Поиск художника по названию в строке поиска")
+    void testArtistShouldFindingByNameInSearchField(ArtistJson artistJson) {
+
+        final String currentArtistName = artistJson.name();
+
+        Selenide.open(ArtistPage.URL, ArtistPage.class)
+                .checkThatPageLoaded()
+                .fillSearchInput(currentArtistName)
+                .toArtistCardByName(currentArtistName)
+                .checkArtistCardData(artistJson, null);
     }
 }

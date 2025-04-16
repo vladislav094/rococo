@@ -3,7 +3,6 @@ package guru.qa.rococo.page;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.rococo.model.rest.ArtistJson;
-import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.model.rest.PaintingJson;
 import guru.qa.rococo.page.modal.ArtistModal;
 import guru.qa.rococo.page.modal.PaintingModal;
@@ -57,7 +56,7 @@ public class ArtistPage extends BasePage<ArtistPage> {
     }
 
     @Step("Go on artist page by name: {name}")
-    public ArtistPage toArtistCardByTitle(String name) {
+    public ArtistPage toArtistCardByName(String name) {
         artistItems.find(text(name)).click();
         return this;
     }

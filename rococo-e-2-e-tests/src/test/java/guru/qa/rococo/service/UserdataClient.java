@@ -5,7 +5,7 @@ import guru.qa.rococo.model.rest.UserJson;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public interface UserdataClieint {
+public interface UserdataClient {
 
     @Nonnull
     UserJson createUser(String username, String password);
